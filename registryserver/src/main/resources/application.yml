@@ -1,0 +1,40 @@
+server:
+  port: 39111
+
+spring:
+  application:
+    name: registryserver
+  profiles:
+    active: dev
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+eureka:
+  server:
+    enable-self-preservation: true
+    eviction-interval-timer-in-ms: 5000
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+     metadataMap:
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+security:
+  basic:
+    enabled: false
+management:
+  security:
+    enabled: false
+
+## =============================================================
+## Logging Properties @see LoggingApplicationListener
+## =============================================================
+logging:
+  file: registryserver
+banner:
+  location: banner
+  charset: UTF-8
+

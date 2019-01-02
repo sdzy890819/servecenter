@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+        <package name="com.ouding.wallet.domain"/>
+    </typeAliases>
+    <mappers>
+        <mapper resource="mapper-config/TestMapper.xml"/>
+        <mapper resource="mapper-config/CreditRepaymentInfoMapper.xml"/>
+        <mapper resource="mapper-config/CreditRepaymentReductionMapper.xml"/>
+        <mapper resource="mapper-config/UserOrderMapper.xml"/>
+        <mapper resource="mapper-config/CreditRepaymentMapper.xml"/>
+        <mapper resource="mapper-config/MemberConfigMapper.xml"/>
+        <mapper resource="mapper-config/ProductMapper.xml"/>
+        <mapper resource="mapper-config/ZytSyncTimeMapper.xml"/>
+        <mapper resource="mapper-config/BaseEntity.xml"/>
+        <mapper resource="mapper-config/ZytRecordMapper.xml"/>
+        <mapper resource="mapper-config/InputAssetRecordMapper.xml"/>
+        <mapper resource="mapper-config/UserOrderLogMapper.xml"/>
+        <mapper resource="mapper-config/AddOrderConfigurationMapper.xml"/>
+        <mapper resource="mapper-config/OrderContractMapper.xml"/>
+        <mapper resource="mapper-config/ContractPdfMapper.xml"/>
+    </mappers>
+</configuration>

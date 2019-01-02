@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ouding.wallet.mapper.UserOrderMapper">
+    <resultMap id="userOrder" type="com.ouding.wallet.domain.UserOrder">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="order_sn" property="orderSn"/>
+        <result column="user_id" property="userId"/>
+        <result column="biz_status" property="bizStatus"/>
+        <result column="product_id" property="productId"/>
+        <result column="account" property="account"/>
+        <result column="rate" property="rate"/>
+        <result column="fee" property="fee"/>
+        <result column="deadline" property="deadline"/>
+        <result column="date_unit" property="dateUnit"/>
+        <result column="p_use" property="pUse"/>
+        <result column="channel" property="channel"/>
+        <result column="app_type" property="appType"/>
+        <result column="loan_status" property="loanStatus"/>
+        <result column="loan_su_time" property="loanSuTime"/>
+        <result column="loan_serial_num" property="loanSerialNum"/>
+        <result column="bank_card" property="bankCard"/>
+        <result column="bank_card_name" property="bankCardName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="is_delete" property="isdelete"/>
+        <result column="remark" property="remark"/>
+        <result column="is_finished" property="isFinished"/>
+        <result column="approve_time" property="approveTime"/>
+        <result column="user_member_id" property="userMemberId"/>
+        <result column="third_party_fee" property="thirdPartyFee"/>
+        <result column="product_fee" property="productFee"/>
+        <result column="product_third_party_fee" property="productThirdPartyFee"/>
+        <result column="product_rate" property="productRate"/>
+        <result column="product_periods" property="productPeriods"/>
+        <result column="product_channel" property="productChannel"/>
+        <result column="product_repayment_id" property="productRepaymentId"/>
+        <result column="second_account" property="secondAccount"/>
+        <result column="ident" property="ident"/>
+        <result column="thirdparty_product_id" property="thirdpartyProductId"/>
+        <result column="payment_method" property="paymentMethod"/>
+        <result column="first_account" property="firstAccount" />
+
+    </resultMap>
+
+    <sql id="sql_all">
+        order_sn, user_id, biz_status,product_id,account,rate,fee,deadline,date_unit,p_use,channel,app_type,loan_status,loan_su_time,
+            loan_serial_num,bank_card,bank_card_name,user_member_id,is_delete,is_finished,approve_time,approve_user,approve_user_gid,cancel_update_time
+            , third_party_fee, product_fee, product_third_party_fee, product_rate,product_periods,product_channel,product_repayment_id
+            ,second_account,ident,thirdparty_product_id,payment_method,first_account
+    </sql>
+
+    <update id="updateOrderIfColumnNotNull">
+        update user_order
+        <set>
+            <if test="c.userId != null">
+                user_id = #{c.userId},
+            </if>
+            <if test="c.bizStatus != null">
+                biz_status = #{c.bizStatus},
+            </if>
+            <if test="c.productId != null">
+                product_id = #{c.productId},
+            </if>
+            <if test="c.account != null">
+                account = #{c.account},
+            </if>
+            <if test="c.rate != null">
+                rate = #{c.rate},
+            </if>
+            <if test="c.fee != null">
+                fee = #{c.fee},
+            </if>
+            <if test="c.deadline != null">
+                deadline = #{c.deadline},
+            </if>
+            <if test="c.dateUnit != null">
+                date_unit = #{c.dateUnit},
+            </if>
+            <if test="c.pUse != null">
+                p_use = #{c.pUse},
+            </if>
+            <if test="c.channel != null">
+                channel = #{c.channel},
+            </if>
+            <if test="c.appType != null">
+                app_type = #{c.appType},
+            </if>
+            <if test="c.loanStatus != null">
+                loan_status = #{c.loanStatus},
+            </if>
+            <if test="c.loanSuTime != null">
+                loan_su_time = #{c.loanSuTime},
+            </if>
+            <if test="c.loanSerialNum != null">
+                loan_serial_num = #{c.loanSerialNum},
+            </if>
+            <if test="c.bankCard != null">
+                bank_card = #{c.bankCard},
+            </if>
+            <if test="c.bankCardName != null">
+                bank_card_name = #{c.bankCardName},
+            </if>
+            <if test="c.createTime != null">
+                create_time = #{c.createTime},
+            </if>
+            <if test="c.modifyTime != null">
+                modify_time = #{c.modifyTime},
+            </if>
+            <if test="c.isdelete != null">
+                is_delete = #{c.isdelete},
+            </if>
+            <if test="c.remark != null">
+                remark = #{c.remark},
+            </if>
+            <if test="c.isFinished != null">
+                is_finished = #{c.isFinished},
+            </if>
+            <if test="c.approveTime != null">
+                approve_time = #{c.approveTime},
+            </if>
+            <if test="c.userMemberId != null">
+                user_member_id = #{c.userMemberId},
+            </if>
+            <if test="c.thirdPartyFee != null">
+                third_party_fee = #{c.thirdPartyFee},
+            </if>
+            <if test="c.productFee != null">
+                product_fee = #{c.productFee},
+            </if>
+            <if test="c.productThirdPartyFee != null">
+                product_third_party_fee = #{c.productThirdPartyFee},
+            </if>
+            <if test="c.productRate != null">
+                product_rate = #{c.productRate},
+            </if>
+            <if test="c.productPeriods != null">
+                product_periods = #{c.productPeriods},
+            </if>
+            <if test="c.productChannel != null">
+                product_channel = #{c.productChannel},
+            </if>
+            <if test="c.productRepaymentId != null">
+                product_repayment_id = #{c.productRepaymentId},
+            </if>
+            <if test="c.secondAccount != null">
+                second_account = #{c.secondAccount},
+            </if>
+            <if test="c.ident != null">
+                ident = #{c.ident},
+            </if>
+            <if test="c.thirdpartyProductId != null">
+                thirdparty_product_id = #{c.thirdpartyProductId},
+            </if>
+            <if test="c.paymentMethod != null">
+                payment_method = #{c.paymentMethod},
+            </if>
+            <if test="c.firstAccount != null">
+                first_account = #{c.firstAccount},
+            </if>
+        </set>
+        <where>
+            order_sn = #{c.orderSn}
+        </where>
+    </update>
+
+    <select id="findOrders" resultMap="userOrder">
+        select
+        <include refid="sql_all"/>
+        from user_order where order_sn in
+        <foreach collection="list" open="(" close=")" item="c" separator=",">
+            #{c}
+        </foreach>
+    </select>
+
+    <update id="updateOpenAccountOrder" parameterType="java.util.Map">
+        update user_order set
+        <if test="borrowerCardNo != null">
+            bank_card = #{borrowerCardNo},
+        </if>
+        <if test="bankCardName != null">
+            bank_card_name = #{bankCardName},
+        </if>
+        biz_status = #{bizStatus},
+        open_account_time = #{openAccountTime},
+        modify_time = #{modifyTime}
+        WHERE
+        user_id = #{userId} and order_sn = #{orderSn} and biz_status = 530
+    </update>
+
+    <update id="updateOrder" parameterType="com.ouding.wallet.domain.UserOrder">
+        update user_order set
+        <if test="bizStatus != null">
+            biz_status = #{bizStatus},
+        </if>
+        <if test="loanStatus != null">
+            loan_status = #{loanStatus},
+        </if>
+        <if test="loanSuTime != null">
+            loan_su_time = #{loanSuTime},
+        </if>
+        <if test="isFinished != null">
+            is_finished = #{isFinished},
+        </if>
+        modify_time = #{modifyTime},
+        modify_by = #{modifyBy}
+        WHERE order_sn = #{orderSn}
+    </update>
+</mapper>

@@ -1,0 +1,21 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:39111/eureka/
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    eviction-interval-timer-in-ms: 5000
+  instance:
+     metadataMap:
+        instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+security:
+  basic:
+    enabled: false
+management:
+  security:
+    enabled: false
+
+logging:
+  path: ${logidr}/logs

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ouding.wallet.mapper.CreditRepaymentInfoMapper">
+    <resultMap id="creditRepaymentInfo" type="com.ouding.wallet.domain.CreditRepaymentInfo">
+        <id column="repayment_info_id" jdbcType="BIGINT" property="repaymentInfoId"/>
+        <result column="credit_repaymen_id" jdbcType="BIGINT" property="creditRepaymenId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="num" jdbcType="INTEGER" property="num"/>
+        <result column="plan_principal" jdbcType="DECIMAL" property="planPrincipal"/>
+        <result column="handling_charge" jdbcType="DECIMAL" property="handlingCharge"/>
+        <result column="service_money" jdbcType="DECIMAL" property="serviceMoney"/>
+        <result column="plan_service_money" jdbcType="DECIMAL" property="planServiceMoney"/>
+        <result column="third_service_money" jdbcType="DECIMAL" property="thirdServiceMoney"/>
+        <result column="third_principal" jdbcType="DECIMAL" property="thirdPrincipal"/>
+        <result column="third_interest" jdbcType="DECIMAL" property="thirdInterest"/>
+        <result column="plan_interest" jdbcType="DECIMAL" property="planInterest"/>
+        <result column="prepayment_penalty" jdbcType="DECIMAL" property="prepaymentPenalty"/>
+        <result column="prepayment_date" jdbcType="BIGINT" property="prepaymentDate"/>
+        <result column="prepayment_amount" jdbcType="DECIMAL" property="prepaymentAmount"/>
+        <result column="diff_value" jdbcType="DECIMAL" property="diffValue"/>
+        <result column="end_interest_date" jdbcType="BIGINT" property="endInterestDate"/>
+        <result column="plan_date" jdbcType="BIGINT" property="planDate"/>
+        <result column="real_date" jdbcType="BIGINT" property="realDate"/>
+        <result column="overdue_days" jdbcType="INTEGER" property="overdueDays"/>
+        <result column="overdue_interest" jdbcType="DECIMAL" property="overdueInterest"/>
+        <result column="biz_status" jdbcType="INTEGER" property="bizStatus"/>
+        <result column="is_borrower_repay" jdbcType="INTEGER" property="isBorrowerRepay"/>
+        <result column="baddebt_date" jdbcType="BIGINT" property="baddebtDate"/>
+        <result column="baddebt_amount" jdbcType="DECIMAL" property="baddebtAmount"/>
+        <result column="amount_repayment" jdbcType="DECIMAL" property="amountRepayment"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="modify_time" jdbcType="BIGINT" property="modifyTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="is_delete" jdbcType="BIT" property="isDelete"/>
+        <result column="pay_sn" jdbcType="VARCHAR" property="paySn"/>
+        <result column="account_start_time" jdbcType="BIGINT" property="accountStartTime"/>
+        <result column="first_principal" property="firstPrincipal"/>
+        <result column="second_principal" property="secondPrincipal"/>
+        <result column="payment_method" property="paymentMethod"/>
+        <result column="ident" property="ident"/>
+    </resultMap>
+    <resultMap id="creditRepaymentInfoFile" type="com.ouding.wallet.domain.CreditRepaymentInfoFile">
+    </resultMap>
+
+    <update id="update">
+        update credit_repayment_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="orderSn != null">
+                order_sn = #{orderSn},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="planPrincipal != null">
+                plan_principal = #{planPrincipal},
+            </if>
+            <if test="handlingCharge != null">
+                handling_charge = #{handlingCharge},
+            </if>
+            <if test="serviceMoney != null">
+                service_money = #{serviceMoney},
+            </if>
+            <if test="planServiceMoney != null">
+                plan_service_money = #{planServiceMoney},
+            </if>
+            <if test="thirdServiceMoney != null">
+                third_service_money = #{thirdServiceMoney},
+            </if>
+            <if test="thirdPrincipal != null">
+                third_principal = #{thirdPrincipal},
+            </if>
+            <if test="thirdInterest != null">
+                third_interest = #{thirdInterest},
+            </if>
+            <if test="planInterest != null">
+                plan_interest = #{planInterest},
+            </if>
+            <if test="prepaymentPenalty != null">
+                prepayment_penalty = #{prepaymentPenalty},
+            </if>
+            <if test="prepaymentDate != null">
+                prepayment_date = #{prepaymentDate},
+            </if>
+            <if test="prepaymentAmount != null">
+                prepayment_amount = #{prepaymentAmount},
+            </if>
+            <if test="diffValue != null">
+                diff_value = #{diffValue},
+            </if>
+            <if test="endInterestDate != null">
+                end_interest_date = #{endInterestDate},
+            </if>
+            <if test="planDate != null">
+                plan_date = #{planDate},
+            </if>
+            <if test="realDate != null">
+                real_date = #{realDate},
+            </if>
+            <if test="overdueDays != null">
+                overdue_days = #{overdueDays},
+            </if>
+            <if test="overdueInterest != null">
+                overdue_interest = #{overdueInterest},
+            </if>
+            <if test="bizStatus != null">
+                biz_status = #{bizStatus},
+            </if>
+            <if test="isBorrowerRepay != null">
+                is_borrower_repay = #{isBorrowerRepay},
+            </if>
+            <if test="baddebtDate != null">
+                baddebt_date = #{baddebtDate},
+            </if>
+            <if test="baddebtAmount != null">
+                baddebt_amount = #{baddebtAmount},
+            </if>
+            <if test="amountRepayment != null">
+                amount_repayment = #{amountRepayment},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="isDelete != null">
+                is_delete = #{isDelete},
+            </if>
+            <if test="paySn != null">
+                pay_sn = #{paySn},
+            </if>
+            <if test="accountStartTime != null">
+                account_start_time = #{accountStartTime},
+            </if>
+            <if test="firstPrincipal != null">
+                first_principal = #{firstPrincipal},
+            </if>
+            <if test="secondPrincipal != null">
+                second_principal = #{secondPrincipal},
+            </if>
+            <if test="paymentMethod != null">
+                payment_method = #{paymentMethod},
+            </if>
+            <if test="ident != null">
+                ident = #{ident},
+            </if>
+        </trim>
+        where repayment_info_id = #{repaymentInfoId}
+    </update>
+
+    <insert id="addCreditRepaymentInfo" parameterType="java.util.List">
+        insert into
+        credit_repayment_info(credit_repaymen_id,user_id,order_sn,num,plan_principal,service_money,plan_date,third_principal,third_interest,pay_sn,create_time,modify_time,plan_service_money,diff_value,
+        account_start_time,first_principal,second_principal,payment_method,ident)
+        values
+        <foreach collection="list" item="creditRepaymentInfo" index="index" separator=",">
+            (#{creditRepaymentInfo.creditRepaymenId},#{creditRepaymentInfo.userId},#{creditRepaymentInfo.orderSn},
+            #{creditRepaymentInfo.num},#{creditRepaymentInfo.planPrincipal},
+            #{creditRepaymentInfo.serviceMoney},#{creditRepaymentInfo.planDate},
+            #{creditRepaymentInfo.thirdPrincipal},#{creditRepaymentInfo.thirdInterest},#{creditRepaymentInfo.paySn},
+            #{creditRepaymentInfo.createTime},#{creditRepaymentInfo.modifyTime},#{creditRepaymentInfo.planServiceMoney},#{creditRepaymentInfo.diffValue},#{creditRepaymentInfo.accountStartTime}
+            ,#{creditRepaymentInfo.firstPrincipal},#{creditRepaymentInfo.secondPrincipal},#{creditRepaymentInfo.paymentMethod},#{creditRepaymentInfo.ident})
+        </foreach>
+    </insert>
+
+    <select id="getNoRepaymentInfo" parameterType="java.util.Map"
+            resultMap="creditRepaymentInfo">
+        select
+        repayment_info_id, credit_repaymen_id, user_id, order_sn, num, plan_principal, handling_charge,
+        service_money, plan_service_money, third_service_money, third_principal, third_interest,
+        plan_interest, prepayment_penalty, prepayment_date, prepayment_amount, diff_value,
+        end_interest_date, plan_date, real_date, overdue_days, overdue_interest, biz_status,
+        is_borrower_repay, baddebt_date, baddebt_amount, amount_repayment, create_time, modify_time,
+        remark, is_delete, pay_sn, account_start_time,first_principal,second_principal,payment_method,ident
+        From
+        credit_repayment_info
+        where
+        is_borrower_repay=0 and
+        is_delete=false and
+        plan_date <![CDATA[ >= ]]> #{todayStartTime} and
+        plan_date <![CDATA[ < ]]> #{tomorrowStartTime} and
+        ident in
+        <foreach collection="identList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

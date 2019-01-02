@@ -1,0 +1,128 @@
+## =============================================================
+## Spring autoconfigure Properties: Overriding application.yml
+## =============================================================
+spring:
+  redis:
+    timeout: 2000
+    pool:
+      max-wait: 2000 # 2 seconds
+      max-idle: 10
+      min-idle: 0
+      max-active: 10
+    cluster:
+      nodes:
+        - 10.1.1.157:7000
+        - 10.1.1.157:7001
+        - 10.1.1.157:7002
+        - 10.1.1.157:7003
+        - 10.1.1.157:7004
+        - 10.1.1.157:7005
+      max-redirects: 8
+  data:
+    mongodb:
+      uri: mongodb://oudingroot:bac8385c-4204-11e8-9724-7cd30adab910@dds-bp1dc5714bcf091433290.mongodb.rds.aliyuncs.com:3717/ouding
+  datasource:
+    url: jdbc:mysql:replication://rm-bp1i88hozx8c07k81.mysql.rds.aliyuncs.com:3306,rm-bp1i88hozx8c07k81.mysql.rds.aliyuncs.com:3306/ironman?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowMasterDownConnections=true&readFromMasterWhenNoSlaves=true
+    username: oudingroot
+    password: 1QAZ2wsx
+    driver-class-name: com.mysql.jdbc.ReplicationDriver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initialSize: 10
+      minIdle: 10
+      maxActive: 50
+      maxWait: 3000
+      useUnfairLock: true
+      poolPreparedStatements: false
+      testOnBorrow: false
+      keepAlive: false
+      validation-query: select 1
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+  rabbitmq:
+    host: 10.1.1.157
+    port: 5672
+    username: zipkin_prod
+    password: zipkin_prod
+    virtual-host: /zipkin_prod
+  sleuth:
+    sampler:
+      percentage: 0.1
+    enabled: true
+## =============================================================
+## Application Properties @see ApplicationProperties: Overriding application.yml
+## =============================================================
+application:
+  cors:
+    enabled: false
+  facebank:
+    channelNum: jiejiejieChannel
+    channelProduct: JJJP001
+    sendSecurity: CDE38F426828825C40B34859D7F352E8
+    tokenUrl: https://asset.facebank.net/publicAPI/getToken
+    fileDownloadNotifyUrl: https://asset.facebank.net/publicAPI/fileDownloadNotify
+  xaolianPost:
+    searchByAssetIdUrl: https://asset.facebank.net/assetAPI/searchByAssetId
+    loanUrl: https://asset.facebank.net/assetAPI/inputDirectAsset
+    withdrawAuthUrl: https://asset.facebank.net/assetAPI/withdrawAuth
+    withdrawAuthResultSearchUrl: https://asset.facebank.net/assetAPI/withdrawAuthResultSearch
+    version: V3.0
+    terminalType: 01
+    channelNum: jiejiejieChannel
+    channelProduct: JJJP001
+    publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5OdOvLrntCPOMU2t6SvAWdAWrHcs9FySiwIIWjNX2OuTkN8b2TihxkEjmESYGml_RrinNhub8vOu4mWUyeYc6MS6LKyU1n-_i_CxIH78IQ3f2ZniYYxzm2A_0yQQlnewMz8hneH5adPjKUG2EJilvO0Svfk8PgLQnsZz3fUVgPViwItlV06DA-LMT3HJqvt1J_7CcHWtfTg9Qliz9TdZXFNrRKpVbSAz3IzdhOdXJsoOJuuNlXYjuQOJJS2UsZIp9GN6PYNunjW79yaIALmPBxkXnH9piNEYt2LFxFM2EFv9qehNkUwcRUuIvIcZuKQc33GVeRihPwmYRQ_MWdrGQwIDAQAB
+    privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDAF8XLt-iruGtG6gwvM0n8llOXrxPqaZk7UDQ4yXp9JqgUIHJf3cFMmp7vRt-B3ADsSuWL9LgC2lhKfWgGfZXHtKTrIa_o1pN69ixAokXHNH9q8vD5aXbqCAwYRLZVz6fgzFfmUWbjVF07xmN__tixDixjJaqph4x_1AOMKkacZtnCkEMz57IYs2sZvuxXcxgGpLkGiszKnRzd2vMzh2SsWCbnkfvb72468avczB-2dsJf9StOHqCSI106uHaR9UKxqmQGazkmZ9i4G7xWF7mZ97FkYbzqAmpADGAsWfkY9Rnx0Xbtb1Us0zvir2jLa78qIN8RzDnWDloJs07sIwsxAgMBAAECggEAaqKHxeBRBEq7GsHAg89ICjT1MKYbOyzlyFxssP1_xsvX0Fx2wasbrEfFZPUGDFOyG3o0VW5DXCoTiz50qe27YQJx7qljurCrbD4OMM8kR0JoXVmB1iLqxV40QKCcS6ScABnPzeZwZFAn9Y_bGmnBpwBEOcHmLHg30ZpDYeLyEc27PfT3J3vlkUF0Mg8WQqSYOuItisidD12zMgZhtMVl-VaMY_jLXytLdosJQ-rACIKACdgSc6K1UATliyUNkrDj6rgkRefxqaS1XcHoBeFgJwSJ8AUFnjrZdq_3m9wITG5n95F9rlwPnFV63mhrbAFJ2k-y6fTaMdSOdW3UF3LSAQKBgQD0oQEgCylv1-fg_2qgGDUI50ire8e5CmUcC0Bje2JXMdjLx7sM70q-z4EozwE3LO783AQhKMME9uw57Q63vY2AlpdaHmRJsF2V-LIVYSy5Epb1Xo-3fol_bUntHBiMbmAL-ysUPVRYQ6viQ_H8q5tmCATmA02Ok-C1hOi7ccs-oQKBgQDJBZuu0biAocC2xJCSSqn1tbcz2YsLpRDpJXTE_h3JHMQJFJ1mOU2ElruAtDdQr0kD0opA25zb5RzaItdGRAY2SI8NcDvanUt9hX_OGJOtWI7owfzK2--HbxqIM-mpkn2pdZZz6icI7TL675Mnis0Mis-C24l_T1TesNMYAtVSkQKBgEpmXU09l9CoPaG0jN07_4VBslxVPR0OCEpLMb4P3IzgYCs6B62baYQ23_VlX91EETtePvNGzmlIH_hOHNfNEqg1JLsH20B-HzhpduABufRfrwHZTKRmG7NhrcYrcVvkhdme_i8dp_VgP3qFZ6eNGaoibjr2bjQazZDnZ1D6_vGBAoGBAI-e0R7yuXY1msE56OyMKafiP1TtHTmholZgq2---rrgMXMnZllNoYOUSbxnhYnA4lK3zo0OGqDErXtwHwwVt7Z62rHIOQs1DGVOxwQRbRkRR3Emf5zTy-ugRn1_UXcUsXEsEOUaKu9mwOCl4CYFNgC7AA1HGpJ5tHIyNW9XPt_xAoGAPtXGsnDL_V6dNaL2zp4OezPHkG3Le_TcbmhUe7xwoWMH3mXlV398w-eN7ZPNXcEG9chkhXjtSs7XL7xDcDOxIjhgmRxcPUWwhANHflUceFe-bUMkzuV-6AXYNS6Pjr88zv_BVdsbQcyQYSglGg7x2qM76nTEpZDcfvXY9NCnmWI
+  openAccountXaolian:
+    searchByAssetIdUrl: https://asset.facebank.net/assetAPI/searchByAssetId
+    loanUrl: https://asset.facebank.net/assetAPI/inputDirectAsset
+    withdrawAuthUrl: https://asset.facebank.net/assetAPI/withdrawAuth
+    withdrawAuthResultSearchUrl: https://asset.facebank.net/assetAPI/withdrawAuthResultSearch
+    version: V3.0
+    terminalType: 01
+    channelNum: jiejiejieChannel
+    channelProduct: JJJP001
+    publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5OdOvLrntCPOMU2t6SvAWdAWrHcs9FySiwIIWjNX2OuTkN8b2TihxkEjmESYGml_RrinNhub8vOu4mWUyeYc6MS6LKyU1n-_i_CxIH78IQ3f2ZniYYxzm2A_0yQQlnewMz8hneH5adPjKUG2EJilvO0Svfk8PgLQnsZz3fUVgPViwItlV06DA-LMT3HJqvt1J_7CcHWtfTg9Qliz9TdZXFNrRKpVbSAz3IzdhOdXJsoOJuuNlXYjuQOJJS2UsZIp9GN6PYNunjW79yaIALmPBxkXnH9piNEYt2LFxFM2EFv9qehNkUwcRUuIvIcZuKQc33GVeRihPwmYRQ_MWdrGQwIDAQAB
+    privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDAF8XLt-iruGtG6gwvM0n8llOXrxPqaZk7UDQ4yXp9JqgUIHJf3cFMmp7vRt-B3ADsSuWL9LgC2lhKfWgGfZXHtKTrIa_o1pN69ixAokXHNH9q8vD5aXbqCAwYRLZVz6fgzFfmUWbjVF07xmN__tixDixjJaqph4x_1AOMKkacZtnCkEMz57IYs2sZvuxXcxgGpLkGiszKnRzd2vMzh2SsWCbnkfvb72468avczB-2dsJf9StOHqCSI106uHaR9UKxqmQGazkmZ9i4G7xWF7mZ97FkYbzqAmpADGAsWfkY9Rnx0Xbtb1Us0zvir2jLa78qIN8RzDnWDloJs07sIwsxAgMBAAECggEAaqKHxeBRBEq7GsHAg89ICjT1MKYbOyzlyFxssP1_xsvX0Fx2wasbrEfFZPUGDFOyG3o0VW5DXCoTiz50qe27YQJx7qljurCrbD4OMM8kR0JoXVmB1iLqxV40QKCcS6ScABnPzeZwZFAn9Y_bGmnBpwBEOcHmLHg30ZpDYeLyEc27PfT3J3vlkUF0Mg8WQqSYOuItisidD12zMgZhtMVl-VaMY_jLXytLdosJQ-rACIKACdgSc6K1UATliyUNkrDj6rgkRefxqaS1XcHoBeFgJwSJ8AUFnjrZdq_3m9wITG5n95F9rlwPnFV63mhrbAFJ2k-y6fTaMdSOdW3UF3LSAQKBgQD0oQEgCylv1-fg_2qgGDUI50ire8e5CmUcC0Bje2JXMdjLx7sM70q-z4EozwE3LO783AQhKMME9uw57Q63vY2AlpdaHmRJsF2V-LIVYSy5Epb1Xo-3fol_bUntHBiMbmAL-ysUPVRYQ6viQ_H8q5tmCATmA02Ok-C1hOi7ccs-oQKBgQDJBZuu0biAocC2xJCSSqn1tbcz2YsLpRDpJXTE_h3JHMQJFJ1mOU2ElruAtDdQr0kD0opA25zb5RzaItdGRAY2SI8NcDvanUt9hX_OGJOtWI7owfzK2--HbxqIM-mpkn2pdZZz6icI7TL675Mnis0Mis-C24l_T1TesNMYAtVSkQKBgEpmXU09l9CoPaG0jN07_4VBslxVPR0OCEpLMb4P3IzgYCs6B62baYQ23_VlX91EETtePvNGzmlIH_hOHNfNEqg1JLsH20B-HzhpduABufRfrwHZTKRmG7NhrcYrcVvkhdme_i8dp_VgP3qFZ6eNGaoibjr2bjQazZDnZ1D6_vGBAoGBAI-e0R7yuXY1msE56OyMKafiP1TtHTmholZgq2---rrgMXMnZllNoYOUSbxnhYnA4lK3zo0OGqDErXtwHwwVt7Z62rHIOQs1DGVOxwQRbRkRR3Emf5zTy-ugRn1_UXcUsXEsEOUaKu9mwOCl4CYFNgC7AA1HGpJ5tHIyNW9XPt_xAoGAPtXGsnDL_V6dNaL2zp4OezPHkG3Le_TcbmhUe7xwoWMH3mXlV398w-eN7ZPNXcEG9chkhXjtSs7XL7xDcDOxIjhgmRxcPUWwhANHflUceFe-bUMkzuV-6AXYNS6Pjr88zv_BVdsbQcyQYSglGg7x2qM76nTEpZDcfvXY9NCnmWI
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    internalEndpoint: jiejiejie-public.oss-cn-beijing-internal.aliyuncs.com
+    accessKeyId: LTAIBU6i4DGotZJv
+    accessKeySecret: yczQBgkzVdHNHzkJLqDyogiUSFyGeC
+    publicBucketName: jiejiejie-public
+    privateBucketName: jiejiejie-private
+    idcardImgFolder: img/idcard/
+  sesame51:
+    appKey: 79A30F98493B41BD89E943B53F687914
+    appSecret: E7641FCDB0374FAEB23691D90BC71DB0F2FA075B
+    domain: https://t.51gjj.com/
+  rabbit:
+    loan-exchange: exchange_esign_create_LoanService_contract
+    loan-routing-key: loan
+    host: 10.1.1.157
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+    loan-channel: jiejiejieChannel
+  zyt:
+    user-name: sanjiekeji
+    password: 28acac8a31db7fb7d04b38627f3fb6bc
+    push-url: http://toproperty.ziyitong.com.cn/api/v1/platformBatch/importCaseBaseinfo
+    update-case-url: http://toproperty.ziyitong.com.cn/api/v1/case/updateCaseMoney
+    repay-result-url: http://toproperty.ziyitong.com.cn/api/v1/payment/repayResult
+    close-case-url: http://toproperty.ziyitong.com.cn/api/v1/case/closeCase
+  routingKey:
+    statusKey: common.order_status
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    com.ouding.wallet: debug
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:39111/eureka/
+feign:
+  hystrix:
+    enabled: true
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 3000

@@ -1,0 +1,17 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="LOG_PATH" value="${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="logback/daily-appender.xml"/>
+    <include resource="logback/daily-error-appender.xml"/>
+    <include resource="logback/metrics-appender.xml"/>
+    <jmxConfigurator/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="DAILY_FILE"/>
+        <appender-ref ref="DAILY_ERROR_FILE"/>
+    </root>
+
+
+</configuration>
