@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fdz.content.mapper.PartnerInterfaceConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.fdz.content.domain.PartnerInterfaceConfig" extends="baseEntity.base">
+    
+    <result column="partner_id" property="partnerId" jdbcType="BIGINT" />
+    <result column="interface_url" property="interfaceUrl" jdbcType="VARCHAR" />
+    <result column="interface_type" property="interfaceType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_time, modify_time, create_by, modify_by, remark, is_delete, partner_id, 
+    interface_url, interface_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fdz.content.domain.PartnerInterfaceConfigExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from partner_interface_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from partner_interface_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from partner_interface_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fdz.content.domain.PartnerInterfaceConfigExample" >
+    delete from partner_interface_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.fdz.content.domain.PartnerInterfaceConfig" >
+    insert into partner_interface_config (id, create_time, modify_time, 
+      create_by, modify_by, remark, 
+      is_delete, partner_id, interface_url, 
+      interface_type)
+    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
+      #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{delete,jdbcType=BIT}, #{partnerId,jdbcType=BIGINT}, #{interfaceUrl,jdbcType=VARCHAR}, 
+      #{interfaceType,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fdz.content.domain.PartnerInterfaceConfig" >
+    insert into partner_interface_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="modifyBy != null" >
+        modify_by,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="delete != null" >
+        is_delete,
+      </if>
+      <if test="partnerId != null" >
+        partner_id,
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url,
+      </if>
+      <if test="interfaceType != null" >
+        interface_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyBy != null" >
+        #{modifyBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="delete != null" >
+        #{delete,jdbcType=BIT},
+      </if>
+      <if test="partnerId != null" >
+        #{partnerId,jdbcType=BIGINT},
+      </if>
+      <if test="interfaceUrl != null" >
+        #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        #{interfaceType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fdz.content.domain.PartnerInterfaceConfigExample" resultType="java.lang.Integer" >
+    select count(*) from partner_interface_config
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update partner_interface_config
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.modifyTime != null" >
+        modify_time = #{record.modifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyBy != null" >
+        modify_by = #{record.modifyBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delete != null" >
+        is_delete = #{record.delete,jdbcType=BIT},
+      </if>
+      <if test="record.partnerId != null" >
+        partner_id = #{record.partnerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.interfaceUrl != null" >
+        interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.interfaceType != null" >
+        interface_type = #{record.interfaceType,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update partner_interface_config
+    set id = #{record.id,jdbcType=BIGINT},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      modify_time = #{record.modifyTime,jdbcType=BIGINT},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      modify_by = #{record.modifyBy,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      is_delete = #{record.delete,jdbcType=BIT},
+      partner_id = #{record.partnerId,jdbcType=BIGINT},
+      interface_url = #{record.interfaceUrl,jdbcType=VARCHAR},
+      interface_type = #{record.interfaceType,jdbcType=TINYINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fdz.content.domain.PartnerInterfaceConfig" >
+    update partner_interface_config
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyBy != null" >
+        modify_by = #{modifyBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="delete != null" >
+        is_delete = #{delete,jdbcType=BIT},
+      </if>
+      <if test="partnerId != null" >
+        partner_id = #{partnerId,jdbcType=BIGINT},
+      </if>
+      <if test="interfaceUrl != null" >
+        interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="interfaceType != null" >
+        interface_type = #{interfaceType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fdz.content.domain.PartnerInterfaceConfig" >
+    update partner_interface_config
+    set create_time = #{createTime,jdbcType=BIGINT},
+      modify_time = #{modifyTime,jdbcType=BIGINT},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      modify_by = #{modifyBy,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      is_delete = #{delete,jdbcType=BIT},
+      partner_id = #{partnerId,jdbcType=BIGINT},
+      interface_url = #{interfaceUrl,jdbcType=VARCHAR},
+      interface_type = #{interfaceType,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

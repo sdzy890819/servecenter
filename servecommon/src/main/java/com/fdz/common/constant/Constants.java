@@ -33,12 +33,12 @@ public final class Constants {
         public static final String UNKNOWN = "unknown";
         public static final Charset CHARSET_UTF_8 = Charset.forName("UTF-8");
 
-        public static final String TOKEN = "C-Authorization-Token";
-        public static final String TOKEN_X = "Authorization";
-        public static final String C_USER_INFO_HEADER = "C-Forwarded-Principal";
-        public static final String X_USER_INFO_HEADER = "X-Forwarded-Principal";
-        public static final String X_USER_IS_LOGIN = "X-LOGIN";
-        public static final String C_USER_IS_LOGIN = "C-LOGIN";
+        public static final String TOKEN_P = "P-Authorization-Token";
+        public static final String TOKEN_M = "M-Authorization-Token";
+        public static final String M_USER_INFO_HEADER = "M-Forwarded-Principal";
+        public static final String P_USER_INFO_HEADER = "P-Forwarded-Principal";
+        public static final String P_USER_IS_LOGIN = "P-LOGIN";
+        public static final String M_USER_IS_LOGIN = "M-LOGIN";
         public static final String X_APP_INFO = "X-APP-INFO";
         public static final String X_APP_KEY = "appKey";
         public static final String X_SECRET = "secret";

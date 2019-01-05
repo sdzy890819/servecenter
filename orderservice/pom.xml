@@ -94,17 +94,10 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
-        <!-- sleuth + zipkin + rabbitmq -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mobile</artifactId>
         </dependency>
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
-            <artifactId>servecommon</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <!-- swagger2 -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
@@ -132,6 +125,12 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.43</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>servecommon</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 

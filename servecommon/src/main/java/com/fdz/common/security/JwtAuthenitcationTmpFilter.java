@@ -1,6 +1,5 @@
 package com.fdz.common.security;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdz.common.constant.Constants;
 import com.fdz.common.exception.BizException;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 
 public class JwtAuthenitcationTmpFilter implements HandlerInterceptor {
@@ -29,11 +27,9 @@ public class JwtAuthenitcationTmpFilter implements HandlerInterceptor {
         Claims claims = null;
         try {
             claims = jwtUtil.parseJWT(request.getHeader("Authorization"));
-            Map<String, String> map = objectMapper.readValue(claims.getSubject(), new TypeReference<Map<String, String>>() {
-            });
-            String userId = map.get("userId");
+            String userId = claims.getSubject();
             if (StringUtils.isNotBlank(userId)) {
-                request.setAttribute(Constants.Common.X_USER_INFO_HEADER, userId);
+                request.setAttribute(Constants.Common.P_USER_INFO_HEADER, userId);
             } else {
                 throw new BizException(101001, "Access Denied");
             }

@@ -42,7 +42,7 @@ public class SwaggerConfiguration {
                 .directModelSubstitute(LocalDateTime.class, java.util.Date.class)
                 .directModelSubstitute(LocalDate.class, java.util.Date.class)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.ouding.wallet"))
+                .apis(RequestHandlerSelectors.basePackage("com.fdz.order"))
                 .paths(PathSelectors.any())
                 .build();
     }

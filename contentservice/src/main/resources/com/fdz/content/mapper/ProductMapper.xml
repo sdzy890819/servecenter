@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fdz.content.mapper.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.fdz.content.domain.Product" extends="baseEntity.base">
+
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_type_no" property="productTypeNo" jdbcType="VARCHAR" />
+    <result column="product_description" property="productDescription" jdbcType="VARCHAR" />
+    <result column="product_cover_image" property="productCoverImage" jdbcType="VARCHAR" />
+    <result column="prime_costs" property="primeCosts" jdbcType="DECIMAL" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="product_model" property="productModel" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, create_time, modify_time, create_by, modify_by, remark, is_delete, product_name, 
+    product_type_no, product_description, product_cover_image, prime_costs, sale_price, 
+    status, product_model
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fdz.content.domain.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fdz.content.domain.ProductExample" >
+    delete from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.fdz.content.domain.Product" >
+    insert into product (id, create_time, modify_time, 
+      create_by, modify_by, remark, 
+      is_delete, product_name, product_type_no, 
+      product_description, product_cover_image, 
+      prime_costs, sale_price, status, 
+      product_model)
+    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
+      #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{delete,jdbcType=BIT}, #{productName,jdbcType=VARCHAR}, #{productTypeNo,jdbcType=VARCHAR}, 
+      #{productDescription,jdbcType=VARCHAR}, #{productCoverImage,jdbcType=VARCHAR}, 
+      #{primeCosts,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, #{status,jdbcType=BIT}, 
+      #{productModel,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fdz.content.domain.Product" >
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="modifyBy != null" >
+        modify_by,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="delete != null" >
+        is_delete,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productTypeNo != null" >
+        product_type_no,
+      </if>
+      <if test="productDescription != null" >
+        product_description,
+      </if>
+      <if test="productCoverImage != null" >
+        product_cover_image,
+      </if>
+      <if test="primeCosts != null" >
+        prime_costs,
+      </if>
+      <if test="salePrice != null" >
+        sale_price,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="productModel != null" >
+        product_model,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyBy != null" >
+        #{modifyBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="delete != null" >
+        #{delete,jdbcType=BIT},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeNo != null" >
+        #{productTypeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productDescription != null" >
+        #{productDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="productCoverImage != null" >
+        #{productCoverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="primeCosts != null" >
+        #{primeCosts,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="productModel != null" >
+        #{productModel,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fdz.content.domain.ProductExample" resultType="java.lang.Integer" >
+    select count(*) from product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.modifyTime != null" >
+        modify_time = #{record.modifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyBy != null" >
+        modify_by = #{record.modifyBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delete != null" >
+        is_delete = #{record.delete,jdbcType=BIT},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeNo != null" >
+        product_type_no = #{record.productTypeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productDescription != null" >
+        product_description = #{record.productDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productCoverImage != null" >
+        product_cover_image = #{record.productCoverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.primeCosts != null" >
+        prime_costs = #{record.primeCosts,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salePrice != null" >
+        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=BIT},
+      </if>
+      <if test="record.productModel != null" >
+        product_model = #{record.productModel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update product
+    set id = #{record.id,jdbcType=BIGINT},
+      create_time = #{record.createTime,jdbcType=BIGINT},
+      modify_time = #{record.modifyTime,jdbcType=BIGINT},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      modify_by = #{record.modifyBy,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      is_delete = #{record.delete,jdbcType=BIT},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      product_type_no = #{record.productTypeNo,jdbcType=VARCHAR},
+      product_description = #{record.productDescription,jdbcType=VARCHAR},
+      product_cover_image = #{record.productCoverImage,jdbcType=VARCHAR},
+      prime_costs = #{record.primeCosts,jdbcType=DECIMAL},
+      sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=BIT},
+      product_model = #{record.productModel,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fdz.content.domain.Product" >
+    update product
+    <set >
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyBy != null" >
+        modify_by = #{modifyBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="delete != null" >
+        is_delete = #{delete,jdbcType=BIT},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeNo != null" >
+        product_type_no = #{productTypeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="productDescription != null" >
+        product_description = #{productDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="productCoverImage != null" >
+        product_cover_image = #{productCoverImage,jdbcType=VARCHAR},
+      </if>
+      <if test="primeCosts != null" >
+        prime_costs = #{primeCosts,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="productModel != null" >
+        product_model = #{productModel,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fdz.content.domain.Product" >
+    update product
+    set create_time = #{createTime,jdbcType=BIGINT},
+      modify_time = #{modifyTime,jdbcType=BIGINT},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      modify_by = #{modifyBy,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      is_delete = #{delete,jdbcType=BIT},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_type_no = #{productTypeNo,jdbcType=VARCHAR},
+      product_description = #{productDescription,jdbcType=VARCHAR},
+      product_cover_image = #{productCoverImage,jdbcType=VARCHAR},
+      prime_costs = #{primeCosts,jdbcType=DECIMAL},
+      sale_price = #{salePrice,jdbcType=DECIMAL},
+      status = #{status,jdbcType=BIT},
+      product_model = #{productModel,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

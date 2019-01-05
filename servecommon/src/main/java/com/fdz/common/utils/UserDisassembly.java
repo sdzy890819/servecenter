@@ -4,9 +4,9 @@ public class UserDisassembly {
 
     private static final String SPLIT_SYMBOL = "_";
 
-    private static final String START_C_SYMBOL = "C";
+    private static final String START_P_SYMBOL = "P";
 
-    private static final String START_X_SYMBOL = "X";
+    private static final String START_M_SYMBOL = "M";
 
     /**
      * 拆解出用户
@@ -27,8 +27,8 @@ public class UserDisassembly {
      * @param user
      * @return
      */
-    public static String assembleC(Long user) {
-        return START_C_SYMBOL.concat(SPLIT_SYMBOL).concat(String.valueOf(user));
+    public static String assembleP(Long user) {
+        return START_P_SYMBOL.concat(SPLIT_SYMBOL).concat(String.valueOf(user));
     }
 
     /**
@@ -37,13 +37,16 @@ public class UserDisassembly {
      * @param user
      * @return
      */
-    public static String assembleX(Long user) {
-        return START_X_SYMBOL.concat(SPLIT_SYMBOL).concat(String.valueOf(user));
+    public static String assembleM(Long user) {
+        return START_M_SYMBOL.concat(SPLIT_SYMBOL).concat(String.valueOf(user));
     }
 
-    public static boolean isC(String userId) {
-        return userId.startsWith(START_C_SYMBOL);
+    public static boolean isP(String userId) {
+        return userId.startsWith(START_P_SYMBOL);
     }
 
+    public static boolean isM(String userId) {
+        return userId.startsWith(START_M_SYMBOL);
+    }
 
 }

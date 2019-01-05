@@ -1,10 +1,10 @@
 application:
   swagger2:
     version: 1.0
-    title: 藕丁钱包-订单中心-Swagger2接口文档
+    title: 小贷商城-订单中心-Swagger2接口文档
     description:
     contact:
-      email: zhangyang@ouding.com
+      email: sdzy890819@126.com
       name: Zhang Yang
-      url: http://118.190.88.132/zhangyang/wallet
-    terms-url: xx
+      url: https://github.com/sdzy890819/servecenter
+    terms-url: http://xxxxxxxxxxxxxx

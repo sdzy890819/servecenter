@@ -1,0 +1,122 @@
+server:
+  port: 38112
+  compression:
+    enabled: true
+    mime-types: text/html, text/xml, text/plain, text/css, text/javascript, application/javascript
+  session:
+    timeout: 7200
+    cookie:
+      max-age: -1
+  error:
+    whitelabel:
+      enabled: false
+  useForwardHeaders: true
+  undertow:
+    accesslog:
+      enabled: true
+      pattern: "%t %a &quot;%r&quot; %s (%D ms)"
+      dir: ${user.home}/undertow/partnergateway/access-logs/
+spring:
+  application:
+    name: partnergateway
+  profiles:
+    active: dev,swagger
+  aop:
+    proxy-target-class: true
+    auto: true
+  resources:
+    cache-period: 36000000
+    chain:
+      gzipped: true
+      html-application-cache: true
+#    static-locations: classpath:/resources/, classpath:/static/
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+management:
+  context-path: /management
+  security:
+    enabled: false
+  port: 6606
+  health:
+    redis:
+      enabled: false
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    metadata-map:
+      #  For SBA uses
+      management.port: ${management.port}
+      management.context-path: ${management.context-path}
+      health.path: ${management.context-path}/health
+
+zuul:
+  ribbon-isolation-strategy: thread
+  semaphore:
+    max-semaphores: 2000
+  ignored-services: "*"
+  strip-prefix: true
+  retryable: true
+  ignore-local-service: true
+  ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+  routes:
+    contentservice:
+      path: /v1/partner/login
+      service-id: contentservice
+      strip-prefix: false
+
+# ==========================================================================
+# - Hystrix Settings
+# ==========================================================================
+# Disable Hystrix timeout globally (for all services)
+hystrix:
+  command:
+    contentservice:
+      execution:
+        isolation.thread.timeoutInMilliseconds: 5000
+        timeout:
+          enabled: true
+  threadpool:
+    default:
+      coreSize: 400
+
+# ==========================================================================
+# - Ribbon Settings
+# ==========================================================================
+# CommonClientConfigKey
+ribbon:
+  ReadTimeout: 60000
+  ConnectTimeout: 3000
+  MaxAutoRetries: 3
+  OkToRetryOnAllOperations: true
+  MaxAutoRetriesNextServer: 8
+  ServerListRefreshInterval: 1000
+  eureka:
+    enabled: true
+  eager-load:
+    enabled: false
+## =============================================================
+## Logging Properties @see LoggingApplicationListener
+## =============================================================
+logging:
+  path: ${user.home}/logs/partnergateway
+  file: partnergateway
+  pattern:
+    level: "[MDC:%X{currentSessionId};%X{remoteIP}] %5p"
+  level:
+    root: WARN
+    com.ouding.wallet: info
+banner:
+  charset: UTF-8
+  location: banner

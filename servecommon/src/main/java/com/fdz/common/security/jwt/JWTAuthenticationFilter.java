@@ -1,6 +1,7 @@
 package com.fdz.common.security.jwt;
 
 import com.fdz.common.utils.CookieUtil;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -21,10 +22,12 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 
     private final TokenProvider tokenProvider;
     private final String authorizationHeaderName;
+    private final AuthenticationManager authenticationManager;
 
-    public JWTAuthenticationFilter(TokenProvider tokenProvider, String authorizationHeaderName) {
+    public JWTAuthenticationFilter(TokenProvider tokenProvider, String authorizationHeaderName, AuthenticationManager authenticationManager) {
         this.authorizationHeaderName = authorizationHeaderName;
         this.tokenProvider = tokenProvider;
+        this.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -34,6 +37,7 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
         String jwt = resolveToken(httpServletRequest);
         if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
             Authentication authentication = this.tokenProvider.getAuthentication(jwt);
+            authentication = authenticationManager.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(servletRequest, servletResponse);

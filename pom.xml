@@ -13,6 +13,11 @@
         <module>orderservice</module>
         <module>servecommon</module>
         <module>registryserver</module>
+        <module>contentservice</module>
+        <module>payservice</module>
+        <module>partnergateway</module>
+        <module>manageservice</module>
+        <module>managergateway</module>
     </modules>
 
 

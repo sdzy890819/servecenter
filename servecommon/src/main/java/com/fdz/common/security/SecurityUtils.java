@@ -1,12 +1,14 @@
 package com.fdz.common.security;
 
 import com.fdz.common.constant.Constants;
+import com.fdz.common.exception.BizException;
+import com.fdz.common.utils.StringUtils;
+import com.fdz.common.utils.UserDisassembly;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -37,21 +39,32 @@ public final class SecurityUtils {
         return userId;
     }
 
-    public static String getCurrentLoginUserId() {
-        return getForwardedLoginUserId(Constants.Common.C_USER_INFO_HEADER);
+    public static String getCurrentLoginUserIdByManager() {
+        return getForwardedLoginUserId(Constants.Common.M_USER_INFO_HEADER);
     }
 
-    public static String getCurrentLoginCustomerId() {
-        return getForwardedLoginUserId(Constants.Common.X_USER_INFO_HEADER);
+    public static Long checkLoginAndGetUserByManager() {
+        String userId = getCurrentLoginUserIdByManager();
+        if (StringUtils.isNotBlank(userId)) {
+            return Long.parseLong(UserDisassembly.disassembly(userId));
+        }
+        throw new BizException("未登录, 请登录后再操作");
     }
 
-    public static String getTmpUserId() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return request.getAttribute(Constants.Common.X_USER_INFO_HEADER).toString();
+    public static Long checkLoginAndGetUserByPartner() {
+        String userId = getCurrentLoginUserIdByPartner();
+        if (StringUtils.isNotBlank(userId)) {
+            return Long.parseLong(UserDisassembly.disassembly(userId));
+        }
+        throw new BizException("未登录, 请登录后再操作");
     }
 
-    public static boolean checkXLogin() {
-        return Boolean.valueOf(getForwardedLoginUserId(Constants.Common.X_USER_IS_LOGIN));
+    public static String getCurrentLoginUserIdByPartner() {
+        return getForwardedLoginUserId(Constants.Common.P_USER_INFO_HEADER);
+    }
+
+    public static boolean checkPLogin() {
+        return Boolean.valueOf(getForwardedLoginUserId(Constants.Common.P_USER_IS_LOGIN));
     }
 
 
@@ -85,7 +98,7 @@ public final class SecurityUtils {
      * @return
      */
     public static String disassembleToken(String bearToken) {
-        if (StringUtils.hasText(bearToken) && bearToken.startsWith("Bearer ")) {
+        if (StringUtils.isNotBlank(bearToken) && bearToken.startsWith("Bearer ")) {
             return bearToken.substring(7, bearToken.length());
         }
         return bearToken;

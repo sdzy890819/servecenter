@@ -19,19 +19,6 @@ public class ApplicationProperties {
     private final Swagger2 swagger2 = new Swagger2();
 
     @NestedConfigurationProperty
-    private final Facebank facebank = new Facebank();
-
-    @NestedConfigurationProperty
-    private final Oss oss = new Oss();
-
-    @NestedConfigurationProperty
-    private final Zyt zyt = new Zyt();
-
-    @NestedConfigurationProperty
-    private final XaolianPost xaolianPost = new XaolianPost();
-
-
-    @NestedConfigurationProperty
     private final Rabbit rabbit = new Rabbit();
 
     @NestedConfigurationProperty
@@ -60,9 +47,13 @@ public class ApplicationProperties {
         private String password;
         private String pushUrl;
         private String updateCaseUrl;
-        /** 还款结果确认 */
+        /**
+         * 还款结果确认
+         */
         private String repayResultUrl;
-        /** 案件销案 */
+        /**
+         * 案件销案
+         */
         private String closeCaseUrl;
     }
 
@@ -94,39 +85,4 @@ public class ApplicationProperties {
         }
     }
 
-    @Data
-    public static class Facebank {
-        private String channelNum;
-        private String channelProduct;
-        private String sendSecurity;
-        private String tokenUrl;
-        private String fileDownloadNotifyUrl;
-
-    }
-
-    @Data
-    public static class Oss {
-        private String endpoint;
-        private String internalEndpoint;
-        private String accessKeyId;
-        private String accessKeySecret;
-        private String publicBucketName;
-        private String privateBucketName;
-        private String idcardImgFolder;
-    }
-
-    @Data
-    public static class XaolianPost {
-        private String searchByAssetIdUrl;
-        private String loanUrl;
-        private String withdrawAuthUrl;
-        private String withdrawAuthResultSearchUrl;
-        private String version;
-        private String terminalType;
-        private String channelNum;
-        private String channelProduct;
-        private String publicKey;
-        private String privateKey;
-
-    }
 }

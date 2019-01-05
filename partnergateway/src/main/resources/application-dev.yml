@@ -1,0 +1,35 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:39111/eureka/
+logging:
+  level:
+    root: info
+    com.ouding.wallet: debug
+    org.springframework.security: trace
+application:
+  cors:
+    config:
+      allow-credentials: true
+      allowed-headers: "*"
+      allowed-origins: "*"
+      allowed-methods: POST, GET, PATCH, PUT, DELETE, OPTIONS, HEAD
+      max-age: 36000
+    enabled: true
+  security-conf:
+    authentication:
+      jwt:
+        secret: servecenteraskldjoqwe
+        token-validity-in-seconds: 216000 #12 * 60 * 60 * 5
+        token-validity-in-seconds-for-remember-me: 302400 #7 * 12 * 60 * 60
+spring:
+  redis:
+    host: 39.106.221.165
+    port: 6379
+    timeout: 2000
+    password: cms-new-123!@#
+    pool:
+      max-wait: 2000 # 2 seconds
+      max-idle: 10
+      min-idle: 0
+      max-active: 10

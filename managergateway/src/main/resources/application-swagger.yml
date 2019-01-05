@@ -1,0 +1,14 @@
+application:
+  swagger2:
+    version: 1.0
+    title: 小贷商品-后台系统-Swagger2接口文档
+    description:
+    contact:
+      email: sdzy890819@126.com
+      name: Zhang Yang
+      url: https://github.com/sdzy890819/servecenter
+    terms-url: http://xxxxxxxxxxxxxx
+    ignored-services: partnergateway, registryserver, payservice, thirdpartygateway, managergateway
+    service-mapping-names:
+      orderservice: 订单服务
+      contentservice: 内容服务
