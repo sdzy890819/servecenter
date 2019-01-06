@@ -82,4 +82,12 @@ public class PartnerManager {
         return partnerUserMapper.insertSelective(partnerUser);
     }
 
+    public Partner findPartnerByUniqueKey(String uniqueKey) {
+        return partnerMapper.findPartnerByUniqueKey(uniqueKey);
+    }
+
+    public PartnerInterfaceConfig findConfigByPartnerAndType(Long partner, byte type) {
+        return partnerInterfaceConfigMapper.findConfigByPartnerAndType(partner, type);
+    }
+
 }

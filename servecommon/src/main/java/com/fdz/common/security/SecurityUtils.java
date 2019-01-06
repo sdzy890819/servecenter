@@ -39,10 +39,20 @@ public final class SecurityUtils {
         return userId;
     }
 
+    /**
+     * 获取当前登录的管理员ID
+     *
+     * @return
+     */
     public static String getCurrentLoginUserIdByManager() {
         return getForwardedLoginUserId(Constants.Common.M_USER_INFO_HEADER);
     }
 
+    /**
+     * 检查登录。并返回当前管理员ID
+     *
+     * @return
+     */
     public static Long checkLoginAndGetUserByManager() {
         String userId = getCurrentLoginUserIdByManager();
         if (StringUtils.isNotBlank(userId)) {
@@ -51,6 +61,11 @@ public final class SecurityUtils {
         throw new BizException("未登录, 请登录后再操作");
     }
 
+    /**
+     * 检查登录。并返回当前合作伙伴ID
+     *
+     * @return
+     */
     public static Long checkLoginAndGetUserByPartner() {
         String userId = getCurrentLoginUserIdByPartner();
         if (StringUtils.isNotBlank(userId)) {
@@ -59,12 +74,22 @@ public final class SecurityUtils {
         throw new BizException("未登录, 请登录后再操作");
     }
 
+    /**
+     * 获取当前登录的合作伙伴ID
+     *
+     * @return
+     */
     public static String getCurrentLoginUserIdByPartner() {
         return getForwardedLoginUserId(Constants.Common.P_USER_INFO_HEADER);
     }
 
-    public static boolean checkPLogin() {
-        return Boolean.valueOf(getForwardedLoginUserId(Constants.Common.P_USER_IS_LOGIN));
+    /**
+     * 获取当前的唯一KEY
+     *
+     * @return
+     */
+    public static String getCurrentUniqueKey() {
+        return getForwardedLoginUserId(Constants.Common.UNIQUE_KEY_HEADER);
     }
 
 

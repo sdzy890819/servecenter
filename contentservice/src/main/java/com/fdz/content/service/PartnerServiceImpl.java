@@ -1,13 +1,13 @@
 package com.fdz.content.service;
 
 import com.fdz.common.redis.RedisDataManager;
+import com.fdz.common.security.vo.LoginUser;
 import com.fdz.common.utils.StringUtils;
 import com.fdz.common.utils.UserDisassembly;
 import com.fdz.content.domain.Partner;
 import com.fdz.content.domain.PartnerInterfaceConfig;
 import com.fdz.content.domain.PartnerProduct;
 import com.fdz.content.domain.PartnerUser;
-import com.fdz.common.security.vo.LoginUser;
 import com.fdz.content.manager.PartnerManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -104,5 +104,15 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
 
     public int insertSelective(PartnerUser partnerUser) {
         return partnerManager.insertSelective(partnerUser);
+    }
+
+    @Override
+    public Partner findPartnerByUniqueKey(String uniqueKey) {
+        return partnerManager.findPartnerByUniqueKey(uniqueKey);
+    }
+
+    @Override
+    public PartnerInterfaceConfig findConfigByPartnerAndType(Long partner, byte type) {
+        return partnerManager.findConfigByPartnerAndType(partner, type);
     }
 }

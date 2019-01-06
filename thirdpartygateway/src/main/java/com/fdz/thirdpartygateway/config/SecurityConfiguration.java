@@ -2,8 +2,7 @@ package com.fdz.thirdpartygateway.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdz.common.security.Http401UnauthorizedEntryPoint;
-import com.fdz.common.security.jwt.TokenProvider;
-import com.fdz.thirdpartygateway.filter.XLRsaAuthenticationFilter;
+import com.fdz.thirdpartygateway.filter.RsaAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,8 +12,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
@@ -23,18 +20,8 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    @Resource
-    private ApplicationProperties applicationProperties;
     @Resource
     private ObjectMapper objectMapper;
-
-    @Bean
-    public TokenProvider tokenProvider() {
-        return new TokenProvider(applicationProperties.getSecurityConf().getAuthentication().getJwt().getSecret(),
-                applicationProperties.getSecurityConf().getAuthentication().getJwt().getTokenValidityInSeconds() * 1000,
-                applicationProperties.getSecurityConf().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe() * 1000, objectMapper);
-    }
 
     @Bean
     public Http401UnauthorizedEntryPoint http401UnauthorizedEntryPoint(ObjectMapper objectMapper) {
@@ -50,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors().and().csrf().disable().headers().frameOptions().disable()
                 .and()
-                .addFilterBefore(xlRsaAuthenticationFilter(objectMapper), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(rsaAuthenticationFilter(objectMapper), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -60,10 +47,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public XLRsaAuthenticationFilter xlRsaAuthenticationFilter(ObjectMapper objectMapper) {
-        return new XLRsaAuthenticationFilter(objectMapper);
+    public RsaAuthenticationFilter rsaAuthenticationFilter(ObjectMapper objectMapper) {
+        return new RsaAuthenticationFilter(objectMapper);
     }
-
 
     @Override
     public void configure(WebSecurity web) {
@@ -74,15 +60,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api-docs")
                 .antMatchers("/api-docs/**")
                 .antMatchers("/swagger-resources/**");
-    }
-
-    private JWTConfigurer securityConfigurerAdapter() {
-        return new JWTConfigurer(tokenProvider());
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
 

@@ -1,12 +1,25 @@
-package com.fdz.content.domain;
+package com.fdz.thirdpartygateway.service.content.dto;
 
-import com.fdz.common.domain.BaseEntity;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
-public class Partner extends BaseEntity {
+public class PartnerRestResult {
+
+    private Long id;
+
+    private Long createTime;
+
+    private Long modifyTime;
+
+    private String createBy;
+
+    private String modifyBy;
+
+    private String remark;
+
+    private Boolean delete;
 
     private String name;
 
@@ -26,11 +39,4 @@ public class Partner extends BaseEntity {
 
     private String uniqueKey;
 
-    public Partner() {
-        super();
-    }
-
-    public Partner(Long id) {
-        super(id);
-    }
 }

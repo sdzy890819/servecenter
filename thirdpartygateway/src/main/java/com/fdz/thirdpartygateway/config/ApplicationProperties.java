@@ -26,24 +26,12 @@ public class ApplicationProperties {
     @NestedConfigurationProperty
     private final SecurityConf securityConf = new SecurityConf();
 
-
     @NestedConfigurationProperty
-    private final XLPro xlPro = new XLPro();
-
-    private final Rong360 rong360 = new Rong360();
+    private final MyRsaKey myRsaKey = new MyRsaKey();
 
     @Data
-    public static class Rong360 {
-        private String publicKey;
-    }
-
-    @Data
-    public static class XLPro {
-
-        private String publicKey;
-
+    public static class MyRsaKey {
         private String privateKey;
-
     }
 
     @Data

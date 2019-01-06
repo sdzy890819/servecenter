@@ -15,7 +15,7 @@ server:
     accesslog:
       enabled: true
       pattern: "%t %a &quot;%r&quot; %s (%D ms)"
-      dir: ${logdir}/undertow/access-logs/
+      dir: ${logdir}/undertow/thirdpartygateway/access-logs/
 spring:
   application:
     name: thirdpartygateway

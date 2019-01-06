@@ -204,4 +204,23 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return input;
     }
 
+    /**
+     * 隐藏部分内容 使用星号 * 代替
+     *
+     * @param str
+     * @return
+     */
+    public static String hideSomeString(String str) {
+        if (isNotBlank(str)) {
+            int length = str.length();
+            if (length < 3) {
+                str = str.substring(0, 1) + "**";
+            } else {
+                int jg = str.length() / 3;
+                str = str.substring(0, jg) + "***" + str.substring(str.length() - jg);
+            }
+        }
+        return str;
+    }
+
 }

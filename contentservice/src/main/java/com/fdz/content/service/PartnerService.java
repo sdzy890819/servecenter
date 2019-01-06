@@ -32,4 +32,8 @@ public interface PartnerService {
     int insertSelective(PartnerProduct partnerProduct);
 
     int insertSelective(PartnerUser partnerUser);
+
+    Partner findPartnerByUniqueKey(String uniqueKey);
+
+    PartnerInterfaceConfig findConfigByPartnerAndType(Long partner, byte type);
 }

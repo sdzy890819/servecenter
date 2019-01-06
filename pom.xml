@@ -16,7 +16,6 @@
         <module>contentservice</module>
         <module>payservice</module>
         <module>partnergateway</module>
-        <module>manageservice</module>
         <module>managergateway</module>
     </modules>
 

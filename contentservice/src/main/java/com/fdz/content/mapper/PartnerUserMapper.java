@@ -32,4 +32,5 @@ public interface PartnerUserMapper {
     @Select("select " + SQL + " from " + TABLE + Constants.Sql.NOT_DELETED + " and user_name = #{userName} order by id desc limit 1")
     @ResultMap(RESULT_MAP)
     PartnerUser findPartnerUserByUserName(@Param("userName") String userName);
+
 }

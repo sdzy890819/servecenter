@@ -3,7 +3,8 @@ package com.fdz.thirdpartygateway.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdz.common.config.CustomZuulFallback;
 import com.fdz.common.filter.RequestIdentifyingFilter;
-import com.fdz.thirdpartygateway.filter.XLRsaDecryptionFilter;
+import com.fdz.thirdpartygateway.filter.RsaDecryptionFilter;
+import com.fdz.thirdpartygateway.service.content.ContentService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,8 +20,8 @@ public class ZuulFilterConfiguration {
     }
 
     @Bean
-    public XLRsaDecryptionFilter xlRsaDecryptionFilter(ApplicationProperties applicationProperties, ObjectMapper objectMapper) {
-        return new XLRsaDecryptionFilter(applicationProperties, objectMapper);
+    public RsaDecryptionFilter xlRsaDecryptionFilter(ApplicationProperties applicationProperties, ObjectMapper objectMapper, ContentService contentService) {
+        return new RsaDecryptionFilter(applicationProperties, objectMapper, contentService);
     }
 
     @Bean

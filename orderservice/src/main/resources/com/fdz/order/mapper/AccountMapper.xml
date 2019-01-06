@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fdz.content.mapper.PartnerMapper" >
-  <resultMap id="BaseResultMap" type="com.fdz.content.domain.Partner" extends="baseEntity.base">
-    
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
-    <result column="nature" property="nature" jdbcType="TINYINT" />
-    <result column="code" property="code" jdbcType="VARCHAR" />
-    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
-    <result column="contact_mobile" property="contactMobile" jdbcType="VARCHAR" />
-    <result column="service_rate" property="serviceRate" jdbcType="DECIMAL" />
-    <result column="public_key" property="publicKey" jdbcType="VARCHAR" />
-    <result column="unique_key" property="uniqueKey" jdbcType="VARCHAR" />
+<mapper namespace="com.fdz.order.mapper.AccountMapper" >
+  <resultMap id="BaseResultMap" type="com.fdz.order.domain.Account" extends="baseEntity.base">
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="freezing_amount" property="freezingAmount" jdbcType="DECIMAL" />
+    <result column="partner_id" property="partnerId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,16 +65,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, create_time, modify_time, create_by, modify_by, remark, is_delete, `name`, short_name,
-    nature, code, contacts, contact_mobile, service_rate, public_key,unique_key
+    id, create_time, modify_time, create_by, modify_by, remark, is_delete, amount, freezing_amount, 
+    partner_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fdz.content.domain.PartnerExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fdz.order.domain.AccountExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from partner
+    from account
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -92,35 +85,31 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
-    from partner
+    from account
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from partner
+    delete from account
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fdz.content.domain.PartnerExample" >
-    delete from partner
+  <delete id="deleteByExample" parameterType="com.fdz.order.domain.AccountExample" >
+    delete from account
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.fdz.content.domain.Partner" keyProperty="id" useGeneratedKeys="true">
-    insert into partner (id, create_time, modify_time, 
+  <insert id="insert" parameterType="com.fdz.order.domain.Account" >
+    insert into account (id, create_time, modify_time, 
       create_by, modify_by, remark, 
-      is_delete, `name`, short_name,
-      nature, code, contacts, 
-      contact_mobile, service_rate, public_key,unique_key
-      )
+      is_delete, amount, freezing_amount, 
+      partner_id)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{delete,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, 
-      #{nature,jdbcType=TINYINT}, #{code,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, 
-      #{contactMobile,jdbcType=VARCHAR}, #{serviceRate,jdbcType=DECIMAL}, #{publicKey,jdbcType=VARCHAR},#{uniqueKey,jdbcType=VARCHAR}
-      )
+      #{delete,jdbcType=BIT}, #{amount,jdbcType=DECIMAL}, #{freezingAmount,jdbcType=DECIMAL}, 
+      #{partnerId,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.fdz.content.domain.Partner" keyProperty="id" useGeneratedKeys="true">
-    insert into partner
+  <insert id="insertSelective" parameterType="com.fdz.order.domain.Account" >
+    insert into account
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -143,32 +132,14 @@
       <if test="delete != null" >
         is_delete,
       </if>
-      <if test="name != null" >
-        `name`,
+      <if test="amount != null" >
+        amount,
       </if>
-      <if test="shortName != null" >
-        short_name,
+      <if test="freezingAmount != null" >
+        freezing_amount,
       </if>
-      <if test="nature != null" >
-        nature,
-      </if>
-      <if test="code != null" >
-        code,
-      </if>
-      <if test="contacts != null" >
-        contacts,
-      </if>
-      <if test="contactMobile != null" >
-        contact_mobile,
-      </if>
-      <if test="serviceRate != null" >
-        service_rate,
-      </if>
-      <if test="publicKey != null" >
-        public_key,
-      </if>
-      <if test="uniqueKey != null">
-        unique_key,
+      <if test="partnerId != null" >
+        partner_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -193,43 +164,25 @@
       <if test="delete != null" >
         #{delete,jdbcType=BIT},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="shortName != null" >
-        #{shortName,jdbcType=VARCHAR},
+      <if test="freezingAmount != null" >
+        #{freezingAmount,jdbcType=DECIMAL},
       </if>
-      <if test="nature != null" >
-        #{nature,jdbcType=TINYINT},
-      </if>
-      <if test="code != null" >
-        #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="contacts != null" >
-        #{contacts,jdbcType=VARCHAR},
-      </if>
-      <if test="contactMobile != null" >
-        #{contactMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceRate != null" >
-        #{serviceRate,jdbcType=DECIMAL},
-      </if>
-      <if test="publicKey != null" >
-        #{publicKey,jdbcType=VARCHAR},
-      </if>
-      <if test="uniqueKey != null">
-        #{uniqueKey,jdbcType=VARCHAR},
+      <if test="partnerId != null" >
+        #{partnerId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fdz.content.domain.PartnerExample" resultType="java.lang.Integer" >
-    select count(*) from partner
+  <select id="countByExample" parameterType="com.fdz.order.domain.AccountExample" resultType="java.lang.Integer" >
+    select count(*) from account
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update partner
+    update account
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
@@ -252,32 +205,14 @@
       <if test="record.delete != null" >
         is_delete = #{record.delete,jdbcType=BIT},
       </if>
-      <if test="record.name != null" >
-        `name` = #{record.name,jdbcType=VARCHAR},
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
       </if>
-      <if test="record.shortName != null" >
-        short_name = #{record.shortName,jdbcType=VARCHAR},
+      <if test="record.freezingAmount != null" >
+        freezing_amount = #{record.freezingAmount,jdbcType=DECIMAL},
       </if>
-      <if test="record.nature != null" >
-        nature = #{record.nature,jdbcType=TINYINT},
-      </if>
-      <if test="record.code != null" >
-        code = #{record.code,jdbcType=VARCHAR},
-      </if>
-      <if test="record.contacts != null" >
-        contacts = #{record.contacts,jdbcType=VARCHAR},
-      </if>
-      <if test="record.contactMobile != null" >
-        contact_mobile = #{record.contactMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="record.serviceRate != null" >
-        service_rate = #{record.serviceRate,jdbcType=DECIMAL},
-      </if>
-      <if test="record.publicKey != null" >
-        public_key = #{record.publicKey,jdbcType=VARCHAR},
-      </if>
-      <if test="record.uniqueKey != null">
-        unique_key = #{record.uniqueKey,jdbcType=VARCHAR},
+      <if test="record.partnerId != null" >
+        partner_id = #{record.partnerId,jdbcType=BIGINT},
       </if>
     </set>
     <if test="_parameter != null" >
@@ -285,7 +220,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update partner
+    update account
     set id = #{record.id,jdbcType=BIGINT},
       create_time = #{record.createTime,jdbcType=BIGINT},
       modify_time = #{record.modifyTime,jdbcType=BIGINT},
@@ -293,21 +228,15 @@
       modify_by = #{record.modifyBy,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       is_delete = #{record.delete,jdbcType=BIT},
-      `name` = #{record.name,jdbcType=VARCHAR},
-      short_name = #{record.shortName,jdbcType=VARCHAR},
-      nature = #{record.nature,jdbcType=TINYINT},
-      code = #{record.code,jdbcType=VARCHAR},
-      contacts = #{record.contacts,jdbcType=VARCHAR},
-      contact_mobile = #{record.contactMobile,jdbcType=VARCHAR},
-      service_rate = #{record.serviceRate,jdbcType=DECIMAL},
-      public_key = #{record.publicKey,jdbcType=VARCHAR},
-      unique_key = #{record.uniqueKey,jdbcType=VARCHAR}
+      amount = #{record.amount,jdbcType=DECIMAL},
+      freezing_amount = #{record.freezingAmount,jdbcType=DECIMAL},
+      partner_id = #{record.partnerId,jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fdz.content.domain.Partner" >
-    update partner
+  <update id="updateByPrimaryKeySelective" parameterType="com.fdz.order.domain.Account" >
+    update account
     <set >
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=BIGINT},
@@ -327,53 +256,29 @@
       <if test="delete != null" >
         is_delete = #{delete,jdbcType=BIT},
       </if>
-      <if test="name != null" >
-        `name` = #{name,jdbcType=VARCHAR},
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
       </if>
-      <if test="shortName != null" >
-        short_name = #{shortName,jdbcType=VARCHAR},
+      <if test="freezingAmount != null" >
+        freezing_amount = #{freezingAmount,jdbcType=DECIMAL},
       </if>
-      <if test="nature != null" >
-        nature = #{nature,jdbcType=TINYINT},
-      </if>
-      <if test="code != null" >
-        code = #{code,jdbcType=VARCHAR},
-      </if>
-      <if test="contacts != null" >
-        contacts = #{contacts,jdbcType=VARCHAR},
-      </if>
-      <if test="contactMobile != null" >
-        contact_mobile = #{contactMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="serviceRate != null" >
-        service_rate = #{serviceRate,jdbcType=DECIMAL},
-      </if>
-      <if test="publicKey != null" >
-        public_key = #{publicKey,jdbcType=VARCHAR},
-      </if>
-      <if test="uniqueKey != null">
-        unique_key = #{uniqueKey,jdbcType=VARCHAR},
+      <if test="partnerId != null" >
+        partner_id = #{partnerId,jdbcType=BIGINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fdz.content.domain.Partner" >
-    update partner
+  <update id="updateByPrimaryKey" parameterType="com.fdz.order.domain.Account" >
+    update account
     set create_time = #{createTime,jdbcType=BIGINT},
       modify_time = #{modifyTime,jdbcType=BIGINT},
       create_by = #{createBy,jdbcType=VARCHAR},
       modify_by = #{modifyBy,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       is_delete = #{delete,jdbcType=BIT},
-      `name` = #{name,jdbcType=VARCHAR},
-      short_name = #{shortName,jdbcType=VARCHAR},
-      nature = #{nature,jdbcType=TINYINT},
-      code = #{code,jdbcType=VARCHAR},
-      contacts = #{contacts,jdbcType=VARCHAR},
-      contact_mobile = #{contactMobile,jdbcType=VARCHAR},
-      service_rate = #{serviceRate,jdbcType=DECIMAL},
-      public_key = #{publicKey,jdbcType=VARCHAR},
-      unique_key = #{uniqueKey,jdbcType=VARCHAR}
+      amount = #{amount,jdbcType=DECIMAL},
+      freezing_amount = #{freezingAmount,jdbcType=DECIMAL},
+      partner_id = #{partnerId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

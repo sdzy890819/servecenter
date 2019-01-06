@@ -6,6 +6,7 @@ import com.fdz.common.utils.HttpServletUtils;
 import com.fdz.common.utils.StringUtils;
 import com.fdz.thirdpartygateway.contants.ThirdparyConstants;
 import com.fdz.thirdpartygateway.utils.ServletUtils;
+import com.fdz.thirdpartygateway.vo.ThirdpartyRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,11 +23,11 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 @Slf4j
-public class XLRsaAuthenticationFilter extends GenericFilterBean {
+public class RsaAuthenticationFilter extends GenericFilterBean {
 
     private ObjectMapper objectMapper;
 
-    public XLRsaAuthenticationFilter(ObjectMapper objectMapper) {
+    public RsaAuthenticationFilter(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
@@ -45,21 +46,10 @@ public class XLRsaAuthenticationFilter extends GenericFilterBean {
             Map<String, Object> args = objectMapper.readValue(body, new TypeReference<Map<String, Object>>() {
             });
             String principal = "THIRD_PARTY";
-            if (args.get("version") != null && args.get("channelNum") != null && args.get("signMsg") != null) {
-                String version = String.valueOf(args.get("version"));
-                String channelNum = String.valueOf(args.get("channelNum"));
-                String signMsg = String.valueOf(args.get("signMsg"));
-                if (StringUtils.isNotBlank(version) && StringUtils.isNotBlank(channelNum) && StringUtils.isNotBlank(signMsg)) {
-                    request.setAttribute(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.XL_CHANNEL);
-                    Authentication authentication = new UsernamePasswordAuthenticationToken("XL", null, null);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    principal = "XL";
-                }
-            } else if (args.get("sign") != null && args.get("biz_data") != null) {
-                request.setAttribute(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.RONG360_CHANNEL);
-                Authentication authentication = new UsernamePasswordAuthenticationToken("RONG360", null, null);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                principal = "RONG360";
+            Object channelType = args.get("channelType");
+            if (channelType != null && ThirdpartyRequest.CHANNEL_TYPE.equals((String) channelType)) {
+                request.setAttribute(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.PARTNER_CHANNEL);
+                principal = "PARTNER";
             }
             Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, null);
             SecurityContextHolder.getContext().setAuthentication(authentication);
