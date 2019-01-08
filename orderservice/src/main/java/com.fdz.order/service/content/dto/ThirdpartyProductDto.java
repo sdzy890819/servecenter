@@ -1,0 +1,41 @@
+package com.fdz.order.service.content.dto;
+
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Data
+public class ThirdpartyProductDto {
+
+    private Long id;
+
+    private BigDecimal salePrice;
+
+    private BigDecimal platformPrice;
+
+    private BigDecimal primeCosts;
+
+    private Boolean shelf;
+
+    private String productName;
+
+    private String productTypeNo;
+
+    private String productTypeName;
+
+    private String productDescription;
+
+    private String productCoverImage;
+
+    private String productModel;
+
+    private Long partnerId;
+
+    private Long productId;
+
+    private BigDecimal productSalePrice;
+
+    private List<String> productImages;
+
+}

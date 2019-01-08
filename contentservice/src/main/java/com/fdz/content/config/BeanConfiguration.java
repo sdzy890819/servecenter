@@ -6,6 +6,7 @@ import com.fdz.common.utils.MacUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class BeanConfiguration {
@@ -20,6 +21,11 @@ public class BeanConfiguration {
         }
         IDGenerator idGenerator = new IDGenerator(machineId, BussinessIds.PRODUCTTYPE.getId());
         return idGenerator;
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
 }

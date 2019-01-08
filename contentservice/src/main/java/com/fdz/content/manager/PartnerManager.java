@@ -1,17 +1,13 @@
 package com.fdz.content.manager;
 
-import com.fdz.content.domain.Partner;
-import com.fdz.content.domain.PartnerInterfaceConfig;
-import com.fdz.content.domain.PartnerProduct;
-import com.fdz.content.domain.PartnerUser;
-import com.fdz.content.mapper.PartnerInterfaceConfigMapper;
-import com.fdz.content.mapper.PartnerMapper;
-import com.fdz.content.mapper.PartnerProductMapper;
-import com.fdz.content.mapper.PartnerUserMapper;
+import com.fdz.common.utils.Page;
+import com.fdz.content.domain.*;
+import com.fdz.content.mapper.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -28,6 +24,9 @@ public class PartnerManager {
 
     @Resource
     private PartnerUserMapper partnerUserMapper;
+
+    @Resource
+    private InterfaceExecRecordMapper interfaceExecRecordMapper;
 
     public PartnerUser findPartnerUserByUserName(String userName) {
         return partnerUserMapper.findPartnerUserByUserName(userName);
@@ -52,6 +51,14 @@ public class PartnerManager {
 
     public int updateByPrimaryKeySelective(Partner partner) {
         return partnerMapper.updateByPrimaryKeySelective(partner);
+    }
+
+    public int updateByPrimaryKeySelective(InterfaceExecRecord interfaceExecRecord) {
+        return interfaceExecRecordMapper.updateByPrimaryKeySelective(interfaceExecRecord);
+    }
+
+    public int insertSelective(InterfaceExecRecord interfaceExecRecord) {
+        return interfaceExecRecordMapper.insertSelective(interfaceExecRecord);
     }
 
     public int updateByPrimaryKeySelective(PartnerInterfaceConfig partnerInterfaceConfig) {
@@ -90,4 +97,47 @@ public class PartnerManager {
         return partnerInterfaceConfigMapper.findConfigByPartnerAndType(partner, type);
     }
 
+    public int countPartnerProduct() {
+        return partnerProductMapper.countPartnerProduct();
+    }
+
+    public List<PartnerProduct> listPartnerProduct(Page page) {
+        return partnerProductMapper.listPartnerProduct(page);
+    }
+
+    public List<PartnerProduct> searchPartnerProduct(PartnerProduct partnerProduct, Page page) {
+        return partnerProductMapper.searchPartnerProduct(partnerProduct, page);
+    }
+
+    public int countSearchPartnerProduct(PartnerProduct partnerProduct) {
+        return partnerProductMapper.countSearchPartnerProduct(partnerProduct);
+    }
+
+    public int countPartnerProductByProductId(Long productId) {
+        return partnerProductMapper.countPartnerProductByProductId(productId);
+    }
+
+    public List<PartnerProduct> findPartnerProductByProductId(Long productId) {
+        return partnerProductMapper.findPartnerProductByProductId(productId);
+    }
+
+    public List<PartnerInterfaceConfig> findConfigByPartnerIdAndType(List<Long> partnerIds, byte interfaceType) {
+        return partnerInterfaceConfigMapper.findConfigByPartnerIdAndType(partnerIds, interfaceType);
+    }
+
+    public int insertInterfaceExecRecordList(List<InterfaceExecRecord> list) {
+        return interfaceExecRecordMapper.insertInterfaceExecRecordList(list);
+    }
+
+    public List<InterfaceExecRecord> findRecordPartnerIdAndTypeAndStatus(List<Long> partnerId, byte type, byte status) {
+        return interfaceExecRecordMapper.findRecordPartnerIdAndTypeAndStatus(partnerId, type, status);
+    }
+
+    public List<InterfaceExecRecord> queryRecordByStatus(byte status) {
+        return interfaceExecRecordMapper.queryRecordByStatus(status);
+    }
+
+    public List<PartnerProduct> findPPByProductIds(List<Long> partnerProductIds) {
+        return partnerProductMapper.findPPByProductIds(partnerProductIds);
+    }
 }

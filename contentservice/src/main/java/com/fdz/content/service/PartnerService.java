@@ -1,9 +1,8 @@
 package com.fdz.content.service;
 
-import com.fdz.content.domain.Partner;
-import com.fdz.content.domain.PartnerInterfaceConfig;
-import com.fdz.content.domain.PartnerProduct;
-import com.fdz.content.domain.PartnerUser;
+import com.fdz.content.domain.*;
+
+import java.util.List;
 
 public interface PartnerService {
 
@@ -25,6 +24,10 @@ public interface PartnerService {
 
     int updateByPrimaryKeySelective(PartnerUser partnerUser);
 
+    int updateByPrimaryKeySelective(InterfaceExecRecord interfaceExecRecord);
+
+    int insertSelective(InterfaceExecRecord interfaceExecRecord);
+
     int insertSelective(Partner partner);
 
     int insertSelective(PartnerInterfaceConfig partnerInterfaceConfig);
@@ -36,4 +39,20 @@ public interface PartnerService {
     Partner findPartnerByUniqueKey(String uniqueKey);
 
     PartnerInterfaceConfig findConfigByPartnerAndType(Long partner, byte type);
+
+    int countPartnerProductByProductId(Long productId);
+
+    void syncProduct(Long id);
+
+    void syncPartnerProduct(Long id);
+
+    List<PartnerProduct> findPartnerProductByProductId(Long productId);
+
+    List<PartnerInterfaceConfig> findConfigByPartnerIdAndType(List<Long> partnerIds, byte interfaceType);
+
+    int insertInterfaceExecRecordList(List<InterfaceExecRecord> list);
+
+    List<InterfaceExecRecord> findRecordPartnerIdAndTypeAndStatus(List<Long> partnerId, byte type, byte status);
+
+    List<InterfaceExecRecord> queryRecordByStatus(byte status);
 }

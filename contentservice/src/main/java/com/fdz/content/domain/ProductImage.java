@@ -10,6 +10,7 @@ public class ProductImage extends BaseEntity {
 
     private Long productId;
 
+
     public ProductImage() {
         super();
     }

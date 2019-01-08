@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @RestController
 @ApiVersion("1")
-@RequestMapping("/partner")
+@RequestMapping("/content/partner")
 @Api("合作伙伴信息接口")
 public class PartnerController {
 

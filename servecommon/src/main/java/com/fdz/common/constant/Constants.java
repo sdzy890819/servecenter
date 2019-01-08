@@ -30,6 +30,8 @@ public final class Constants {
         public static final String PROD_PROFILE = "prod";
         public static final String PRE_PROFILE = "pre";
 
+        public static final String THIRDPARTY_VERSION = "1";
+
         public static final boolean needRealPay(String active) {
             return StringUtils.isNotBlank(active) && PROD_PROFILE.equals(active);
         }
@@ -46,6 +48,9 @@ public final class Constants {
 
         public static final int USER_NOT_LOGIN = 546;
         public static final String USER_NOT_LOGIN_MESSAGE = "您还未登录或者登录超时，请重新登录后再次操作";
+
+        public static final int THIRDPARTY_ERROR_JSON = 100190;
+        public static final int THIRDPARTY_ERROR_RSA = 100191;
     }
 
     public static final class RedisKey {

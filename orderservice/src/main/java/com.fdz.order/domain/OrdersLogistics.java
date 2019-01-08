@@ -26,6 +26,8 @@ public class OrdersLogistics extends BaseEntity {
 
     private Byte deliveryStatus;
 
+    private Byte businessDeliveryStatus;
+
 
     public OrdersLogistics() {
         super();

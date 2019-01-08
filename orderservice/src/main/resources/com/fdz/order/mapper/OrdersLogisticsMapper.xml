@@ -12,6 +12,7 @@
     <result column="logistics_sn" jdbcType="VARCHAR" property="logisticsSn" />
     <result column="logistics_status" jdbcType="VARCHAR" property="logisticsStatus" />
     <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus" />
+    <result column="business_delivery_status"  jdbcType="TINYINT" property="businessDeliveryStatus" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -74,7 +75,7 @@
   <sql id="Base_Column_List">
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, 
     partner_sn, partner_id, receiver, receiver_address, receiver_mobile, logistics, logistics_sn, 
-    logistics_status, delivery_status
+    logistics_status, delivery_status,business_delivery_status
   </sql>
   <select id="selectByExample" parameterType="com.fdz.order.domain.OrdersLogisticsExample" resultMap="BaseResultMap">
     select
@@ -112,13 +113,13 @@
       is_delete, order_sn, partner_sn, 
       partner_id, receiver, receiver_address, 
       receiver_mobile, logistics, logistics_sn, 
-      logistics_status, delivery_status)
+      logistics_status, delivery_status,business_delivery_status)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{delete,jdbcType=BIT}, #{orderSn,jdbcType=VARCHAR}, #{partnerSn,jdbcType=VARCHAR}, 
       #{partnerId,jdbcType=BIGINT}, #{receiver,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
       #{receiverMobile,jdbcType=VARCHAR}, #{logistics,jdbcType=VARCHAR}, #{logisticsSn,jdbcType=VARCHAR}, 
-      #{logisticsStatus,jdbcType=VARCHAR}, #{deliveryStatus,jdbcType=TINYINT})
+      #{logisticsStatus,jdbcType=VARCHAR}, #{deliveryStatus,jdbcType=TINYINT}, #{businessDeliveryStatus})
   </insert>
   <insert id="insertSelective" parameterType="com.fdz.order.domain.OrdersLogistics">
     insert into orders_logistics
@@ -174,402 +175,8 @@
       <if test="deliveryStatus != null">
         delivery_status,
       </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=BIGINT},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=BIGINT},
-      </if>
-      <if test="createBy != null">
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyBy != null">
-        #{modifyBy,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="delete != null">
-        #{delete,jdbcType=BIT},
-      </if>
-      <if test="orderSn != null">
-        #{orderSn,jdbcType=VARCHAR},
-      </if>
-      <if test="partnerSn != null">
-        #{partnerSn,jdbcType=VARCHAR},
-      </if>
-      <if test="partnerId != null">
-        #{partnerId,jdbcType=BIGINT},
-      </if>
-      <if test="receiver != null">
-        #{receiver,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverAddress != null">
-        #{receiverAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverMobile != null">
-        #{receiverMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="logistics != null">
-        #{logistics,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsSn != null">
-        #{logisticsSn,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsStatus != null">
-        #{logisticsStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryStatus != null">
-        #{deliveryStatus,jdbcType=TINYINT},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.fdz.order.domain.OrdersLogisticsExample" resultType="java.lang.Integer">
-    select count(*) from orders_logistics
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update orders_logistics
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=BIGINT},
-      </if>
-      <if test="record.modifyTime != null">
-        modify_time = #{record.modifyTime,jdbcType=BIGINT},
-      </if>
-      <if test="record.createBy != null">
-        create_by = #{record.createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.modifyBy != null">
-        modify_by = #{record.modifyBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.remark != null">
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.delete != null">
-        is_delete = #{record.delete,jdbcType=BIT},
-      </if>
-      <if test="record.orderSn != null">
-        order_sn = #{record.orderSn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.partnerSn != null">
-        partner_sn = #{record.partnerSn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.partnerId != null">
-        partner_id = #{record.partnerId,jdbcType=BIGINT},
-      </if>
-      <if test="record.receiver != null">
-        receiver = #{record.receiver,jdbcType=VARCHAR},
-      </if>
-      <if test="record.receiverAddress != null">
-        receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="record.receiverMobile != null">
-        receiver_mobile = #{record.receiverMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="record.logistics != null">
-        logistics = #{record.logistics,jdbcType=VARCHAR},
-      </if>
-      <if test="record.logisticsSn != null">
-        logistics_sn = #{record.logisticsSn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.logisticsStatus != null">
-        logistics_status = #{record.logisticsStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="record.deliveryStatus != null">
-        delivery_status = #{record.deliveryStatus,jdbcType=TINYINT},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update orders_logistics
-    set id = #{record.id,jdbcType=BIGINT},
-      create_time = #{record.createTime,jdbcType=BIGINT},
-      modify_time = #{record.modifyTime,jdbcType=BIGINT},
-      create_by = #{record.createBy,jdbcType=VARCHAR},
-      modify_by = #{record.modifyBy,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      is_delete = #{record.delete,jdbcType=BIT},
-      order_sn = #{record.orderSn,jdbcType=VARCHAR},
-      partner_sn = #{record.partnerSn,jdbcType=VARCHAR},
-      partner_id = #{record.partnerId,jdbcType=BIGINT},
-      receiver = #{record.receiver,jdbcType=VARCHAR},
-      receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
-      receiver_mobile = #{record.receiverMobile,jdbcType=VARCHAR},
-      logistics = #{record.logistics,jdbcType=VARCHAR},
-      logistics_sn = #{record.logisticsSn,jdbcType=VARCHAR},
-      logistics_status = #{record.logisticsStatus,jdbcType=VARCHAR},
-      delivery_status = #{record.deliveryStatus,jdbcType=TINYINT}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fdz.order.domain.OrdersLogistics">
-    update orders_logistics
-    <set>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=BIGINT},
-      </if>
-      <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=BIGINT},
-      </if>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyBy != null">
-        modify_by = #{modifyBy,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="delete != null">
-        is_delete = #{delete,jdbcType=BIT},
-      </if>
-      <if test="orderSn != null">
-        order_sn = #{orderSn,jdbcType=VARCHAR},
-      </if>
-      <if test="partnerSn != null">
-        partner_sn = #{partnerSn,jdbcType=VARCHAR},
-      </if>
-      <if test="partnerId != null">
-        partner_id = #{partnerId,jdbcType=BIGINT},
-      </if>
-      <if test="receiver != null">
-        receiver = #{receiver,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverAddress != null">
-        receiver_address = #{receiverAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverMobile != null">
-        receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="logistics != null">
-        logistics = #{logistics,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsSn != null">
-        logistics_sn = #{logisticsSn,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsStatus != null">
-        logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryStatus != null">
-        delivery_status = #{deliveryStatus,jdbcType=TINYINT},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fdz.order.domain.OrdersLogistics">
-    update orders_logistics
-    set create_time = #{createTime,jdbcType=BIGINT},
-      modify_time = #{modifyTime,jdbcType=BIGINT},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      modify_by = #{modifyBy,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      is_delete = #{delete,jdbcType=BIT},
-      order_sn = #{orderSn,jdbcType=VARCHAR},
-      partner_sn = #{partnerSn,jdbcType=VARCHAR},
-      partner_id = #{partnerId,jdbcType=BIGINT},
-      receiver = #{receiver,jdbcType=VARCHAR},
-      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
-      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
-      logistics = #{logistics,jdbcType=VARCHAR},
-      logistics_sn = #{logisticsSn,jdbcType=VARCHAR},
-      logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
-      delivery_status = #{deliveryStatus,jdbcType=TINYINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <resultMap id="BaseResultMap" type="com.fdz.order.domain.OrdersLogistics">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="create_time" jdbcType="BIGINT" property="createTime" />
-    <result column="modify_time" jdbcType="BIGINT" property="modifyTime" />
-    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
-    <result column="modify_by" jdbcType="VARCHAR" property="modifyBy" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="is_delete" jdbcType="BIT" property="delete" />
-    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
-    <result column="partner_sn" jdbcType="VARCHAR" property="partnerSn" />
-    <result column="partner_id" jdbcType="BIGINT" property="partnerId" />
-    <result column="receiver" jdbcType="VARCHAR" property="receiver" />
-    <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
-    <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
-    <result column="logistics" jdbcType="VARCHAR" property="logistics" />
-    <result column="logistics_sn" jdbcType="VARCHAR" property="logisticsSn" />
-    <result column="logistics_status" jdbcType="VARCHAR" property="logisticsStatus" />
-    <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, 
-    partner_sn, partner_id, receiver, receiver_address, receiver_mobile, logistics, logistics_sn, 
-    logistics_status, delivery_status
-  </sql>
-  <select id="selectByExample" parameterType="com.fdz.order.domain.OrdersLogisticsExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from orders_logistics
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from orders_logistics
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from orders_logistics
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.fdz.order.domain.OrdersLogisticsExample">
-    delete from orders_logistics
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.fdz.order.domain.OrdersLogistics">
-    insert into orders_logistics (id, create_time, modify_time, 
-      create_by, modify_by, remark, 
-      is_delete, order_sn, partner_sn, 
-      partner_id, receiver, receiver_address, 
-      receiver_mobile, logistics, logistics_sn, 
-      logistics_status, delivery_status)
-    values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
-      #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{delete,jdbcType=BIT}, #{orderSn,jdbcType=VARCHAR}, #{partnerSn,jdbcType=VARCHAR}, 
-      #{partnerId,jdbcType=BIGINT}, #{receiver,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
-      #{receiverMobile,jdbcType=VARCHAR}, #{logistics,jdbcType=VARCHAR}, #{logisticsSn,jdbcType=VARCHAR}, 
-      #{logisticsStatus,jdbcType=VARCHAR}, #{deliveryStatus,jdbcType=TINYINT})
-  </insert>
-  <insert id="insertSelective" parameterType="com.fdz.order.domain.OrdersLogistics">
-    insert into orders_logistics
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-      <if test="createBy != null">
-        create_by,
-      </if>
-      <if test="modifyBy != null">
-        modify_by,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="delete != null">
-        is_delete,
-      </if>
-      <if test="orderSn != null">
-        order_sn,
-      </if>
-      <if test="partnerSn != null">
-        partner_sn,
-      </if>
-      <if test="partnerId != null">
-        partner_id,
-      </if>
-      <if test="receiver != null">
-        receiver,
-      </if>
-      <if test="receiverAddress != null">
-        receiver_address,
-      </if>
-      <if test="receiverMobile != null">
-        receiver_mobile,
-      </if>
-      <if test="logistics != null">
-        logistics,
-      </if>
-      <if test="logisticsSn != null">
-        logistics_sn,
-      </if>
-      <if test="logisticsStatus != null">
-        logistics_status,
-      </if>
-      <if test="deliveryStatus != null">
-        delivery_status,
+      <if test="businessDeliveryStatus != null">
+        business_delivery_status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -624,6 +231,9 @@
       <if test="deliveryStatus != null">
         #{deliveryStatus,jdbcType=TINYINT},
       </if>
+      <if test="businessDeliveryStatus != null">
+        #{businessDeliveryStatus},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.fdz.order.domain.OrdersLogisticsExample" resultType="java.lang.Integer">
@@ -638,15 +248,11 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.createTime != null">
-        create_time = #{record.createTime,jdbcType=BIGINT},
-      </if>
+
       <if test="record.modifyTime != null">
         modify_time = #{record.modifyTime,jdbcType=BIGINT},
       </if>
-      <if test="record.createBy != null">
-        create_by = #{record.createBy,jdbcType=VARCHAR},
-      </if>
+
       <if test="record.modifyBy != null">
         modify_by = #{record.modifyBy,jdbcType=VARCHAR},
       </if>
@@ -686,6 +292,9 @@
       <if test="record.deliveryStatus != null">
         delivery_status = #{record.deliveryStatus,jdbcType=TINYINT},
       </if>
+      <if test="record.businessDeliveryStatus != null">
+        business_delivery_status = #{record.businessDeliveryStatus},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -694,9 +303,9 @@
   <update id="updateByExample" parameterType="map">
     update orders_logistics
     set id = #{record.id,jdbcType=BIGINT},
-      create_time = #{record.createTime,jdbcType=BIGINT},
+
       modify_time = #{record.modifyTime,jdbcType=BIGINT},
-      create_by = #{record.createBy,jdbcType=VARCHAR},
+
       modify_by = #{record.modifyBy,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       is_delete = #{record.delete,jdbcType=BIT},
@@ -709,7 +318,8 @@
       logistics = #{record.logistics,jdbcType=VARCHAR},
       logistics_sn = #{record.logisticsSn,jdbcType=VARCHAR},
       logistics_status = #{record.logisticsStatus,jdbcType=VARCHAR},
-      delivery_status = #{record.deliveryStatus,jdbcType=TINYINT}
+      delivery_status = #{record.deliveryStatus,jdbcType=TINYINT},
+      business_delivery_status = #{record.businessDeliveryStatus}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -717,15 +327,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fdz.order.domain.OrdersLogistics">
     update orders_logistics
     <set>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=BIGINT},
-      </if>
+
       <if test="modifyTime != null">
         modify_time = #{modifyTime,jdbcType=BIGINT},
       </if>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
+
       <if test="modifyBy != null">
         modify_by = #{modifyBy,jdbcType=VARCHAR},
       </if>
@@ -765,14 +371,17 @@
       <if test="deliveryStatus != null">
         delivery_status = #{deliveryStatus,jdbcType=TINYINT},
       </if>
+      <if test="businessDeliveryStatus != null">
+        business_delivery_status = #{businessDeliveryStatus},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fdz.order.domain.OrdersLogistics">
     update orders_logistics
-    set create_time = #{createTime,jdbcType=BIGINT},
+    set
       modify_time = #{modifyTime,jdbcType=BIGINT},
-      create_by = #{createBy,jdbcType=VARCHAR},
+
       modify_by = #{modifyBy,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       is_delete = #{delete,jdbcType=BIT},
@@ -785,7 +394,8 @@
       logistics = #{logistics,jdbcType=VARCHAR},
       logistics_sn = #{logisticsSn,jdbcType=VARCHAR},
       logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
-      delivery_status = #{deliveryStatus,jdbcType=TINYINT}
+      delivery_status = #{deliveryStatus,jdbcType=TINYINT},
+      business_delivery_status = #{businessDeliveryStatus}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

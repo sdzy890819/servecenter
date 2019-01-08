@@ -27,6 +27,15 @@ public class ApplicationProperties {
     @NestedConfigurationProperty
     private final SecurityConf securityConf = new SecurityConf();
 
+
+    @NestedConfigurationProperty
+    private final MyRsaKey myRsaKey = new MyRsaKey();
+
+    @Data
+    public static class MyRsaKey {
+        private String privateKey;
+    }
+
     @Data
     public static class SecurityConf {
         @NestedConfigurationProperty

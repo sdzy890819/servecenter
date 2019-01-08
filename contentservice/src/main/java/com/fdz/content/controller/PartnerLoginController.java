@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @ApiVersion("1")
-@RequestMapping("/partner")
+@RequestMapping("/content/partner")
 @Api("合作伙伴登录接口")
 public class PartnerLoginController {
 

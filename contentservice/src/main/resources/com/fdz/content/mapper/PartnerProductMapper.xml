@@ -2,11 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.fdz.content.mapper.PartnerProductMapper" >
   <resultMap id="BaseResultMap" type="com.fdz.content.domain.PartnerProduct" extends="baseEntity.base">
-    
+
     <result column="product_id" property="productId" jdbcType="BIGINT" />
     <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
     <result column="platform_price" property="platformPrice" jdbcType="DECIMAL" />
     <result column="shelf" property="shelf" jdbcType="BIT" />
+    <result column="partner_id" property="partnerId" jdbcType="BIGINT" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -68,7 +69,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, product_id, 
-    sale_price, platform_price, shelf
+    sale_price, platform_price, shelf, partner_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fdz.content.domain.PartnerProductExample" >
     select
@@ -85,7 +86,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from partner_product
     where id = #{id,jdbcType=BIGINT}
@@ -100,17 +101,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.fdz.content.domain.PartnerProduct" >
+  <insert id="insert" parameterType="com.fdz.content.domain.PartnerProduct" keyProperty="id" useGeneratedKeys="true">
     insert into partner_product (id, create_time, modify_time, 
       create_by, modify_by, remark, 
       is_delete, product_id, sale_price, 
-      platform_price, shelf)
+      platform_price, shelf, partner_id)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{delete,jdbcType=BIT}, #{productId,jdbcType=BIGINT}, #{salePrice,jdbcType=DECIMAL}, 
-      #{platformPrice,jdbcType=DECIMAL}, #{shelf,jdbcType=BIT})
+      #{platformPrice,jdbcType=DECIMAL}, #{shelf,jdbcType=BIT},#{partnerId,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.fdz.content.domain.PartnerProduct" >
+  <insert id="insertSelective" parameterType="com.fdz.content.domain.PartnerProduct" keyProperty="id" useGeneratedKeys="true">
     insert into partner_product
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -145,6 +146,9 @@
       </if>
       <if test="shelf != null" >
         shelf,
+      </if>
+      <if test="partnerId != null">
+        partner_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -181,6 +185,9 @@
       <if test="shelf != null" >
         #{shelf,jdbcType=BIT},
       </if>
+      <if test="partnerId != null">
+        #{partnerId,jdbcType=BIGINT},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.fdz.content.domain.PartnerProductExample" resultType="java.lang.Integer" >
@@ -195,15 +202,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=BIGINT},
-      </if>
+
       <if test="record.modifyTime != null" >
         modify_time = #{record.modifyTime,jdbcType=BIGINT},
       </if>
-      <if test="record.createBy != null" >
-        create_by = #{record.createBy,jdbcType=VARCHAR},
-      </if>
+
       <if test="record.modifyBy != null" >
         modify_by = #{record.modifyBy,jdbcType=VARCHAR},
       </if>
@@ -225,6 +228,9 @@
       <if test="record.shelf != null" >
         shelf = #{record.shelf,jdbcType=BIT},
       </if>
+      <if test="record.partnerId != null">
+        partner_id = #{record.partnerId, jdbcType=BIGINT},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -233,16 +239,17 @@
   <update id="updateByExample" parameterType="map" >
     update partner_product
     set id = #{record.id,jdbcType=BIGINT},
-      create_time = #{record.createTime,jdbcType=BIGINT},
+
       modify_time = #{record.modifyTime,jdbcType=BIGINT},
-      create_by = #{record.createBy,jdbcType=VARCHAR},
+
       modify_by = #{record.modifyBy,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       is_delete = #{record.delete,jdbcType=BIT},
       product_id = #{record.productId,jdbcType=BIGINT},
       sale_price = #{record.salePrice,jdbcType=DECIMAL},
       platform_price = #{record.platformPrice,jdbcType=DECIMAL},
-      shelf = #{record.shelf,jdbcType=BIT}
+      shelf = #{record.shelf,jdbcType=BIT},
+      partner_id = #{record.partnerId, jdbcType=BIGINT}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -250,15 +257,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fdz.content.domain.PartnerProduct" >
     update partner_product
     <set >
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=BIGINT},
-      </if>
+
       <if test="modifyTime != null" >
         modify_time = #{modifyTime,jdbcType=BIGINT},
       </if>
-      <if test="createBy != null" >
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
+
       <if test="modifyBy != null" >
         modify_by = #{modifyBy,jdbcType=VARCHAR},
       </if>
@@ -280,21 +283,72 @@
       <if test="shelf != null" >
         shelf = #{shelf,jdbcType=BIT},
       </if>
+      <if test="partnerId != null">
+        partner_id = #{partnerId, jdbcType=BIGINT},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fdz.content.domain.PartnerProduct" >
     update partner_product
-    set create_time = #{createTime,jdbcType=BIGINT},
+    set
       modify_time = #{modifyTime,jdbcType=BIGINT},
-      create_by = #{createBy,jdbcType=VARCHAR},
+
       modify_by = #{modifyBy,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       is_delete = #{delete,jdbcType=BIT},
       product_id = #{productId,jdbcType=BIGINT},
       sale_price = #{salePrice,jdbcType=DECIMAL},
       platform_price = #{platformPrice,jdbcType=DECIMAL},
-      shelf = #{shelf,jdbcType=BIT}
+      shelf = #{shelf,jdbcType=BIT},
+      partner_id = #{partnerId, jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="countSearchPartnerProduct" resultType="java.lang.Integer">
+    select count(1) from partner_product where is_delete = 0
+    <if test="p.productId != null" >
+       and product_id = #{p.productId}
+    </if>
+    <if test="p.salePrice != null" >
+       and sale_price = #{p.salePrice}
+    </if>
+    <if test="p.platformPrice != null" >
+       and platform_price = #{p.platformPrice}
+    </if>
+    <if test="p.shelf != null" >
+       and shelf = #{p.shelf}
+    </if>
+    <if test="p.partnerId != null">
+       and partner_id = #{p.partnerId, jdbcType=BIGINT},
+    </if>
+  </select>
+    <select id="searchPartnerProduct" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from partner_product where is_delete = 0
+        <if test="p.productId != null" >
+            and product_id = #{p.productId}
+        </if>
+        <if test="p.salePrice != null" >
+            and sale_price = #{p.salePrice}
+        </if>
+        <if test="p.platformPrice != null" >
+            and platform_price = #{p.platformPrice}
+        </if>
+        <if test="p.shelf != null" >
+            and shelf = #{p.shelf}
+        </if>
+        <if test="p.partnerId != null">
+          and partner_id = #{p.partnerId, jdbcType=BIGINT},
+        </if>
+        order by id desc limit #{page.start}, #{page.pageSize}
+    </select>
+
+  <select id="findPPByProductIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from partner_product where is_delete = 0
+    and id in (
+    <foreach collection="list" separator="," item="a">
+      #{a}
+    </foreach>
+    )
+  </select>
 </mapper>

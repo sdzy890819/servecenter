@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 
 @RestController
 @ApiVersion("1")
-@RequestMapping("/partner/config")
+@RequestMapping("/content/partner/config")
 @Api("合作伙伴配置信息接口")
 public class PartnerConfigController {
 

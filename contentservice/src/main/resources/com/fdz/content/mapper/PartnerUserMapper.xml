@@ -100,7 +100,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.fdz.content.domain.PartnerUser" >
+  <insert id="insert" parameterType="com.fdz.content.domain.PartnerUser" keyProperty="id" useGeneratedKeys="true">
     insert into partner_user (id, create_time, modify_time, 
       create_by, modify_by, remark, 
       is_delete, user_name, password, 
@@ -110,7 +110,7 @@
       #{delete,jdbcType=BIT}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{realName,jdbcType=VARCHAR}, #{partnerId,jdbcType=BIGINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.fdz.content.domain.PartnerUser" >
+  <insert id="insertSelective" parameterType="com.fdz.content.domain.PartnerUser" keyProperty="id" useGeneratedKeys="true">
     insert into partner_user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -195,15 +195,11 @@
       <if test="record.id != null" >
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.createTime != null" >
-        create_time = #{record.createTime,jdbcType=BIGINT},
-      </if>
+
       <if test="record.modifyTime != null" >
         modify_time = #{record.modifyTime,jdbcType=BIGINT},
       </if>
-      <if test="record.createBy != null" >
-        create_by = #{record.createBy,jdbcType=VARCHAR},
-      </if>
+
       <if test="record.modifyBy != null" >
         modify_by = #{record.modifyBy,jdbcType=VARCHAR},
       </if>
@@ -233,9 +229,9 @@
   <update id="updateByExample" parameterType="map" >
     update partner_user
     set id = #{record.id,jdbcType=BIGINT},
-      create_time = #{record.createTime,jdbcType=BIGINT},
+
       modify_time = #{record.modifyTime,jdbcType=BIGINT},
-      create_by = #{record.createBy,jdbcType=VARCHAR},
+
       modify_by = #{record.modifyBy,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       is_delete = #{record.delete,jdbcType=BIT},
@@ -250,15 +246,11 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.fdz.content.domain.PartnerUser" >
     update partner_user
     <set >
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=BIGINT},
-      </if>
+
       <if test="modifyTime != null" >
         modify_time = #{modifyTime,jdbcType=BIGINT},
       </if>
-      <if test="createBy != null" >
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
+
       <if test="modifyBy != null" >
         modify_by = #{modifyBy,jdbcType=VARCHAR},
       </if>
@@ -285,9 +277,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.fdz.content.domain.PartnerUser" >
     update partner_user
-    set create_time = #{createTime,jdbcType=BIGINT},
+    set
       modify_time = #{modifyTime,jdbcType=BIGINT},
-      create_by = #{createBy,jdbcType=VARCHAR},
+
       modify_by = #{modifyBy,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       is_delete = #{delete,jdbcType=BIT},

@@ -17,6 +17,8 @@ public interface PartnerMapper {
 
     String RESULT_MAP = "BaseResultMap";
 
+    String SELECT = "select " + SQL + " from " + TABLE + Constants.Sql.NOT_DELETED;
+
     int deleteByPrimaryKey(Long id);
 
     int insert(Partner record);
@@ -29,7 +31,7 @@ public interface PartnerMapper {
 
     int updateByPrimaryKey(Partner record);
 
-    @Select("select " + SQL + " from " + TABLE + Constants.Sql.NOT_DELETED + " and unique_key = #{userName} order by id desc limit 1")
+    @Select(SELECT + " and unique_key = #{userName} order by id desc limit 1")
     @ResultMap(RESULT_MAP)
     Partner findPartnerByUniqueKey(@Param("uniqueKey") String uniqueKey);
 }

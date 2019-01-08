@@ -15,8 +15,6 @@ public class Orders extends BaseEntity {
 
     private Long partnerId;
 
-    private Long partnerProductId;
-
     private BigDecimal amount;
 
     private Date buyTime;
@@ -32,6 +30,8 @@ public class Orders extends BaseEntity {
     private Byte status;
 
     private Byte orderStatus;
+
+    private Byte businessDeliveryStatus;
 
     public Orders() {
         super();

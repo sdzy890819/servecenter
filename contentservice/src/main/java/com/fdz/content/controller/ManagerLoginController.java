@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @ApiVersion("1")
-@RequestMapping("/manager")
+@RequestMapping("/content/manager")
 @Api("后台登录接口")
 public class ManagerLoginController {
 

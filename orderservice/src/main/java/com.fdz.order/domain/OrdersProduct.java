@@ -32,13 +32,13 @@ public class OrdersProduct extends BaseEntity {
 
     private BigDecimal salePrice;
 
+    private BigDecimal platformPrice;
+
     private String productModel;
 
     private Long productId;
 
-    private BigDecimal partnerSalePrice;
-
-    private BigDecimal partnerPlatformPrice;
+    private BigDecimal productSalePrice;
 
     public OrdersProduct() {
         super();

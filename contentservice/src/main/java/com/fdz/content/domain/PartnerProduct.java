@@ -16,6 +16,8 @@ public class PartnerProduct extends BaseEntity {
 
     private Boolean shelf;
 
+    private Long partnerId;
+
     public PartnerProduct() {
         super();
     }

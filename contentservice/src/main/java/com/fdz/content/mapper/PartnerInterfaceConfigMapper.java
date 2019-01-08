@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface PartnerInterfaceConfigMapper {
 
@@ -34,4 +36,6 @@ public interface PartnerInterfaceConfigMapper {
     @Select(SELECT + " and partner_id = #{partnerId} and interface_type = #{type} order by id desc limit 1")
     @ResultMap(RESULT_MAP)
     PartnerInterfaceConfig findConfigByPartnerAndType(@Param("partnerId") Long partner, @Param("type") byte type);
+
+    List<PartnerInterfaceConfig> findConfigByPartnerIdAndType(@Param("list") List<Long> partnerIds, @Param("interfaceType") byte interfaceType);
 }
