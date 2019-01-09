@@ -1,6 +1,7 @@
 package com.fdz.content.service;
 
 import com.fdz.content.domain.*;
+import com.fdz.content.dto.RecordDto;
 
 import java.util.List;
 
@@ -55,4 +56,6 @@ public interface PartnerService {
     List<InterfaceExecRecord> findRecordPartnerIdAndTypeAndStatus(List<Long> partnerId, byte type, byte status);
 
     List<InterfaceExecRecord> queryRecordByStatus(byte status);
+
+    void record(RecordDto recordDto);
 }

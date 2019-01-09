@@ -1,9 +1,12 @@
 package com.fdz.order.vo;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class OrderPushVo {
 
     private String sn;
@@ -11,6 +14,8 @@ public class OrderPushVo {
     private String orderSn;
 
     private BigDecimal amount;
+
+    private BigDecimal platformAmount;
 
     private Date buyTime;
 

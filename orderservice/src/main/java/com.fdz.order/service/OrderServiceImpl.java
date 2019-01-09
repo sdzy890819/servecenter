@@ -1,21 +1,29 @@
 package com.fdz.order.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdz.common.enums.DeliveryStatusEnums;
+import com.fdz.common.enums.InterfaceTypeEnums;
 import com.fdz.common.enums.OrdersFinishStatus;
 import com.fdz.common.enums.OrdersStatus;
 import com.fdz.common.exception.BizException;
 import com.fdz.common.utils.IDGenerator;
+import com.fdz.common.utils.Page;
 import com.fdz.common.utils.StringUtils;
+import com.fdz.order.convert.DtoConvert;
 import com.fdz.order.domain.Orders;
+import com.fdz.order.domain.OrdersAndLogistics;
 import com.fdz.order.domain.OrdersLogistics;
 import com.fdz.order.domain.OrdersProduct;
-import com.fdz.order.dto.CashierDto;
-import com.fdz.order.dto.CashierResult;
-import com.fdz.order.dto.GoodsDto;
-import com.fdz.order.dto.ReceivingAddressDto;
+import com.fdz.order.dto.*;
 import com.fdz.order.manager.OrderManager;
 import com.fdz.order.service.content.ContentService;
+import com.fdz.order.service.content.dto.RecordDto;
 import com.fdz.order.service.content.dto.ThirdpartyProductDto;
+import com.fdz.order.vo.OrderProductPushVo;
+import com.fdz.order.vo.OrderPushVo;
+import com.fdz.order.vo.OrderStatusPushVo;
+import com.fdz.order.vo.OrdersLogisticsPushVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +43,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private ContentService contentService;
+
+    @Resource
+    private DtoConvert dtoConvert;
+
+    @Resource
+    private ObjectMapper objectMapper;
 
     @Override
     public CashierResult shopping(CashierDto cashierDto, Long partnerId) {
@@ -98,8 +112,10 @@ public class OrderServiceImpl implements OrderService {
         cashierResult.setOrderSn(orderSn);
         cashierResult.setSn(cashierDto.getSn());
         cashierResult.setGoodsDtos(goodsDtoList);
+        sendOrdersExecRecord(orderSn, partnerId);
         return cashierResult;
     }
+
 
     @Override
     public void delivery(String sn) {
@@ -114,12 +130,21 @@ public class OrderServiceImpl implements OrderService {
         OrdersLogistics ordersLogistics = findOrdersLogisticsByPartnerSn(sn);
         OrdersLogistics updateOl = new OrdersLogistics(ordersLogistics.getId());
         updateOl.setDeliveryStatus(DeliveryStatusEnums.DELIVERY.getStatus());
-        orderManager.insert(updateO, updateOl);
+        update(updateO, updateOl);
+    }
+
+    public void update(Orders update, OrdersLogistics update2) {
+        orderManager.update(update, update2);
     }
 
     @Override
     public Orders findOrdersByPartnerSn(String partnerSn) {
         return orderManager.findOrdersByPartnerSn(partnerSn);
+    }
+
+    @Override
+    public Orders findOrdersByOrderSn(String orderSn) {
+        return orderManager.findOrdersByOrderSn(orderSn);
     }
 
     @Override
@@ -135,5 +160,159 @@ public class OrderServiceImpl implements OrderService {
         Map<Long, ThirdpartyProductDto> result = new HashMap<>();
         tpList.forEach(a -> result.put(a.getId(), a));
         return result;
+    }
+
+    @Override
+    public List<OrdersResult> searchOrders(SearchOrdersDto dto, Page page) {
+        Integer count = orderManager.searchOrdersCount(dto);
+        page.setCount(count);
+        if (page.isQuery()) {
+            List<OrdersResult> results = new ArrayList<>();
+            List<OrdersAndLogistics> list = orderManager.searchOrders(dto, page);
+            if (StringUtils.isNotEmpty(list)) {
+                for (int i = 0; i < list.size(); i++) {
+                    OrdersAndLogistics ordersAndLogistics = list.get(i);
+                    OrdersResult ordersResult = dtoConvert.convertOrdersResult(ordersAndLogistics);
+                    OrdersLogisticsResult ordersLogisticsResult = dtoConvert.convertOrdersLogisticsResult(ordersAndLogistics);
+                    ordersResult.setOrdersLogisticsResult(ordersLogisticsResult);
+                    results.add(ordersResult);
+                }
+            }
+            return results;
+        }
+        return null;
+    }
+
+    @Override
+    public OrdersResult findOrdersResult(String orderSn) {
+        Orders orders = orderManager.findOrdersByOrderSn(orderSn);
+        List<OrdersProduct> ordersProducts = orderManager.findOrdersProductsByOrderSn(orderSn);
+        OrdersLogistics ordersLogistics = orderManager.findOrdersLogisticsByOrderSn(orderSn);
+        OrdersResult ordersResult = dtoConvert.convertOrdersResult(orders);
+        List<OrdersProductResult> ordersProductResults = dtoConvert.convertOrdersProductResult(ordersProducts);
+        ordersResult.setOrdersProductResults(ordersProductResults);
+        OrdersLogisticsResult ordersLogisticsResult = dtoConvert.convertOrdersLogisticsResult(ordersLogistics);
+        ordersResult.setOrdersLogisticsResult(ordersLogisticsResult);
+        return ordersResult;
+    }
+
+    @Override
+    public void businessDelivery(LogisticsDto dto) {
+        Orders orders = orderManager.findOrdersByOrderSn(dto.getOrderSn());
+        if (orders.getOrderStatus() == OrdersStatus.RECEIVED.getStatus()) {
+            throw new BizException("订单已经签收，不可更改物流信息");
+        }
+        OrdersLogistics ordersLogistics = orderManager.findOrdersLogisticsByOrderSn(dto.getOrderSn());
+        Orders updateOrder = new Orders(orders.getId());
+        updateOrder.setStatus(OrdersStatus.DELIVERED.getStatus());
+        updateOrder.setBusinessDeliveryStatus(DeliveryStatusEnums.DELIVERY.getStatus());
+        updateOrder.setBusinessDeliveryTime(new Date());
+        OrdersLogistics updateLogistics = new OrdersLogistics(ordersLogistics.getId());
+        updateLogistics.setBusinessDeliveryStatus(DeliveryStatusEnums.DELIVERY.getStatus());
+        updateLogistics.setLogistics(dto.getLogistics());
+        updateLogistics.setLogisticsSn(dto.getLogisticsSn());
+        updateLogistics.setLogisticsStatus(dto.getLogisticsStatus());
+        update(updateOrder, updateLogistics);
+        sendStatusExecRecord(orders.getOrderSn());
+    }
+
+    @Override
+    public void businessDelivery(String orderSn) {
+        Orders orders = orderManager.findOrdersByOrderSn(orderSn);
+        if (orders.getOrderStatus() == OrdersStatus.RECEIVED.getStatus()) {
+            throw new BizException("订单已经签收，不可更改物流信息");
+        }
+        Orders updateOrder = new Orders(orders.getId());
+        updateOrder.setBusinessDeliveryTime(new Date());
+        updateOrder.setBusinessDeliveryStatus(DeliveryStatusEnums.DELIVERY.getStatus());
+        updateOrder.setStatus(OrdersStatus.DELIVERED.getStatus());
+        OrdersLogistics ordersLogistics = orderManager.findOrdersLogisticsByOrderSn(orderSn);
+        OrdersLogistics updateOrdersLogistics = new OrdersLogistics(ordersLogistics.getId());
+        updateOrdersLogistics.setBusinessDeliveryStatus(DeliveryStatusEnums.DELIVERY.getStatus());
+        update(updateOrder, updateOrdersLogistics);
+        sendStatusExecRecord(orderSn);
+    }
+
+    @Override
+    public void receive(String orderSn) {
+        Orders orders = orderManager.findOrdersByOrderSn(orderSn);
+        Orders updateOrder = new Orders(orders.getId());
+        updateOrder.setEndTime(new Date());
+        updateOrder.setStatus(OrdersStatus.RECEIVED.getStatus());
+        updateOrder.setOrderStatus(OrdersFinishStatus.FINISHED.getStatus());
+        OrdersLogistics ordersLogistics = orderManager.findOrdersLogisticsByOrderSn(orderSn);
+        OrdersLogistics updateOrdersLogistics = new OrdersLogistics(ordersLogistics.getId());
+        updateOrdersLogistics.setLogisticsStatus(OrdersStatus.RECEIVED.getStatusText());
+        update(updateOrder, updateOrdersLogistics);
+        sendStatusExecRecord(orderSn);
+    }
+
+    /**
+     * 保存订单状态推送
+     *
+     * @param orderSn
+     */
+    public void sendStatusExecRecord(String orderSn) {
+        Orders orders = orderManager.findOrdersByOrderSn(orderSn);
+        RecordDto recordDto = new RecordDto();
+        OrderStatusPushVo vo = new OrderStatusPushVo();
+        vo.setOrderSn(orderSn);
+        vo.setSn(orders.getPartnerSn());
+        vo.setStatus(orders.getStatus());
+        try {
+            recordDto.setData(objectMapper.writeValueAsString(vo));
+        } catch (JsonProcessingException e) {
+            throw new BizException("Json转字符串异常", e);
+        }
+        recordDto.setInterfaceType(InterfaceTypeEnums.SYNC_ORDER_STATUS.getType());
+        recordDto.setPartnerId(orders.getPartnerId());
+        contentService.create(recordDto);
+    }
+
+    public OrderStatusPushVo findOrderStatusPushVo(String partnerSn) {
+        Orders orders = orderManager.findOrdersByPartnerSn(partnerSn);
+        OrderStatusPushVo vo = new OrderStatusPushVo();
+        vo.setOrderSn(orders.getOrderSn());
+        vo.setSn(orders.getPartnerSn());
+        vo.setStatus(orders.getStatus());
+        return vo;
+    }
+
+    /**
+     * 发送订单推送
+     *
+     * @param orderSn
+     * @param partnerId
+     */
+    public void sendOrdersExecRecord(String orderSn, Long partnerId) {
+        OrderPushVo orderPushVo = findOrderPushVo(orderSn);
+        RecordDto recordDto = new RecordDto();
+        try {
+            recordDto.setData(objectMapper.writeValueAsString(orderPushVo));
+        } catch (JsonProcessingException e) {
+            throw new BizException("Json转字符串异常", e);
+        }
+        recordDto.setInterfaceType(InterfaceTypeEnums.SYNC_ORDER_STATUS.getType());
+        recordDto.setPartnerId(partnerId);
+        contentService.create(recordDto);
+    }
+
+    /**
+     * 拉取订单信息
+     *
+     * @param orderSn
+     * @return
+     */
+    public OrderPushVo findOrderPushVo(String orderSn) {
+        Orders orders = orderManager.findOrdersByOrderSn(orderSn);
+        OrdersLogistics ordersLogistics = orderManager.findOrdersLogisticsByOrderSn(orderSn);
+        List<OrdersProduct> ordersProducts = orderManager.findOrdersProductsByOrderSn(orderSn);
+
+        OrderPushVo orderPushVo = dtoConvert.convert(orders);
+        List<OrderProductPushVo> orderProductPushVos = dtoConvert.convert(ordersProducts);
+        OrdersLogisticsPushVo ordersLogisticsPushVo = dtoConvert.convert(ordersLogistics);
+        orderPushVo.setProducts(orderProductPushVos);
+        orderPushVo.setLogistics(ordersLogisticsPushVo);
+        return orderPushVo;
     }
 }

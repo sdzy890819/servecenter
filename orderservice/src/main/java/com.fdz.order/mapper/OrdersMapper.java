@@ -1,11 +1,16 @@
 package com.fdz.order.mapper;
 
 import com.fdz.common.constant.Constants;
+import com.fdz.common.utils.Page;
 import com.fdz.order.domain.Orders;
+import com.fdz.order.domain.OrdersAndLogistics;
+import com.fdz.order.dto.SearchOrdersDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface OrdersMapper {
@@ -35,4 +40,12 @@ public interface OrdersMapper {
     @Select(SELECT + " and partner_sn=#{partnerSn}")
     @ResultMap(RESULT_MAP)
     Orders findOrdersByPartnerSn(@Param("partnerSn") String partnerSn);
+
+    @Select(SELECT + " and order_sn=#{orderSn}")
+    @ResultMap(RESULT_MAP)
+    Orders findOrdersByOrderSn(@Param("orderSn") String orderSn);
+
+    List<OrdersAndLogistics> searchOrders(@Param("search") SearchOrdersDto dto, @Param("page") Page page);
+
+    Integer searchOrdersCount(@Param("search") SearchOrdersDto dto);
 }

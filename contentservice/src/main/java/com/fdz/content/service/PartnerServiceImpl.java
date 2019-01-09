@@ -7,6 +7,7 @@ import com.fdz.common.security.vo.LoginUser;
 import com.fdz.common.utils.StringUtils;
 import com.fdz.common.utils.UserDisassembly;
 import com.fdz.content.domain.*;
+import com.fdz.content.dto.RecordDto;
 import com.fdz.content.manager.PartnerManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -246,5 +247,17 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
     @Override
     public List<InterfaceExecRecord> queryRecordByStatus(byte status) {
         return partnerManager.queryRecordByStatus(status);
+    }
+
+    @Override
+    public void record(RecordDto recordDto) {
+        PartnerInterfaceConfig partnerInterfaceConfig = findConfigByPartnerAndType(recordDto.getPartnerId(), recordDto.getInterfaceType());
+        InterfaceExecRecord interfaceExecRecord = new InterfaceExecRecord();
+        interfaceExecRecord.setStatus(InterfaceExecStatus.WAIT.getStatus());
+        interfaceExecRecord.setPartnerId(recordDto.getPartnerId());
+        interfaceExecRecord.setInterfaceUrl(partnerInterfaceConfig.getInterfaceUrl());
+        interfaceExecRecord.setInterfaceType(recordDto.getInterfaceType());
+        interfaceExecRecord.setData(recordDto.getData());
+        insertSelective(interfaceExecRecord);
     }
 }

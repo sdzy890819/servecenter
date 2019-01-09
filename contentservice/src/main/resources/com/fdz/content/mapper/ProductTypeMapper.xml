@@ -6,64 +6,7 @@
     <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
     <result column="sn" property="sn" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
+
   <sql id="Base_Column_List" >
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, product_type_name, 
     sn
@@ -169,58 +112,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fdz.content.domain.ProductTypeExample" resultType="java.lang.Integer" >
-    select count(*) from product_type
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update product_type
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
 
-      <if test="record.modifyTime != null" >
-        modify_time = #{record.modifyTime,jdbcType=BIGINT},
-      </if>
-
-      <if test="record.modifyBy != null" >
-        modify_by = #{record.modifyBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.remark != null" >
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.delete != null" >
-        is_delete = #{record.delete,jdbcType=BIT},
-      </if>
-      <if test="record.productTypeName != null" >
-        product_type_name = #{record.productTypeName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.sn != null" >
-        sn = #{record.sn,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update product_type
-    set id = #{record.id,jdbcType=BIGINT},
-
-      modify_time = #{record.modifyTime,jdbcType=BIGINT},
-
-      modify_by = #{record.modifyBy,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      is_delete = #{record.delete,jdbcType=BIT},
-      product_type_name = #{record.productTypeName,jdbcType=VARCHAR},
-      sn = #{record.sn,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.fdz.content.domain.ProductType" >
     update product_type
     <set >

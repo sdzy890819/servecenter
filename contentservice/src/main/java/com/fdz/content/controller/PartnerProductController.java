@@ -9,7 +9,7 @@ import com.fdz.content.domain.PartnerProduct;
 import com.fdz.content.domain.Product;
 import com.fdz.content.dto.PartnerProductDto;
 import com.fdz.content.dto.SearchPartnerProductDto;
-import com.fdz.content.dto.SearchResult;
+import com.fdz.common.dto.SearchResult;
 import com.fdz.content.dto.ThirdpartyProductDto;
 import com.fdz.content.service.PartnerService;
 import com.fdz.content.service.ProductService;

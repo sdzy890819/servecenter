@@ -141,7 +141,6 @@ public class ProductServiceImpl implements ProductService {
             thirdpartProductDto.setProductCoverImage(product.getProductCoverImage());
             thirdpartProductDto.setProductDescription(product.getProductDescription());
             thirdpartProductDto.setProductModel(product.getProductModel());
-            thirdpartProductDto.setPartnerId(a.getPartnerId());
             thirdpartProductDto.setProductName(product.getProductName());
             thirdpartProductDto.setProductTypeNo(product.getProductTypeNo());
             thirdpartProductDto.setProductTypeName(productType.getProductTypeName());

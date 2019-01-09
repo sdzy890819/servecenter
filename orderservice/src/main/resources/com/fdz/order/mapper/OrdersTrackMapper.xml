@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fdz.content.mapper.PartnerUserMapper" >
-  <resultMap id="BaseResultMap" type="com.fdz.content.domain.PartnerUser" extends="baseEntity.base">
-    
-    <result column="user_name" property="userName" jdbcType="VARCHAR" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="real_name" property="realName" jdbcType="VARCHAR" />
-    <result column="partner_id" property="partnerId" jdbcType="BIGINT" />
+<mapper namespace="com.fdz.order.mapper.OrdersTrackMapper" >
+  <resultMap id="BaseResultMap" type="com.fdz.order.domain.OrdersTrack" extends="baseEntity.base">
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="partner_sn" property="partnerSn" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="last_status" property="lastStatus" jdbcType="TINYINT" />
   </resultMap>
-
   <sql id="Base_Column_List" >
-    id, create_time, modify_time, create_by, modify_by, remark, is_delete, user_name, 
-    password, real_name, partner_id
+    id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, 
+    partner_sn, status, last_status
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+    select
     <include refid="Base_Column_List" />
-    from partner_user
+    from orders_track
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
-    delete from partner_user
+    delete from orders_track
     where id = #{id,jdbcType=BIGINT}
   </delete>
-
-  <insert id="insert" parameterType="com.fdz.content.domain.PartnerUser" keyProperty="id" useGeneratedKeys="true">
-    insert into partner_user (id, create_time, modify_time, 
+  <insert id="insert" parameterType="com.fdz.order.domain.OrdersTrack" >
+    insert into orders_track (id, create_time, modify_time, 
       create_by, modify_by, remark, 
-      is_delete, user_name, password, 
-      real_name, partner_id)
+      is_delete, order_sn, partner_sn, 
+      status, last_status)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{delete,jdbcType=BIT}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{realName,jdbcType=VARCHAR}, #{partnerId,jdbcType=BIGINT})
+      #{delete,jdbcType=BIT}, #{orderSn,jdbcType=VARCHAR}, #{partnerSn,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{lastStatus,jdbcType=TINYINT})
   </insert>
-  <insert id="insertSelective" parameterType="com.fdz.content.domain.PartnerUser" keyProperty="id" useGeneratedKeys="true">
-    insert into partner_user
+  <insert id="insertSelective" parameterType="com.fdz.order.domain.OrdersTrack" >
+    insert into orders_track
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
@@ -59,17 +56,17 @@
       <if test="delete != null" >
         is_delete,
       </if>
-      <if test="userName != null" >
-        user_name,
+      <if test="orderSn != null" >
+        order_sn,
       </if>
-      <if test="password != null" >
-        password,
+      <if test="partnerSn != null" >
+        partner_sn,
       </if>
-      <if test="realName != null" >
-        real_name,
+      <if test="status != null" >
+        status,
       </if>
-      <if test="partnerId != null" >
-        partner_id,
+      <if test="lastStatus != null" >
+        last_status,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -94,29 +91,28 @@
       <if test="delete != null" >
         #{delete,jdbcType=BIT},
       </if>
-      <if test="userName != null" >
-        #{userName,jdbcType=VARCHAR},
+      <if test="orderSn != null" >
+        #{orderSn,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
+      <if test="partnerSn != null" >
+        #{partnerSn,jdbcType=VARCHAR},
       </if>
-      <if test="realName != null" >
-        #{realName,jdbcType=VARCHAR},
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
       </if>
-      <if test="partnerId != null" >
-        #{partnerId,jdbcType=BIGINT},
+      <if test="lastStatus != null" >
+        #{lastStatus,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.fdz.content.domain.PartnerUser" >
-    update partner_user
-    <set >
 
+  <update id="updateByPrimaryKeySelective" parameterType="com.fdz.order.domain.OrdersTrack" >
+    update orders_track
+    <set >
       <if test="modifyTime != null" >
         modify_time = #{modifyTime,jdbcType=BIGINT},
       </if>
-
       <if test="modifyBy != null" >
         modify_by = #{modifyBy,jdbcType=VARCHAR},
       </if>
@@ -126,33 +122,32 @@
       <if test="delete != null" >
         is_delete = #{delete,jdbcType=BIT},
       </if>
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
+      <if test="orderSn != null" >
+        order_sn = #{orderSn,jdbcType=VARCHAR},
       </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
+      <if test="partnerSn != null" >
+        partner_sn = #{partnerSn,jdbcType=VARCHAR},
       </if>
-      <if test="realName != null" >
-        real_name = #{realName,jdbcType=VARCHAR},
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
       </if>
-      <if test="partnerId != null" >
-        partner_id = #{partnerId,jdbcType=BIGINT},
+      <if test="lastStatus != null" >
+        last_status = #{lastStatus,jdbcType=TINYINT},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.fdz.content.domain.PartnerUser" >
-    update partner_user
+  <update id="updateByPrimaryKey" parameterType="com.fdz.order.domain.OrdersTrack" >
+    update orders_track
     set
       modify_time = #{modifyTime,jdbcType=BIGINT},
-
       modify_by = #{modifyBy,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       is_delete = #{delete,jdbcType=BIT},
-      user_name = #{userName,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      real_name = #{realName,jdbcType=VARCHAR},
-      partner_id = #{partnerId,jdbcType=BIGINT}
+      order_sn = #{orderSn,jdbcType=VARCHAR},
+      partner_sn = #{partnerSn,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      last_status = #{lastStatus,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

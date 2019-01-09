@@ -28,8 +28,6 @@ public class ThirdpartProductDto {
 
     private String productModel;
 
-    private Long partnerId;
-
     private List<String> productImages;
 
 }

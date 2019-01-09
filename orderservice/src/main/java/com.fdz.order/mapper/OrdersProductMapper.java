@@ -4,6 +4,8 @@ import com.fdz.common.constant.Constants;
 import com.fdz.order.domain.OrdersProduct;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -34,4 +36,8 @@ public interface OrdersProductMapper {
     int insertOrdersProducts(@Param("list") List<OrdersProduct> list);
 
     int updateByPrimaryKey(OrdersProduct record);
+
+    @Select(SELECT + " and order_sn = #{orderSn} " + Constants.Sql.DEFAULT_ORDER)
+    @ResultMap(RESULT_MAP)
+    List<OrdersProduct> findOrdersProductsByOrderSn(String orderSn);
 }

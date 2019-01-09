@@ -1,4 +1,4 @@
-package com.fdz.content.dto;
+package com.fdz.common.dto;
 
 import com.fdz.common.utils.Page;
 import lombok.Data;

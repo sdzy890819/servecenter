@@ -1,14 +1,18 @@
 package com.fdz.order.service.content;
 
 import com.fdz.common.exception.BizException;
+import com.fdz.common.web.RestResponse;
 import com.fdz.order.service.content.dto.PartnerRestResult;
+import com.fdz.order.service.content.dto.RecordDto;
 import com.fdz.order.service.content.dto.ThirdpartyProductDto;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+@Slf4j
 @Component
 public class ContentService {
 
@@ -41,4 +45,11 @@ public class ContentService {
     public List<ThirdpartyProductDto> detailListFallbak(List<Long> ids, Throwable throwable) {
         throw new BizException("查找不到相关产品");
     }
+
+    public void create(RecordDto dto) {
+        RestResponse restResponse = contentRestClient.create(dto);
+        log.info("记录执行计划， 合作伙伴: {} 执行状态: {}", dto.getPartnerId(), restResponse.isSuccess());
+    }
+
+
 }

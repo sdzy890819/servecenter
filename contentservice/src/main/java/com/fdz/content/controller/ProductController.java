@@ -9,7 +9,7 @@ import com.fdz.content.domain.Product;
 import com.fdz.content.dto.PageDataResult;
 import com.fdz.content.dto.ProductDto;
 import com.fdz.content.dto.SearchProductDto;
-import com.fdz.content.dto.SearchResult;
+import com.fdz.common.dto.SearchResult;
 import com.fdz.content.service.PartnerService;
 import com.fdz.content.service.ProductService;
 import io.swagger.annotations.Api;

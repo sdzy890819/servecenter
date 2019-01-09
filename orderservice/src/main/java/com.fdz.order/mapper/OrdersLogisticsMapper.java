@@ -35,4 +35,8 @@ public interface OrdersLogisticsMapper {
     @Select(SELECT + " and partner_sn=#{partnerSn}")
     @ResultMap(RESULT_MAP)
     OrdersLogistics findOrdersLogisticsByPartnerSn(@Param("partnerSn") String partnerSn);
+
+    @Select(SELECT + " and order_sn=#{orderSn}")
+    @ResultMap(RESULT_MAP)
+    OrdersLogistics findOrdersLogisticsByOrderSn(@Param("orderSn") String orderSn);
 }

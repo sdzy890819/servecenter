@@ -1,5 +1,6 @@
 package com.fdz.content.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdz.common.aspect.ann.Lock;
 import com.fdz.common.enums.InterfaceExecStatus;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -73,12 +75,10 @@ public class JobServiceImpl implements JobService {
                 InterfaceTypeEnums type = InterfaceTypeEnums.get(a.getInterfaceType());
                 Object data = null;
                 switch (type) {
-                    case SYNC_ORDER_STATUS: {
-
-                        break;
-                    }
+                    case SYNC_ORDER_STATUS:
                     case SYNC_ORDER_INFO: {
-
+                        data = objectMapper.readValue(a.getData(), new TypeReference<Map<String, Object>>() {
+                        });
                         break;
                     }
                     case SYNC_PARTNER_PRODUCT: {

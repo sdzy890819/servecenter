@@ -15,83 +15,34 @@
     <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
     <result column="business_delivery_status"  jdbcType="TINYINT" property="businessDeliveryStatus" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
+
+  <resultMap id="ordersAndLogistics" type="com.fdz.order.domain.OrdersAndLogistics" extends="baseEntity.base">
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="partner_sn" jdbcType="VARCHAR" property="partnerSn" />
+    <result column="partner_id" jdbcType="BIGINT" property="partnerId" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="buy_time" jdbcType="TIMESTAMP" property="buyTime" />
+    <result column="confirm_time" jdbcType="TIMESTAMP" property="confirmTime" />
+    <result column="business_delivery_time" jdbcType="TIMESTAMP" property="businessDeliveryTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+    <result column="business_delivery_status"  jdbcType="TINYINT" property="businessDeliveryStatus" />
+    <result column="receiver" jdbcType="VARCHAR" property="receiver" />
+    <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
+    <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
+    <result column="logistics" jdbcType="VARCHAR" property="logistics" />
+    <result column="logistics_sn" jdbcType="VARCHAR" property="logisticsSn" />
+    <result column="logistics_status" jdbcType="VARCHAR" property="logisticsStatus" />
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, 
     partner_sn, partner_id, amount, buy_time, confirm_time, business_delivery_time,
     end_time, delivery_status, status, order_status,business_delivery_status
   </sql>
-  <select id="selectByExample" parameterType="com.fdz.order.domain.OrdersExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from orders
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -102,12 +53,7 @@
     delete from orders
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fdz.order.domain.OrdersExample">
-    delete from orders
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
+
   <insert id="insert" parameterType="com.fdz.order.domain.Orders">
     insert into orders (id, create_time, modify_time, 
       create_by, modify_by, remark, 
@@ -245,98 +191,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fdz.order.domain.OrdersExample" resultType="java.lang.Integer">
-    select count(*) from orders
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update orders
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
 
-      <if test="record.modifyTime != null">
-        modify_time = #{record.modifyTime,jdbcType=BIGINT},
-      </if>
-
-      <if test="record.modifyBy != null">
-        modify_by = #{record.modifyBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.remark != null">
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.delete != null">
-        is_delete = #{record.delete,jdbcType=BIT},
-      </if>
-      <if test="record.orderSn != null">
-        order_sn = #{record.orderSn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.partnerSn != null">
-        partner_sn = #{record.partnerSn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.partnerId != null">
-        partner_id = #{record.partnerId,jdbcType=BIGINT},
-      </if>
-      <if test="record.amount != null">
-        amount = #{record.amount,jdbcType=DECIMAL},
-      </if>
-      <if test="record.buyTime != null">
-        buy_time = #{record.buyTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.confirmTime != null">
-        confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.businessDeliveryTime != null">
-        business_delivery_time = #{record.businessDeliveryTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.endTime != null">
-        end_time = #{record.endTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.deliveryStatus != null">
-        delivery_status = #{record.deliveryStatus,jdbcType=TINYINT},
-      </if>
-      <if test="record.status != null">
-        status = #{record.status,jdbcType=TINYINT},
-      </if>
-      <if test="record.orderStatus != null">
-        order_status = #{record.orderStatus,jdbcType=TINYINT},
-      </if>
-      <if test="record.businessDeliveryStatus != null">
-        business_delivery_status = #{record.businessDeliveryStatus},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update orders
-    set id = #{record.id,jdbcType=BIGINT},
-
-      modify_time = #{record.modifyTime,jdbcType=BIGINT},
-
-      modify_by = #{record.modifyBy,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      is_delete = #{record.delete,jdbcType=BIT},
-      order_sn = #{record.orderSn,jdbcType=VARCHAR},
-      partner_sn = #{record.partnerSn,jdbcType=VARCHAR},
-      partner_id = #{record.partnerId,jdbcType=BIGINT},
-      amount = #{record.amount,jdbcType=DECIMAL},
-      buy_time = #{record.buyTime,jdbcType=TIMESTAMP},
-      confirm_time = #{record.confirmTime,jdbcType=TIMESTAMP},
-      business_delivery_time = #{record.businessDeliveryTime,jdbcType=TIMESTAMP},
-      end_time = #{record.endTime,jdbcType=TIMESTAMP},
-      delivery_status = #{record.deliveryStatus,jdbcType=TINYINT},
-      status = #{record.status,jdbcType=TINYINT},
-      order_status = #{record.orderStatus,jdbcType=TINYINT},
-      business_delivery_status = #{record.businessDeliveryStatus}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.fdz.order.domain.Orders">
     update orders
     <set>
@@ -415,4 +270,50 @@
       business_delivery_status = #{businessDeliveryStatus}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="searchOrders" resultMap="ordersAndLogistics">
+    select <include refid="Base_Column_List" />,receiver, receiver_address, receiver_mobile, logistics, logistics_sn,
+    logistics_status  from orders o, orders_logistics l where is_delete = 0
+    <if test="search.orderSn != null">
+      and o.order_sn = #{search.orderSn}
+    </if>
+    <if test="search.partnerSn != null">
+      and o.partner_sn = #{search.partnerSn}
+    </if>
+    <if test="search.receiverMobile != null">
+      and l.receiver_mobile = #{search.receiverMobile}
+    </if>
+    <if test="search.buyStartTime != null">
+      and l.buy_time  >= #{search.buyStartTime}
+    </if>
+    <if test="search.buyEndTime != null">
+      and l.buy_time &lt;= #{search.buyEndTime}
+    </if>
+    <if test="search.deliveryStatus != null">
+      and l.delivery_status = #{search.deliveryStatus}
+    </if>
+    order by o.id desc limit #{page.start}, #{page.pageSize}
+  </select>
+
+  <select id="searchOrdersCount" resultType="java.lang.Integer">
+    select count(1)  from orders o, orders_logistics l where is_delete = 0
+    <if test="search.orderSn != null">
+      and o.order_sn = #{search.orderSn}
+    </if>
+    <if test="search.partnerSn != null">
+      and o.partner_sn = #{search.partnerSn}
+    </if>
+    <if test="search.receiverMobile != null">
+      and l.receiver_mobile = #{search.receiverMobile}
+    </if>
+    <if test="search.buyStartTime != null">
+      and l.buy_time  >= #{search.buyStartTime}
+    </if>
+    <if test="search.buyEndTime != null">
+      and l.buy_time &lt;= #{search.buyEndTime}
+    </if>
+    <if test="search.deliveryStatus != null">
+      and l.delivery_status = #{search.deliveryStatus}
+    </if>
+  </select>
 </mapper>

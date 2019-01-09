@@ -4,10 +4,13 @@ package com.fdz.order.controller;
 import com.fdz.common.security.SecurityUtils;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
+import com.fdz.order.domain.Orders;
 import com.fdz.order.dto.CashierDto;
 import com.fdz.order.dto.CashierResult;
 import com.fdz.order.dto.DeliveryDto;
 import com.fdz.order.service.OrderService;
+import com.fdz.order.vo.OrderPushVo;
+import com.fdz.order.vo.OrderStatusPushVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,5 +44,18 @@ public class ThirdpartyController {
         return RestResponse.success(null);
     }
 
+    @ApiOperation("拉取订单信息")
+    @PostMapping("/order/info")
+    RestResponse<OrderPushVo> order(@RequestBody DeliveryDto dto) {
+        Orders orders = orderService.findOrdersByPartnerSn(dto.getSn());
+        OrderPushVo orderPushVo = orderService.findOrderPushVo(orders.getOrderSn());
+        return RestResponse.success(orderPushVo);
+    }
+
+    @ApiOperation("拉取订单信息")
+    @PostMapping("/order/status")
+    RestResponse<OrderStatusPushVo> status(@RequestBody DeliveryDto dto) {
+        return RestResponse.success(orderService.findOrderStatusPushVo(dto.getSn()));
+    }
 
 }
