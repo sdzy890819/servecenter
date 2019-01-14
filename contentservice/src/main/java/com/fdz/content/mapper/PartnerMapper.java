@@ -1,11 +1,15 @@
 package com.fdz.content.mapper;
 
 import com.fdz.common.constant.Constants;
+import com.fdz.common.utils.Page;
 import com.fdz.content.domain.Partner;
+import com.fdz.content.dto.PartnerDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface PartnerMapper {
@@ -34,4 +38,10 @@ public interface PartnerMapper {
     @Select(SELECT + " and unique_key = #{userName} order by id desc limit 1")
     @ResultMap(RESULT_MAP)
     Partner findPartnerByUniqueKey(@Param("uniqueKey") String uniqueKey);
+
+    List<Partner> findPartnerByIds(@Param("list") List<Long> partnerIds);
+
+    Integer searchPartnerCount(@Param("p") PartnerDto dto);
+
+    List<Partner> searchPartner(@Param("p") PartnerDto dto, @Param("page") Page page);
 }

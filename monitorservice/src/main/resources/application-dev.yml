@@ -1,0 +1,14 @@
+spring:
+  boot:
+    admin:
+      base-url: http://localhost:39112
+      notify:
+        mail.enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:39111/eureka/
+
+logging:
+  path: ${user.home}/logs

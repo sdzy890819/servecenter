@@ -285,4 +285,26 @@ public class ProductServiceImpl implements ProductService {
     public int updateSelective(Product product, List<String> images) {
         return productManager.updateSelective(product, images);
     }
+
+    @Override
+    public Map<String, String> findProductTypeResultMapBySn(List<String> snlist) {
+        List<ProductType> list = findTypeBySn(snlist);
+        if (StringUtils.isNotEmpty(list)) {
+            Map<String, String> map = new HashMap<>();
+            list.forEach(a -> map.put(a.getSn(), a.getProductTypeName()));
+            return map;
+        }
+        return null;
+    }
+
+    @Override
+    public List<ProductType> findAllTypes() {
+        List<ProductType> list = productManager.findAllTypes();
+        return list;
+    }
+
+    @Override
+    public List<ProductImage> findProductImages(Long productId) {
+        return productManager.findProductImages(productId);
+    }
 }

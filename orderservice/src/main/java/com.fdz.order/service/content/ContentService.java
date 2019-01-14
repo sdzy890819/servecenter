@@ -10,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -51,5 +53,13 @@ public class ContentService {
         log.info("记录执行计划， 合作伙伴: {} 执行状态: {}", dto.getPartnerId(), restResponse.isSuccess());
     }
 
+    @HystrixCommand(fallbackMethod = "findPartnerByIdResultMapFallback")
+    public Map<Long, PartnerRestResult> findPartnerByIdResultMap(List<Long> partnerIds) {
+        return contentRestClient.findPartnerByIdResultMap(partnerIds).getData();
+    }
+
+    public Map<Long, PartnerRestResult> findPartnerByIdResultMapFallback(List<Long> partnerIds) {
+        return new HashMap<>(0);
+    }
 
 }

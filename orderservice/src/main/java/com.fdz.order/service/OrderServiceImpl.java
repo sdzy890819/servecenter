@@ -11,13 +11,11 @@ import com.fdz.common.utils.IDGenerator;
 import com.fdz.common.utils.Page;
 import com.fdz.common.utils.StringUtils;
 import com.fdz.order.convert.DtoConvert;
-import com.fdz.order.domain.Orders;
-import com.fdz.order.domain.OrdersAndLogistics;
-import com.fdz.order.domain.OrdersLogistics;
-import com.fdz.order.domain.OrdersProduct;
+import com.fdz.order.domain.*;
 import com.fdz.order.dto.*;
 import com.fdz.order.manager.OrderManager;
 import com.fdz.order.service.content.ContentService;
+import com.fdz.order.service.content.dto.PartnerRestResult;
 import com.fdz.order.service.content.dto.RecordDto;
 import com.fdz.order.service.content.dto.ThirdpartyProductDto;
 import com.fdz.order.vo.OrderProductPushVo;
@@ -150,6 +148,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrdersLogistics findOrdersLogisticsByPartnerSn(String partnerSn) {
         return orderManager.findOrdersLogisticsByPartnerSn(partnerSn);
+    }
+
+    @Override
+    public OrdersLogistics findOrdersLogisticsByOrderSn(String orderSn) {
+        return orderManager.findOrdersLogisticsByOrderSn(orderSn);
     }
 
     public Map<Long, ThirdpartyProductDto> findTpResultMap(List<Long> ppIds) {
@@ -314,5 +317,58 @@ public class OrderServiceImpl implements OrderService {
         orderPushVo.setProducts(orderProductPushVos);
         orderPushVo.setLogistics(ordersLogisticsPushVo);
         return orderPushVo;
+    }
+
+    @Override
+    public List<DeliveryInfo> statistics(Integer days) {
+        Calendar calendar = Calendar.getInstance();
+        Date end = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, -days);
+        Date start = calendar.getTime();
+        List<OrderStatistics> deliveryList = orderManager.findOrderStatistics(start, end);
+        if (deliveryList != null) {
+            List<Long> partnerIds = new ArrayList<>();
+            deliveryList.forEach(a -> {
+                if (!partnerIds.contains(a.getPartnerId())) {
+                    partnerIds.add(a.getPartnerId());
+                }
+            });
+            Map<Long, PartnerRestResult> partnerMap = contentService.findPartnerByIdResultMap(partnerIds);
+            Map<String, DeliveryInfo> resultMap = new HashMap<>();
+            deliveryList.forEach(a -> {
+                String tmp = a.getOrderDate() + a.getPartnerId();
+                DeliveryInfo deliveryInfo = resultMap.get(tmp);
+                if (resultMap.get(tmp) == null) {
+                    deliveryInfo = new DeliveryInfo();
+                    resultMap.put(tmp, deliveryInfo);
+
+                }
+                deliveryInfo.setDate(a.getOrderDate());
+                deliveryInfo.setPartnerId(a.getPartnerId());
+                PartnerRestResult partnerRestResult = partnerMap.get(a.getPartnerId());
+                deliveryInfo.setPartnerName(partnerRestResult != null ? partnerRestResult.getName() : "");
+                DeliveryStatusEnums deliveryStatusEnums = DeliveryStatusEnums.get(a.getDeliveryStatus());
+                switch (deliveryStatusEnums) {
+                    case DELIVERY: {
+                        deliveryInfo.setDeliveryAndAmount(a.getNum() + "/" + a.getAmount());
+                        break;
+                    }
+                    case DONT_DELIVERY: {
+                        deliveryInfo.setWaitDeliveryAndAmount(a.getNum() + "/" + a.getAmount());
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+            List<DeliveryInfo> result = new ArrayList<>(resultMap.values());
+            return result;
+        }
+        return null;
+    }
+
+    @Override
+    public List<PaymentRecord> findPaymentRecord(PaymentRecordSearchDto dto, Page page) {
+        Integer count = orderManager.
     }
 }

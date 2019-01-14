@@ -39,6 +39,13 @@ application:
     enabled: false
   redis:
     enabled: true
+  oss:
+    access-key-id: LTAIozJy7JLSdOti
+    access-key-secret: ZmiVvbJeZMsVB5uh1xSMnhTXfqH8BV
+    bucket-name: alfar-backend-assets
+    images-dir: images
+    endpoint: oss-cn-beijing-internal.aliyuncs.com
+    public-endpoint: oss-cn-beijing-internal.aliyuncs.com
   security-conf:
     authentication:
       jwt:
@@ -53,7 +60,7 @@ logging:
   level:
     root: info
     org.springframework.web: info
-    com.fdz.order: info
+    com.fdz: info
 eureka:
   client:
     serviceUrl:

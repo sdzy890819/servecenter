@@ -4,9 +4,11 @@ import com.fdz.common.enums.InterfaceExecStatus;
 import com.fdz.common.enums.InterfaceTypeEnums;
 import com.fdz.common.redis.RedisDataManager;
 import com.fdz.common.security.vo.LoginUser;
+import com.fdz.common.utils.Page;
 import com.fdz.common.utils.StringUtils;
 import com.fdz.common.utils.UserDisassembly;
 import com.fdz.content.domain.*;
+import com.fdz.content.dto.PartnerDto;
 import com.fdz.content.dto.RecordDto;
 import com.fdz.content.manager.PartnerManager;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -259,5 +261,30 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
         interfaceExecRecord.setInterfaceType(recordDto.getInterfaceType());
         interfaceExecRecord.setData(recordDto.getData());
         insertSelective(interfaceExecRecord);
+    }
+
+    @Override
+    public Map<Long, Partner> findPartnerByIdResultMap(List<Long> partnerIds) {
+        List<Partner> partnerList = findPartnerByIds(partnerIds);
+        Map<Long, Partner> result = new HashMap<>();
+        if (StringUtils.isNotEmpty(partnerList)) {
+            partnerList.forEach(a -> result.put(a.getId(), a));
+        }
+        return result;
+    }
+
+    public List<Partner> findPartnerByIds(List<Long> partnerIds) {
+        return partnerManager.findPartnerByIds(partnerIds);
+    }
+
+    @Override
+    public List<Partner> searchPartner(PartnerDto dto, Page page) {
+        Integer count = partnerManager.searchPartnerCount(dto);
+        page.setCount(count);
+        if (count != null) {
+            List<Partner> list = partnerManager.searchPartner(dto, page);
+            return list;
+        }
+        return null;
     }
 }

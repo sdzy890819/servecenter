@@ -31,6 +31,19 @@ public class ApplicationProperties {
     @NestedConfigurationProperty
     private final MyRsaKey myRsaKey = new MyRsaKey();
 
+    @NestedConfigurationProperty
+    private final Oss oss = new Oss();
+
+    @Data
+    public static class Oss {
+        private String accessKeyId;
+        private String accessKeySecret;
+        private String bucketName;
+        private String endpoint;
+        private String imagesDir;
+        private String publicEndpoint;
+    }
+
     @Data
     public static class MyRsaKey {
         private String privateKey;

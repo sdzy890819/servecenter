@@ -3,6 +3,7 @@ package com.fdz.order.service;
 import com.fdz.common.utils.Page;
 import com.fdz.order.domain.Orders;
 import com.fdz.order.domain.OrdersLogistics;
+import com.fdz.order.domain.PaymentRecord;
 import com.fdz.order.dto.*;
 import com.fdz.order.vo.OrderPushVo;
 import com.fdz.order.vo.OrderStatusPushVo;
@@ -21,6 +22,8 @@ public interface OrderService {
 
     OrdersLogistics findOrdersLogisticsByPartnerSn(String partnerSn);
 
+    OrdersLogistics findOrdersLogisticsByOrderSn(String orderSn);
+
     List<OrdersResult> searchOrders(SearchOrdersDto dto, Page page);
 
     OrdersResult findOrdersResult(String orderSn);
@@ -34,4 +37,8 @@ public interface OrderService {
     OrderPushVo findOrderPushVo(String orderSn);
 
     OrderStatusPushVo findOrderStatusPushVo(String partnerSn);
+
+    List<DeliveryInfo> statistics(Integer days);
+
+    List<PaymentRecord> findPaymentRecord(PaymentRecordSearchDto dto, Page page);
 }

@@ -1,9 +1,13 @@
 package com.fdz.content.service;
 
+import com.fdz.common.utils.Page;
 import com.fdz.content.domain.*;
+import com.fdz.content.dto.PartnerDto;
 import com.fdz.content.dto.RecordDto;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PartnerService {
 
@@ -58,4 +62,10 @@ public interface PartnerService {
     List<InterfaceExecRecord> queryRecordByStatus(byte status);
 
     void record(RecordDto recordDto);
+
+    Map<Long, Partner> findPartnerByIdResultMap(@RequestBody List<Long> partnerIds);
+
+    List<Partner> findPartnerByIds(List<Long> partnerIds);
+
+    List<Partner> searchPartner(PartnerDto dto, Page page);
 }

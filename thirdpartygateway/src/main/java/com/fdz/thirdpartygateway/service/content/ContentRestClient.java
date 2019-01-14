@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ContentRestClient {
 
 
-    @GetMapping("/v1/partner/unique-key/{uniqueKey}")
+    @GetMapping("/v1/content/partner/unique-key/{uniqueKey}")
     RestResponse<PartnerRestResult> getPartnerByUniqueKey(@PathVariable("uniqueKey") String uniqueKey);
 }

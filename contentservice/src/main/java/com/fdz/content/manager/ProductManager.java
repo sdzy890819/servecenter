@@ -132,4 +132,12 @@ public class ProductManager {
         return productTypeMapper.findProductTypeBySn(sn);
     }
 
+    public List<ProductType> findAllTypes() {
+        return productTypeMapper.findAllTypes();
+    }
+
+    public List<ProductImage> findProductImages(Long productId) {
+        return productImageMapper.findProductImages(productId);
+    }
+
 }

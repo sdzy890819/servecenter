@@ -1,0 +1,77 @@
+
+## =============================================================
+##  Server Customization Properties
+## =============================================================
+server:
+  compression:
+    enabled: true
+    mime-types: text/html, text/xml, application/json
+  port: 37113
+  undertow:
+    accesslog:
+      enabled: true
+      pattern: "%t %a &quot;%r&quot; %s (%D ms)"
+      dir: ${user.home}/undertow/jobservice/access-logs/
+  use-forward-headers: true
+
+## =============================================================
+## Spring autoconfigure Properties
+## =============================================================
+spring:
+  profiles:
+    active: dev,swagger
+  application:
+    admin:
+      enabled: true
+    name: jobservice
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+    favicon:
+      enabled: false
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    property-naming-strategy: LOWER_CAMEL_CASE
+    default-property-inclusion: non_null
+    time-zone: Asia/Shanghai
+    serialization:
+      write_dates_as_timestamps: false
+  http:
+    converters:
+      preferred-json-mapper: jackson
+    encoding:
+      charset: UTF-8
+  metrics.servo.enabled: false
+
+
+## =============================================================
+## Application Properties @see ApplicationProperties
+## =============================================================
+application:
+  cors:
+    enabled: false
+security:
+  basic:
+    enabled: false
+management:
+  security:
+    enabled: false
+
+config:
+  quartz-file-name: /quartz.properties
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+## =============================================================
+## Logging Properties @see LoggingApplicationListener
+## =============================================================
+logging:
+  path: ${user.home}/logs/jobservice
+  file: jobservice
+  pattern:
+    level: "[MDC:%X{currentRequestID};%X{userID};%X{remoteIP}] %5p"
+
+banner:
+  charset: UTF-8
+  location: banner

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdz.common.config.CustomZuulFallback;
 import com.fdz.common.filter.RequestIdentifyingFilter;
 import com.fdz.thirdpartygateway.filter.RsaDecryptionFilter;
+import com.fdz.thirdpartygateway.filter.RsaPostFilter;
 import com.fdz.thirdpartygateway.service.content.ContentService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,11 @@ public class ZuulFilterConfiguration {
     @Bean
     public CustomZuulFallback customZuulFallback() {
         return new CustomZuulFallback();
+    }
+
+    @Bean
+    public RsaPostFilter rsaPostFilter(ContentService contentService, ApplicationProperties applicationProperties, ObjectMapper objectMapper) {
+        return new RsaPostFilter(contentService, applicationProperties, objectMapper);
     }
 
 

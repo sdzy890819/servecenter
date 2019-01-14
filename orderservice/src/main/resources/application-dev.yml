@@ -43,7 +43,7 @@ logging:
   level:
     root: info
     org.springframework.web: info
-    com.fdz.order: info
+    com.fdz: info
 eureka:
   client:
     serviceUrl:

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -166,4 +167,11 @@ public class OrderManager {
         return ordersProductMapper.findOrdersProductsByOrderSn(orderSn);
     }
 
+    public List<OrderStatistics> findOrderStatistics(Date start, Date end) {
+        return ordersMapper.findOrderStatistics(start, end);
+    }
+
+    public List<OrderStatistics> findOrderStatisticsByBusiness(Date start, Date end) {
+        return ordersMapper.findOrderStatisticsByBusiness(start, end);
+    }
 }

@@ -17,6 +17,8 @@
         <module>payservice</module>
         <module>partnergateway</module>
         <module>managergateway</module>
+        <module>jobservice</module>
+        <module>monitorservice</module>
     </modules>
 
 

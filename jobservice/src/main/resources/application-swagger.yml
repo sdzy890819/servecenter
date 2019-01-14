@@ -1,0 +1,10 @@
+application:
+  swagger2:
+    version: 1.0
+    title: 小贷商品-任务中心-Swagger2接口文档
+    description:
+    contact:
+      email: serzy890819@126.com
+      name: Zhang Yang
+      url: https://github.com/sdzy890819/servecenter
+    terms-url: xx

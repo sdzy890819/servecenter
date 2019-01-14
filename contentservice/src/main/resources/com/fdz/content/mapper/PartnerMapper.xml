@@ -368,4 +368,99 @@
       unique_key = #{uniqueKey,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="findPartnerByIds" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from partner where is_delete=0 and id in
+    <foreach collection="list" item="a" close=")" open="(" separator=",">
+      #{a}
+    </foreach>
+  </select>
+
+  <select id="searchPartnerCount" resultType="java.lang.Integer">
+    select count(1) from partner where is_delete=0
+    <if test="p.modifyTime != null" >
+       and modify_time = #{p.modifyTime}
+    </if>
+
+    <if test="p.modifyBy != null" >
+       and modify_by = #{modifyBy}
+    </if>
+    <if test="p.remark != null" >
+       and remark = #{p.remark}
+    </if>
+    <if test="p.delete != null" >
+       and is_delete = #{p.delete}
+    </if>
+    <if test="p.name != null" >
+       and `name` = #{p.name}
+    </if>
+    <if test="p.shortName != null" >
+       and short_name = #{p.shortName}
+    </if>
+    <if test="p.nature != null" >
+       and nature = #{p.nature}
+    </if>
+    <if test="p.code != null" >
+       and code = #{p.code}
+    </if>
+    <if test="p.contacts != null" >
+       and contacts = #{p.contacts}
+    </if>
+    <if test="p.contactMobile != null" >
+       and contact_mobile = #{p.contactMobile}
+    </if>
+    <if test="p.serviceRate != null" >
+       and service_rate = #{p.serviceRate}
+    </if>
+    <if test="p.publicKey != null" >
+       and public_key = #{p.publicKey}
+    </if>
+    <if test="p.uniqueKey != null">
+       and unique_key = #{p.uniqueKey}
+    </if>
+  </select>
+
+  <select id="searchPartner" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from partner where is_delete=0
+    <if test="p.modifyTime != null" >
+      and modify_time = #{p.modifyTime}
+    </if>
+
+    <if test="p.modifyBy != null" >
+      and modify_by = #{modifyBy}
+    </if>
+    <if test="p.remark != null" >
+      and remark = #{p.remark}
+    </if>
+    <if test="p.delete != null" >
+      and is_delete = #{p.delete}
+    </if>
+    <if test="p.name != null" >
+      and `name` = #{p.name}
+    </if>
+    <if test="p.shortName != null" >
+      and short_name = #{p.shortName}
+    </if>
+    <if test="p.nature != null" >
+      and nature = #{p.nature}
+    </if>
+    <if test="p.code != null" >
+      and code = #{p.code}
+    </if>
+    <if test="p.contacts != null" >
+      and contacts = #{p.contacts}
+    </if>
+    <if test="p.contactMobile != null" >
+      and contact_mobile = #{p.contactMobile}
+    </if>
+    <if test="p.serviceRate != null" >
+      and service_rate = #{p.serviceRate}
+    </if>
+    <if test="p.publicKey != null" >
+      and public_key = #{p.publicKey}
+    </if>
+    <if test="p.uniqueKey != null">
+      and unique_key = #{p.uniqueKey}
+    </if> order by id desc limit #{page.start}, #{page.pageSize}
+  </select>
 </mapper>

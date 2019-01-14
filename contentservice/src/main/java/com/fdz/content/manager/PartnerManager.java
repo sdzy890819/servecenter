@@ -2,6 +2,7 @@ package com.fdz.content.manager;
 
 import com.fdz.common.utils.Page;
 import com.fdz.content.domain.*;
+import com.fdz.content.dto.PartnerDto;
 import com.fdz.content.mapper.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -139,5 +140,17 @@ public class PartnerManager {
 
     public List<PartnerProduct> findPPByProductIds(List<Long> partnerProductIds) {
         return partnerProductMapper.findPPByProductIds(partnerProductIds);
+    }
+
+    public List<Partner> findPartnerByIds(List<Long> partnerIds) {
+        return partnerMapper.findPartnerByIds(partnerIds);
+    }
+
+    public Integer searchPartnerCount(PartnerDto dto) {
+        return partnerMapper.searchPartnerCount(dto);
+    }
+
+    public List<Partner> searchPartner(PartnerDto dto, Page page) {
+        return partnerMapper.searchPartner(dto, page);
     }
 }

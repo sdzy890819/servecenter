@@ -5,7 +5,7 @@ eureka:
 logging:
   level:
     root: info
-    com.ouding.wallet: debug
+    com.fdz: debug
     org.springframework.security: trace
 application:
   cors:

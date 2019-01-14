@@ -1,0 +1,83 @@
+server:
+  port: 39112
+  connection-timeout: 1000
+spring:
+  application:
+    name: monitorserver
+  profiles:
+    active: dev
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  mail:
+    host: mail.126.com
+    port: 25 #465 ssl
+    username: sdzy890819@126.com
+    password: zhangyang1989
+    test-connection: true
+    properties:
+      mail.smtp.starttls.enable: true
+      mail.debug: true
+      mail.smtp.auth: true
+      mail.smtp.connectiontimeout: 10000
+      mail.smtp.timeout: 10000
+      mail.smtp.writetimeout: 10000
+  boot:
+    admin:
+      routes:
+        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,health,hystrix.stream
+      turbine:
+        clusters: default
+        location: /turbine.stream
+      notify:
+        mail:
+          to: sdzy890819@126.com
+          from: sdzy890819
+          subject: "服务实例#{application.name} (#{application.id}) 状态发生变化 #{to.status}"
+          text: "服务实例#{application.name} (#{application.id})\n服务状态从 #{from.status} 变为 #{to.status}\n\n详情请见:${spring.boot.admin.base-url}/#/applications/#{application.id}/details"
+      monitor:
+        read-timeout: 10000
+        connect-timeout: 3000
+  aop:
+    proxy-target-class: true
+## =============================================================
+## Logging Properties @see LoggingApplicationListener
+## =============================================================
+logging:
+  file: monitorserver
+  level:
+    root: warn
+    org.springframework.security: info
+    org.springframework.cloud: info
+    com.netflix: warn
+
+management:
+  port: 2018
+  context-path: /management
+  security:
+    enabled: false
+  health:
+    mail:
+      enabled: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 5
+    metadata-map:
+      #  For SBA uses
+      management.port: ${management.port}
+      management.context-path: ${management.context-path}
+      health.path: ${management.context-path}/health
+
+turbine:
+  app-config: orders-service,message-service,data-service,statistical-service,passport-service
+  combine-host-port: false
+  cluster-name-expression: "'default'"
+banner:
+  charset: UTF-8
+  location: banner

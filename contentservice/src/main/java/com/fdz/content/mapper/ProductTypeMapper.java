@@ -39,4 +39,8 @@ public interface ProductTypeMapper {
     @Select(SELECT + " and sn = #{sn}")
     @ResultMap(RESULT_MAP)
     ProductType findProductTypeBySn(@Param("sn") String sn);
+
+    @Select(SELECT + Constants.Sql.DEFAULT_ORDER)
+    @ResultMap(RESULT_MAP)
+    List<ProductType> findAllTypes();
 }

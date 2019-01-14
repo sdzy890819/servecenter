@@ -9,6 +9,7 @@ import com.fdz.content.dto.ThirdpartProductDto;
 import com.fdz.content.dto.ThirdpartyProductDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
 
@@ -46,4 +47,9 @@ public interface ProductService {
 
     List<ThirdpartyProductDto> list(PartnerProduct partnerProduct, Page page);
 
+    Map<String, String> findProductTypeResultMapBySn(List<String> snlist);
+
+    List<ProductType> findAllTypes();
+
+    List<ProductImage> findProductImages(Long productId);
 }

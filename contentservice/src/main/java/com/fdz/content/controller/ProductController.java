@@ -1,15 +1,18 @@
 package com.fdz.content.controller;
 
+import com.fdz.common.dto.SearchResult;
 import com.fdz.common.exception.BizException;
 import com.fdz.common.utils.Page;
+import com.fdz.common.utils.StringUtils;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
 import com.fdz.content.convert.DtoConvert;
 import com.fdz.content.domain.Product;
+import com.fdz.content.domain.ProductImage;
+import com.fdz.content.domain.ProductType;
 import com.fdz.content.dto.PageDataResult;
 import com.fdz.content.dto.ProductDto;
 import com.fdz.content.dto.SearchProductDto;
-import com.fdz.common.dto.SearchResult;
 import com.fdz.content.service.PartnerService;
 import com.fdz.content.service.ProductService;
 import io.swagger.annotations.Api;
@@ -17,7 +20,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @ApiVersion("1")
@@ -34,6 +39,13 @@ public class ProductController {
     @Resource
     private PartnerService partnerService;
 
+    @ApiOperation("商品分类列表")
+    @GetMapping("/type/all")
+    RestResponse<List<ProductType>> allType() {
+        List<ProductType> list = productService.findAllTypes();
+        return RestResponse.success(list);
+    }
+
 
     @ApiOperation("产品列表")
     @GetMapping("/list")
@@ -47,6 +59,17 @@ public class ProductController {
         return RestResponse.success(data);
     }
 
+    @ApiOperation("产品详情")
+    @GetMapping("/detail/{id}")
+    RestResponse<Product> detail(@PathVariable("id") Long id) {
+        Product product = productService.selectProductByPrimaryKey(id);
+        if (product != null) {
+            List<ProductImage> list = productService.findProductImages(id);
+            product.setProductImages(list);
+        }
+        return RestResponse.success(product);
+    }
+
     @ApiOperation("搜索产品")
     @PostMapping("/search")
     RestResponse<SearchResult<List<Product>>> search(@RequestBody SearchProductDto dto,
@@ -55,6 +78,12 @@ public class ProductController {
         Page pageObj = new Page(page, pageSize);
         Product searchProduct = dtoConvert.convert(dto);
         List<Product> list = productService.searchProduct(searchProduct, pageObj);
+        if (StringUtils.isNotEmpty(list)) {
+            List<String> ids = new ArrayList<>();
+            list.forEach(a -> ids.add(a.getProductTypeNo()));
+            Map<String, String> typeMap = productService.findProductTypeResultMapBySn(ids);
+            list.forEach(a -> a.setProductTypeName(typeMap.get(a.getProductTypeNo())));
+        }
         SearchResult<List<Product>> data = new SearchResult<>();
         data.setPage(pageObj);
         data.setData(list);

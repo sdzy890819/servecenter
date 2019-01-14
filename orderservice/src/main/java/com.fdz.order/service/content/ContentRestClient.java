@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.Map;
 
 @FeignClient("contentservice")
 public interface ContentRestClient {
 
 
-    @GetMapping("/v1/partner/unique-key/{uniqueKey}")
+    @GetMapping("/v1/content/partner/unique-key/{uniqueKey}")
     RestResponse<PartnerRestResult> getPartnerByUniqueKey(@PathVariable("uniqueKey") String uniqueKey);
 
     @GetMapping("/v1/content/partner-product/detail/{id}")
@@ -27,4 +28,7 @@ public interface ContentRestClient {
 
     @PostMapping("/v1/content/record/create")
     RestResponse<?> create(@RequestBody RecordDto dto);
+
+    @PostMapping("/v1/content/partner/ids")
+    RestResponse<Map<Long, PartnerRestResult>> findPartnerByIdResultMap(@RequestBody List<Long> partnerIds);
 }

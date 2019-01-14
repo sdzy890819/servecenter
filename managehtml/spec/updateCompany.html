@@ -1,0 +1,106 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txt_id"/>
+                <div class="form-group">
+                    <label for="txt_companyName">公司名</label>
+                    <input type="text" name="txt_companyName" class="form-control" id="txt_companyName"
+                           placeholder="公司名">
+                </div>
+                <div class="form-group">
+                    <label for="txt_description">公司说明</label>
+                    <textarea id="txt_description" name="txt_description" class="form-control" rows="2"
+                              placeholder="公司说明"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="txt_sendType">发送类型</label>
+                    <select id="txt_sendType" name="txt_sendType" class="form-control">
+                        <option value="1">FTP</option>
+                        <option value="2">SCP</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="txt_ip">IP</label>
+                    <input type="text" name="txt_ip" class="form-control" id="txt_ip" placeholder="IP地址">
+                </div>
+                <div class="form-group">
+                    <label for="txt_port">PORT</label>
+                    <input type="text" name="txt_port" class="form-control" id="txt_port" placeholder="Port端口">
+                </div>
+                <div class="form-group">
+                    <label for="txt_sendUser">发送用户名</label>
+                    <input type="text" name="txt_sendUser" class="form-control" id="txt_sendUser" placeholder="发送用户名">
+                </div>
+                <div class="form-group">
+                    <label for="txt_sendPwd">发送密码</label>
+                    <input type="text" name="txt_sendPwd" class="form-control" id="txt_sendPwd" placeholder="发送密码">
+                </div>
+                <div class="form-group">
+                    <label for="txt_basePath">基础目录</label>
+                    <input type="text" name="txt_basePath" class="form-control" id="txt_basePath" placeholder="基础目录">
+                </div>
+                <div class="form-group">
+                    <label for="txt_admin">是否管理员</label>
+                    <select id="txt_admin" name="txt_admin" class="form-control">
+                        <option value="false">否</option>
+                        <option value="true">是</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="txt_url">公司URL</label>
+                    <input type="text" name="txt_url" class="form-control" id="txt_url"
+                           placeholder="公司URL，必须是http或者https开头">
+                </div>
+                <div class="form-group">
+                    <label for="txt_templatePath">模版地址</label>
+                    <input type="text" name="txt_templatePath" class="form-control" id="txt_templatePath"
+                           placeholder="模版地址/data/">
+                </div>
+
+                <div class="form-group">
+                    <label for="txt_wxLogin">微信登陆支付</label>
+                    <select id="txt_wxLogin" name="txt_wxLogin" class="form-control">
+                        <option value="false">否</option>
+                        <option value="true">是</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="txt_wxAppId">微信开发者ID</label>
+                    <input type="text" name="txt_wxAppId" class="form-control" id="txt_wxAppId"
+                           placeholder="公司URL，必须是http或者https开头">
+                </div>
+                <div class="form-group">
+                    <label for="txt_wxAppSecret">微信开发者Secret</label>
+                    <input type="text" name="txt_wxAppSecret" class="form-control" id="txt_wxAppSecret"
+                           placeholder="公司URL，必须是http或者https开头">
+                </div>
+                <div class="form-group">
+                    <label for="txt_wxPay">微信支付商户号</label>
+                    <input type="text" name="txt_wxPay" class="form-control" id="txt_wxPay"
+                           placeholder="公司URL，必须是http或者https开头">
+                </div>
+                <div class="form-group">
+                    <label for="txt_customLoginMode">微信登陆支付</label>
+                    <select id="txt_customLoginMode" name="txt_customLoginMode" class="form-control">
+                        <option value="VERIFYCODE">验证码登陆</option>
+                        <option value="USERPWD">用户名密码</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                </button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txt_id"/>
+                <div class="form-group">
+                    <label for="txt_productName">商品名称</label>
+                    <input type="text" name="txt_productName" class="form-control" id="txt_productName"
+                           placeholder="公司名">
+                </div>
+                <div class="form-group">
+                    <label for="txt_productDescription">商品说明</label>
+                    <textarea id="txt_productDescription" name="txt_productDescription" class="form-control" rows="2"
+                              placeholder="商品说明"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="txt_productTypeNo">商品类型</label>
+                    <select id="txt_productTypeNo" name="txt_productTypeNo" class="form-control">
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>商品图片</label>
+                    <input type="file" value="封面图片上传" name="txt_productCoverImage" id="txt_productCoverImage"/>
+                    <input type="file" value="图片上传" name="txt_productImage1" id="txt_productImage1" />
+                    <input type="file" value="图片上传" name="txt_productImage2" id="txt_productImage2" />
+                    <input type="file" value="图片上传" name="txt_productImage3" id="txt_productImage3" />
+                </div>
+                <div class="form-group">
+                    <label for="txt_primeCosts">进货价格</label>
+                    <input type="text" name="txt_primeCosts" class="form-control" id="txt_primeCosts" placeholder="进货价格">
+                </div>
+                <div class="form-group">
+                    <label for="txt_salePrice">销售价格</label>
+                    <input type="text" name="txt_salePrice" class="form-control" id="txt_salePrice" placeholder="销售价格">
+                </div>
+                <div class="form-group">
+                    <label for="txt_productModel">商品型号</label>
+                    <input type="text" name="txt_productModel" class="form-control" id="txt_productModel" placeholder="商品型号">
+                </div>
+                <div class="form-group">
+                    <label for="txt_status">状态</label>
+                    <select id="txt_status">
+                        <option value="true">上架</option>
+                        <option value="false">下架</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                </button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

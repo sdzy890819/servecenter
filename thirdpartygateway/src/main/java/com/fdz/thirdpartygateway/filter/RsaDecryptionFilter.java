@@ -73,6 +73,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
                         log.debug("打印解密后的数据信息: {}", decodeData);
                         HttpServletRequest servletRequest = ServletUtils.buildRequest(request, decodeData.getBytes(Charset.forName("UTF-8")));
                         ctx.getZuulRequestHeaders().put("content-type", APPLICATION_JSON_CHARSET_UTF_8);
+                        ctx.getZuulRequestHeaders().put(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.PARTNER_CHANNEL);
                         ctx.getZuulRequestHeaders().put(Constants.Common.UNIQUE_KEY_HEADER, partnerRestResult.getUniqueKey());
                         ctx.getZuulRequestHeaders().put(Constants.Common.P_USER_INFO_HEADER, UserDisassembly.assembleP(partnerRestResult.getId()));
                         ctx.setRequest(servletRequest);
@@ -82,7 +83,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
         } catch (BizException e) {
             throw e;
         } catch (Exception e) {
-            log.error("识别失败", e);
+            throw new BizException("不要说话，KISS ME ", e);
         }
         return null;
     }

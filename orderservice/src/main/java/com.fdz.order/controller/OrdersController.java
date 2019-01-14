@@ -4,6 +4,8 @@ import com.fdz.common.dto.SearchResult;
 import com.fdz.common.utils.Page;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
+import com.fdz.order.domain.OrdersLogistics;
+import com.fdz.order.dto.DeliveryInfo;
 import com.fdz.order.dto.LogisticsDto;
 import com.fdz.order.dto.OrdersResult;
 import com.fdz.order.dto.SearchOrdersDto;
@@ -45,6 +47,13 @@ public class OrdersController {
         return RestResponse.success(ordersResult);
     }
 
+    @ApiOperation("物流详情")
+    @GetMapping("/logistics/{orderSn}")
+    RestResponse<OrdersLogistics> logistics(@PathVariable("orderSn") String orderSn) {
+        OrdersLogistics ordersLogistics = orderService.findOrdersLogisticsByOrderSn(orderSn);
+        return RestResponse.success(ordersLogistics);
+    }
+
     @ApiOperation("商家确认发货")
     @PostMapping("/business-delivery")
     RestResponse businessDelivery(@RequestBody LogisticsDto dto) {
@@ -65,6 +74,13 @@ public class OrdersController {
     RestResponse receive(@PathVariable("orderSn") String orderSn) {
         orderService.receive(orderSn);
         return RestResponse.success(null);
+    }
+
+    @ApiOperation("最近几天的订单信息")
+    @GetMapping("/delivery-info/{days}")
+    RestResponse<List<DeliveryInfo>> deliveryInfo(@PathVariable("days") Integer days) {
+        List<DeliveryInfo> list = orderService.statistics(days);
+        return RestResponse.success(list);
     }
 
 }
