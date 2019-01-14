@@ -1,6 +1,7 @@
 package com.fdz.order.service;
 
 import com.fdz.common.utils.Page;
+import com.fdz.order.domain.Account;
 import com.fdz.order.domain.Orders;
 import com.fdz.order.domain.OrdersLogistics;
 import com.fdz.order.domain.PaymentRecord;
@@ -40,5 +41,19 @@ public interface OrderService {
 
     List<DeliveryInfo> statistics(Integer days);
 
-    List<PaymentRecord> findPaymentRecord(PaymentRecordSearchDto dto, Page page);
+    List<PaymentRecord> searchPaymentRecord(PaymentRecordSearchDto dto, Page page);
+
+    int insertSelective(PaymentRecord record);
+
+    PaymentRecord selectPaymentRecordByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(PaymentRecord record);
+
+    void addRecord(PaymentRecord paymentRecord);
+
+    int insertSelective(Account record);
+
+    Account selectAccountByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(Account record);
 }

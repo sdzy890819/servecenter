@@ -1,6 +1,7 @@
 package com.fdz.content.mapper;
 
 import com.fdz.common.constant.Constants;
+import com.fdz.common.utils.Page;
 import com.fdz.content.domain.PartnerInterfaceConfig;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -38,4 +39,8 @@ public interface PartnerInterfaceConfigMapper {
     PartnerInterfaceConfig findConfigByPartnerAndType(@Param("partnerId") Long partner, @Param("type") byte type);
 
     List<PartnerInterfaceConfig> findConfigByPartnerIdAndType(@Param("list") List<Long> partnerIds, @Param("interfaceType") byte interfaceType);
+
+    List<PartnerInterfaceConfig> searchConfig(@Param("p") PartnerInterfaceConfig partnerInterfaceConfig, @Param("page") Page page);
+
+    Integer searchConfigCount(@Param("p") PartnerInterfaceConfig partnerInterfaceConfig);
 }

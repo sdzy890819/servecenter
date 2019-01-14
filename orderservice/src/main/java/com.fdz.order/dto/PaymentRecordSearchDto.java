@@ -16,6 +16,8 @@ public class PaymentRecordSearchDto {
 
     private Byte payStatus;
 
+    private Byte paymentType;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date payStartTime;
 

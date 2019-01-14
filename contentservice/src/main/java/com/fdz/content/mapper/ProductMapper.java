@@ -45,4 +45,8 @@ public interface ProductMapper {
     @Select(SELECT + Constants.Sql.DEFAULT_ORDER + Constants.Sql.LIMIT_SQL)
     @ResultMap(RESULT_MAP)
     List<Product> listProduct(@Param("page") Page page);
+
+    @Select(SELECT + Constants.Sql.DEFAULT_ORDER)
+    @ResultMap(RESULT_MAP)
+    List<Product> findAll();
 }

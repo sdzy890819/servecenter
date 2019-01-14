@@ -44,4 +44,8 @@ public interface PartnerMapper {
     Integer searchPartnerCount(@Param("p") PartnerDto dto);
 
     List<Partner> searchPartner(@Param("p") PartnerDto dto, @Param("page") Page page);
+
+    @Select(SELECT + Constants.Sql.DEFAULT_ORDER)
+    @ResultMap(RESULT_MAP)
+    List<Partner> findAll();
 }

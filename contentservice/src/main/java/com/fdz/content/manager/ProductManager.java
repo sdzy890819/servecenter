@@ -140,4 +140,8 @@ public class ProductManager {
         return productImageMapper.findProductImages(productId);
     }
 
+    public List<Product> findAll() {
+        return productMapper.findAll();
+    }
+
 }

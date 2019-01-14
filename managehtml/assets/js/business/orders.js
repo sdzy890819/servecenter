@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
     load(1, $("#pageSize").find("option:selected").val());
-    loadProductTypeNo();
     $("#pageSize").change(function () {
         load(1, $(this).val());
     });
@@ -45,6 +44,7 @@ $(document).ready(function () {
             delivery($(this).attr("delivery"));
         });
     })
+});
 
     function delivery(orderSn) {
         $.ajax({
@@ -62,28 +62,6 @@ $(document).ready(function () {
         });
     }
 
-    function loadProductTypeNo() {
-        $.ajax({
-            async: false,
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: '/v1/content/product/type/all',
-            dataType: 'json',
-            success: function (data) {
-                if (data.code == 0) {
-                    loadTypes(data.data);
-                }
-            },
-            error: error
-        });
-    }
-
-    function loadTypes(data) {
-        $("#txt_productTypeNo").html("<option value=''></option>");
-        data.forEach(function (val, index) {
-            $("#txt_productTypeNo").html("<option value='" + val.sn + "'>" + val.productTypeName + "</option>");
-        });
-    }
 
     function searchVo() {
         var searchVo = {};
@@ -207,7 +185,7 @@ $(document).ready(function () {
                     if (isNotNull(data.data.result)) {
                         var ab = "";
                         data.data.result.forEach(function (val, index) {
-                            ab = ab + writeData([val.partnerSn, val.orderSn,
+                            ab = ab + writeData(["<a href='orders-detail.html?menuName=orders'>" + val.partnerSn + "</a>", val.orderSn,
                                 val.amount, val.ordersLogisticsResult.logistics,
                                 val.ordersLogisticsResult.logisticsSn,
                                 val.ordersLogisticsResult.receiver,

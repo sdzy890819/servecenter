@@ -52,4 +52,6 @@ public interface ProductService {
     List<ProductType> findAllTypes();
 
     List<ProductImage> findProductImages(Long productId);
+
+    List<Product> findAll();
 }

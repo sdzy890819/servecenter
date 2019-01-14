@@ -2,10 +2,8 @@ package com.fdz.order.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fdz.common.enums.DeliveryStatusEnums;
-import com.fdz.common.enums.InterfaceTypeEnums;
-import com.fdz.common.enums.OrdersFinishStatus;
-import com.fdz.common.enums.OrdersStatus;
+import com.fdz.common.aspect.ann.Lock;
+import com.fdz.common.enums.*;
 import com.fdz.common.exception.BizException;
 import com.fdz.common.utils.IDGenerator;
 import com.fdz.common.utils.Page;
@@ -368,7 +366,52 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<PaymentRecord> findPaymentRecord(PaymentRecordSearchDto dto, Page page) {
-        Integer count = orderManager.
+    public List<PaymentRecord> searchPaymentRecord(PaymentRecordSearchDto dto, Page page) {
+        Integer count = orderManager.searchPaymentRecordCount(dto);
+        page.setCount(count);
+        if (page.isQuery()) {
+            return orderManager.searchPaymentRecord(dto, page);
+        }
+        return null;
+    }
+
+    @Override
+    public int insertSelective(PaymentRecord record) {
+        return orderManager.insertSelective(record);
+    }
+
+    @Override
+    public PaymentRecord selectPaymentRecordByPrimaryKey(Long id) {
+        return orderManager.selectPaymentRecordByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(PaymentRecord record) {
+        return orderManager.updateByPrimaryKeySelective(record);
+    }
+
+    public int insertSelective(Account record) {
+        return orderManager.insertSelective(record);
+    }
+
+    public Account selectAccountByPrimaryKey(Long id) {
+        return orderManager.selectAccountByPrimaryKey(id);
+    }
+
+    public int updateByPrimaryKeySelective(Account record) {
+        return orderManager.updateByPrimaryKeySelective(record);
+    }
+
+    public Account findAccountByPartnerId(Long partnerId) {
+        return orderManager.findAccountByPartnerId(partnerId);
+    }
+
+
+    @Override
+    @Lock(key = "PAYMENT_RECORD_#{paymentRecord.partnerId}")
+    public void addRecord(PaymentRecord paymentRecord) {
+        paymentRecord.setPayRoute(PayRouteEnums.SELF.getRoute());
+        paymentRecord.setFrozen(false);
+        orderManager.calc(paymentRecord);
     }
 }

@@ -12,6 +12,7 @@ import com.fdz.content.domain.ProductImage;
 import com.fdz.content.domain.ProductType;
 import com.fdz.content.dto.PageDataResult;
 import com.fdz.content.dto.ProductDto;
+import com.fdz.content.dto.ProductResult;
 import com.fdz.content.dto.SearchProductDto;
 import com.fdz.content.service.PartnerService;
 import com.fdz.content.service.ProductService;
@@ -46,6 +47,14 @@ public class ProductController {
         return RestResponse.success(list);
     }
 
+
+    @ApiOperation("产品列表")
+    @GetMapping("/all")
+    RestResponse<?> all() {
+        List<Product> list = productService.findAll();
+        List<ProductResult> results = dtoConvert.convert(list);
+        return RestResponse.success(results);
+    }
 
     @ApiOperation("产品列表")
     @GetMapping("/list")

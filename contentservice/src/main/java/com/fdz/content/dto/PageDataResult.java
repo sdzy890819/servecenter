@@ -10,4 +10,6 @@ public class PageDataResult<T> {
 
     private T data;
 
+    private Object searchCondition;
+
 }

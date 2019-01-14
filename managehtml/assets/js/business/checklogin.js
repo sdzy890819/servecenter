@@ -3,48 +3,22 @@ $(document).ready(function () {
         async: false,
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: '/webapi/user-info',
+        url: '/v1/content/manager/current-user',
         dataType: 'json',
         success: function (data) {
             if (data.code == 0) {
-                $("#nickName").append(data.data.companyName + "-" + data.data.nickName);
-                $("#welcomeUserName").append(data.data.companyName + "【 " + data.data.companyKey + " 】" + ", 员工:" + data.data.nickName);
-                $("#wangzhan_url").attr('href', data.data.url);
-                $("#copyright_1").html(data.data.companyName);
-                if (data.data.admin) {
-                    $("#main-menu").append("<li><a href=\"company.html?menuName=company\" menuName=\"company\"><i class=\"fa fa-edit\"></i> 公司管理 </a></li>");
-                }
-                $.ajax({
-                    async: false,
-                    type: "GET",
-                    contentType: "application/json; charset=utf-8",
-                    url: '/webapi/column/all',
-                    dataType: 'json',
-                    success: function (data1) {
-                        if (data1.code == 0) {
-                            var list = data1.data;
-                            $("#columnMenu").append("<li><a href=\"addColumn.html?menuName=column\"><i class=\"fa fa-edit\"></i>添加新栏目</a></li>");
-                            list.forEach(function (val, index) {
-                                $("#columnMenu").append("<li><a href=\"content.html?menuName=column&columnId=" + val.id + "&columnName=" + val.name + "\"><i class=\"fa fa-edit\"></i>" + val.name + "</a></li>");
-                            })
-                        } else {
-                            alert(data.msg);
-                        }
-                    },
-                    error: error
-                });
+                $("#nickName").append(data.data.realName);
+                $("#welcomeUserName").append(data.data.realName);
             }
         },
         error: error
     });
-    var menu = getQueryString()["menuName"];
-    $('a[menuName|="' + menu + '"]').addClass("active-menu");
     $("#logout").click(function () {
         $.ajax({
             async: false,
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: '/webapi/exit',
+            url: '/v1/content/manager/exit',
             dataType: 'json',
             success: function (data) {
                 if (data.code == 0) {
@@ -105,4 +79,53 @@ function writeDataByMap(data) {
         })
     }
     return html;
+}
+
+
+function loadPartner(ids) {
+    $.ajax({
+        async: false,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: '/v1/content/partner/all',
+        dataType: 'json',
+        success: function (data) {
+            if (data.code == 0) {
+                ids.forEach(function (val, index) {
+                    var partnerHtml = "<option value=''>请选择</option>";
+                    if (isNotNull(data.data)) {
+                        data.data.forEach(function (val2, index2) {
+                            partnerHtml += "<option value='" + val2.id + "'>" + val2.name + "</option>";
+                        });
+                    }
+                    $("#" + val).html(partnerHtml);
+                });
+            }
+        },
+        error: error
+    });
+}
+
+function loadProduct(ids) {
+    $.ajax({
+        async: false,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: '/v1/content/product/all',
+        dataType: 'json',
+        success: function (data) {
+            if (data.code == 0) {
+                ids.forEach(function (val, index) {
+                    var partnerHtml = "<option value=''>请选择</option>";
+                    if (isNotNull(data.data)) {
+                        data.data.forEach(function (val2, index2) {
+                            partnerHtml += "<option value='" + val2.id + "'>" + val2.productName + "</option>";
+                        });
+                    }
+                    $("#" + val).html(partnerHtml);
+                });
+            }
+        },
+        error: error
+    });
 }

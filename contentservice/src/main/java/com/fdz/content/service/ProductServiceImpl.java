@@ -2,10 +2,7 @@ package com.fdz.content.service;
 
 import com.fdz.common.utils.Page;
 import com.fdz.common.utils.StringUtils;
-import com.fdz.content.domain.PartnerProduct;
-import com.fdz.content.domain.Product;
-import com.fdz.content.domain.ProductImage;
-import com.fdz.content.domain.ProductType;
+import com.fdz.content.domain.*;
 import com.fdz.content.dto.ThirdpartProductDto;
 import com.fdz.content.dto.ThirdpartyProductDto;
 import com.fdz.content.manager.PartnerManager;
@@ -26,6 +23,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Resource
     private PartnerManager partnerManager;
+
+    @Resource
+    private PartnerService partnerService;
 
     public ProductImage selectProductImageByPrimaryKey(Long id) {
         return productManager.selectProductImageByPrimaryKey(id);
@@ -155,14 +155,17 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ThirdpartyProductDto> listInner(List<PartnerProduct> list) {
         List<Long> productIds = new ArrayList<>();
+        List<Long> partnerIds = new ArrayList<>();
         for (PartnerProduct partnerProduct : list) {
             productIds.add(partnerProduct.getProductId());
+            partnerIds.add(partnerProduct.getPartnerId());
         }
         Map<Long, Product> productMap = findProductByIdsResultMap(productIds);
         List<String> snlist = new ArrayList<>();
         productMap.forEach((k, v) -> snlist.add(v.getProductTypeNo()));
         Map<Long, List<String>> productImagesMap = findImagesByIdsResultMap(productIds);
         Map<Long, ProductType> productTypeMap = findTypeBySnResultMap(snlist);
+        Map<Long, Partner> partnerMap = partnerService.findPartnerByIdResultMap(partnerIds);
         List<ThirdpartyProductDto> result = new ArrayList<>();
         list.stream().forEach(a -> {
             Product product = productMap.get(a.getId());
@@ -174,6 +177,7 @@ public class ProductServiceImpl implements ProductService {
             thirdpartProductDto.setProductDescription(product.getProductDescription());
             thirdpartProductDto.setProductModel(product.getProductModel());
             thirdpartProductDto.setPartnerId(a.getPartnerId());
+            thirdpartProductDto.setPartnerName(partnerMap.get(a.getPartnerId()) != null ? partnerMap.get(a.getPartnerId()).getName() : "");
             thirdpartProductDto.setProductId(product.getId());
             thirdpartProductDto.setProductName(product.getProductName());
             thirdpartProductDto.setProductTypeNo(product.getProductTypeNo());
@@ -306,5 +310,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductImage> findProductImages(Long productId) {
         return productManager.findProductImages(productId);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        return productManager.findAll();
     }
 }

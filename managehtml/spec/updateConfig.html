@@ -1,0 +1,42 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txt_id"/>
+                <div class="form-group">
+                    <label for="txt_partnerId">合作伙伴</label>
+                    <select id="txt_partnerId" name="txt_partnerId" class="form-control">
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="txt_interfaceType">接口类型</label>
+                    <select id="txt_interfaceType" class="form-control">
+                        <option value="">请选择</option>
+                        <option value="1">同步商品接口</option>
+                        <option value="2">同步订单信息接口</option>
+                        <option value="3">同步订单状态</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="txt_interfaceUrl">接口地址</label>
+                    <input type="text" name="txt_interfaceUrl" class="form-control" id="txt_interfaceUrl"
+                           placeholder="接口地址">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                </button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

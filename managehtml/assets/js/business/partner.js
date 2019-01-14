@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
     load(1, $("#pageSize").find("option:selected").val());
-    loadProductTypeNo();
     $("#pageSize").change(function () {
         load(1, $(this).val());
     });
@@ -28,7 +27,6 @@ $(document).ready(function () {
     });
 
 
-
     $("#search_btn").click(function () {
         load(1, $("#pageSize").find("option:selected").val(), searchVo());
     });
@@ -40,30 +38,7 @@ $(document).ready(function () {
     $(document).on("click", "#listDelete", function () {
         delBtnClick($(this).attr("delete"));
     });
-
-
-    function loadProductTypeNo() {
-        $.ajax({
-            async: false,
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: '/v1/content/product/type/all',
-            dataType: 'json',
-            success: function (data) {
-                if (data.code == 0) {
-                    loadTypes(data.data);
-                }
-            },
-            error: error
-        });
-    }
-
-    function loadTypes(data) {
-        $("#txt_productTypeNo").html("<option value=''></option>");
-        data.forEach(function (val, index) {
-            $("#txt_productTypeNo").html("<option value='" + val.sn + "'>" + val.productTypeName + "</option>");
-        });
-    }
+})
 
     function searchVo() {
         var searchVo = {};
@@ -195,7 +170,9 @@ $(document).ready(function () {
                         var ab = "";
                         data.data.result.forEach(function (val, index) {
                             ab = ab + writeData([val.uniqueKey, val.name, val.contacts, val.contactMobile, val.natureStr, val.serviceRate,
-                                val.createTimeStr, "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a><a href='#' id='listDelete' delete='\" + val.id + \"' class='btn btn-danger btn-sm' >删除</a>"]);
+                                val.createTimeStr,
+                                "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>" +
+                                "<a href='#' id='listDelete' delete='\" + val.id + \"' class='btn btn-danger btn-sm' >删除</a>"]);
                         })
                         $("#body").html(ab);
                     }
@@ -250,5 +227,6 @@ $(document).ready(function () {
             error: error
         });
     }
+
 
 

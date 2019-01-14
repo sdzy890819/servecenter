@@ -6,82 +6,12 @@
     <result column="freezing_amount" property="freezingAmount" jdbcType="DECIMAL" />
     <result column="partner_id" property="partnerId" jdbcType="BIGINT" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
+
   <sql id="Base_Column_List" >
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, amount, freezing_amount, 
     partner_id
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fdz.order.domain.AccountExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from account
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -92,12 +22,7 @@
     delete from account
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fdz.order.domain.AccountExample" >
-    delete from account
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
+
   <insert id="insert" parameterType="com.fdz.order.domain.Account" >
     insert into account (id, create_time, modify_time, 
       create_by, modify_by, remark, 
@@ -175,62 +100,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.fdz.order.domain.AccountExample" resultType="java.lang.Integer" >
-    select count(*) from account
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update account
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
-
-      <if test="record.modifyTime != null" >
-        modify_time = #{record.modifyTime,jdbcType=BIGINT},
-      </if>
-
-      <if test="record.modifyBy != null" >
-        modify_by = #{record.modifyBy,jdbcType=VARCHAR},
-      </if>
-      <if test="record.remark != null" >
-        remark = #{record.remark,jdbcType=VARCHAR},
-      </if>
-      <if test="record.delete != null" >
-        is_delete = #{record.delete,jdbcType=BIT},
-      </if>
-      <if test="record.amount != null" >
-        amount = #{record.amount,jdbcType=DECIMAL},
-      </if>
-      <if test="record.freezingAmount != null" >
-        freezing_amount = #{record.freezingAmount,jdbcType=DECIMAL},
-      </if>
-      <if test="record.partnerId != null" >
-        partner_id = #{record.partnerId,jdbcType=BIGINT},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update account
-    set id = #{record.id,jdbcType=BIGINT},
-
-      modify_time = #{record.modifyTime,jdbcType=BIGINT},
-
-      modify_by = #{record.modifyBy,jdbcType=VARCHAR},
-      remark = #{record.remark,jdbcType=VARCHAR},
-      is_delete = #{record.delete,jdbcType=BIT},
-      amount = #{record.amount,jdbcType=DECIMAL},
-      freezing_amount = #{record.freezingAmount,jdbcType=DECIMAL},
-      partner_id = #{record.partnerId,jdbcType=BIGINT}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.fdz.order.domain.Account" >
     update account
     <set >

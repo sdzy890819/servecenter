@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta content="" name="description"/>
     <meta content="webthemez" name="author"/>
-    <title>后台管理平台 -- 合作伙伴管理</title>
+    <title>后台管理平台 -- 资金流水管理</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
@@ -34,7 +34,7 @@
     <div id="page-wrapper">
         <div class="header">
             <h1 class="page-header">
-                合作伙伴管理
+                资金流水管理
                 <small id="welcomeUserName">Welcome</small>
             </h1>
 
@@ -44,16 +44,45 @@
                 <div class="panel-body">
                     <form class="form-inline" id="searchForm">
                         <div class="form-group">
-                            <label for="search_name">合作伙伴名称</label>
-                            <input type="text" id="search_name" class="form-control" placeholder="渠道名称">
+                            <label for="search_partnerId">渠道</label>
+                            <select id="search_partnerId">
+
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="search_contacts">合作伙伴联系人电话</label>
-                            <input type="text" id="search_contacts" class="form-control" placeholder="渠道联系人电话">
+                            <label for="search_paySn">流水号</label>
+                            <input type="text" id="search_paySn" class="form-control" placeholder="流水号">
                         </div>
                         <div class="form-group">
-                            <label for="search_contactMobile">合作伙伴联系人</label>
-                            <input type="text" id="search_contactMobile" class="form-control" placeholder="渠道联系人">
+                            <label for="search_orderSn">商品订单号</label>
+                            <input type="text" id="search_orderSn" class="form-control" placeholder="商品订单号">
+                        </div>
+                        <div class="form-group">
+                            <label for="search_payStatus">交易状态</label>
+                            <select id="search_payStatus">
+                                <option value="">请选择</option>
+                                <option value="1">交易成功</option>
+                                <option value="2">交易失败</option>
+                                <option value="3">处理中</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="search_frozen">冻结资金</label>
+                            <select id="search_frozen">
+                                <option value="">请选择</option>
+                                <option value="true">冻结</option>
+                                <option value="false">非冻结</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="search_paymentType">交易类型</label>
+                            <select id="search_paymentType">
+                                <option value="">请选择</option>
+                                <option value="1">充值</option>
+                                <option value="2">提现</option>
+                                <option value="3">货款</option>
+                                <option value="4">信息费</option>
+                            </select>
                         </div>
                         <button type="button" id="search_btn" class="btn btn-default">查询</button>
                     </form>
@@ -61,7 +90,7 @@
             </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        合作伙伴列表
+                        资金流水列表
                     </div>
                     <div class="panel-body">
                         <div>
@@ -92,29 +121,29 @@
                                     <tr role="row">
                                         <th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"
                                             rowspan="1" colspan="1" aria-sort="ascending" style="width: 139px;">
-                                            合作伙伴编号
+                                            渠道
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
                                             colspan="1" style="width: 139px;">
-                                            合作伙伴
+                                            流水号
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">合作伙伴联系人
+                                            colspan="1" style="width: 139px;">商品订单号
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">合作伙伴联系人电话
+                                            colspan="1" style="width: 139px;">流水类型
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">性质
+                                            colspan="1" style="width: 139px;">操作金额
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">渠道服务费
+                                            colspan="1" style="width: 139px;">变动后余额
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">创建日期
+                                            colspan="1" style="width: 139px;">交易日期
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">操作
+                                            colspan="1" style="width: 139px;">交易状态
                                         </th>
                                     </tr>
                                     </thead>
@@ -140,7 +169,7 @@
 
                     </div>
             </div>
-            <!--# include virtual="/spec/updatePartner.html" -->
+            <!--# include virtual="/spec/updatePayment.html" -->
             <!-- /. ROW  -->
             <!--# include virtual="/spec/publicUpdateUser.html" -->
         </div>
@@ -165,7 +194,7 @@
 
 <script type="text/javascript" src="assets/js/util.js"></script>
 <script type="text/javascript" src="assets/js/business/checklogin.js"></script>
-<script type="text/javascript" src="assets/js/business/partner.js"></script>
+<script type="text/javascript" src="assets/js/business/payment.js"></script>
 
 </body>
 

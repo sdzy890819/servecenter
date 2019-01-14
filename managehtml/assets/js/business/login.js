@@ -4,7 +4,7 @@ $(document).ready(function () {
         async: false,
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: '/webapi/user-info',
+        url: '/v1/content/manager/current-user',
         dataType: 'json',
         success: function (data) {
             if (data.code == 0) {
@@ -21,7 +21,7 @@ $(document).ready(function () {
         }
     })
 
-    $("#loginSubmit").click(function () {
+    $("#login").click(function () {
         loginSubmit();
     })
 
@@ -35,15 +35,14 @@ $(document).ready(function () {
 });
 
 function loginSubmit() {
-    var userName = $("#userName").val();
-    var pwd = $("#pwd").val();
-    var remember = $("#remember").is(":checked");
+    var userName = $("#login-username").val();
+    var pwd = $("#login-password").val();
     $.ajax({
         async: false,
         type: "POST",
-        data: '{"userName":"' + userName + '","pwd":"' + pwd + '","remember":"' + remember + '"}',
+        data: '{"userName":"' + userName + '","password":"' + pwd + '"}',
         contentType: "application/json; charset=utf-8",
-        url: '/webapi/login',
+        url: '/v1/content/manager/login',
         dataType: 'json',
         success: function (data) {
             if (data.code == 0) {

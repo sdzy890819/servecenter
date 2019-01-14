@@ -124,22 +124,23 @@ $(document).ready(function () {
         writeDataByMap(dataMap);
     }
 
-    function get(id) {
-        $.ajax({
-            async: false,
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: '/v1/order/logistics/' + id,
-            dataType: 'json',
-            success: function (data) {
-                if (data.code == 0) {
-                    setVal(data.data);
-                }
-            },
-            error: error
-        });
-    }
 
 });
+
+function get(id) {
+    $.ajax({
+        async: false,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: '/v1/order/logistics/' + id,
+        dataType: 'json',
+        success: function (data) {
+            if (data.code == 0) {
+                setVal(data.data);
+            }
+        },
+        error: error
+    });
+}
 
 

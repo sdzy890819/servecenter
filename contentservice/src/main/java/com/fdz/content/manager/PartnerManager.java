@@ -153,4 +153,16 @@ public class PartnerManager {
     public List<Partner> searchPartner(PartnerDto dto, Page page) {
         return partnerMapper.searchPartner(dto, page);
     }
+
+    public List<Partner> findAll() {
+        return partnerMapper.findAll();
+    }
+
+    public List<PartnerInterfaceConfig> searchConfig(PartnerInterfaceConfig partnerInterfaceConfig, Page page) {
+        return partnerInterfaceConfigMapper.searchConfig(partnerInterfaceConfig, page);
+    }
+
+    public Integer searchConfigCount(PartnerInterfaceConfig partnerInterfaceConfig) {
+        return partnerInterfaceConfigMapper.searchConfigCount(partnerInterfaceConfig);
+    }
 }

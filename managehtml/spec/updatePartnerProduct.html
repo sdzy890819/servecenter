@@ -1,0 +1,50 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txt_id"/>
+                <div class="form-group">
+                    <label for="txt_partnerId">合作伙伴</label>
+                    <select id="txt_partnerId" name="txt_partnerId" class="form-control">
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="txt_productId">商品库产品</label>
+                    <select id="txt_productId" name="txt_productId" class="form-control">
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="txt_salePrice">进货价格</label>
+                    <input type="text" name="txt_salePrice" class="form-control" id="txt_salePrice" placeholder="进货价格">
+                </div>
+                <div class="form-group">
+                    <label for="txt_platformPrice">销售价格</label>
+                    <input type="text" name="txt_platformPrice" class="form-control" id="txt_platformPrice"
+                           placeholder="销售价格">
+                </div>
+                <div class="form-group">
+                    <label for="txt_shelf">是否上架</label>
+                    <select id="txt_shelf">
+                        <option value="true">上架</option>
+                        <option value="false">下架</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                </button>
+                <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

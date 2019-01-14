@@ -9,6 +9,8 @@ import com.fdz.content.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DtoConvert {
 
@@ -24,4 +26,7 @@ public interface DtoConvert {
 
     PartnerProduct convert(PartnerProductDto dto);
 
+    ProductResult convert(Product product);
+
+    List<ProductResult> convert(List<Product> products);
 }

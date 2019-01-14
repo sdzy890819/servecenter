@@ -152,4 +152,25 @@
     </foreach>
     ) and interface_type = #{interfaceType} order by id desc
   </select>
+
+  <select id="searchConfigCount" resultType="java.lang.Integer">
+    select count(1) from partner_interface_config where is_delete=0
+    <if test="p.partnerId != null" >
+       and partner_id = #{p.partnerId}
+    </if>
+    <if test="p.interfaceType != null" >
+       and interface_type = #{p.interfaceType}
+    </if>
+  </select>
+
+  <select id="searchConfig" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from partner_interface_config where is_delete = 0
+    <if test="p.partnerId != null" >
+      and partner_id = #{p.partnerId}
+    </if>
+    <if test="p.interfaceType != null" >
+      and interface_type = #{p.interfaceType}
+    </if>
+    order by partner_id, id desc limit #{page.start}, #{page.pageSize};
+  </select>
 </mapper>

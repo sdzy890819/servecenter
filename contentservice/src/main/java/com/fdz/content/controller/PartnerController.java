@@ -55,7 +55,7 @@ public class PartnerController {
     RestResponse<PageDataResult<List<Partner>>> search(@RequestBody PartnerDto dto,
                                                        @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                        @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
-        Page pagObj = new Page();
+        Page pagObj = new Page(page, pageSize);
         List<Partner> list = partnerService.searchPartner(dto, pagObj);
         PageDataResult pageDataResult = new PageDataResult();
         pageDataResult.setData(list);
@@ -140,6 +140,13 @@ public class PartnerController {
     @PostMapping("/v1/content/partner/ids")
     RestResponse<Map<Long, Partner>> findPartnerByIdResultMap(@RequestBody List<Long> partnerIds) {
         return RestResponse.success(partnerService.findPartnerByIds(partnerIds));
+    }
+
+    @ApiOperation("获取合作伙伴列表")
+    @GetMapping("/all")
+    RestResponse<List<Partner>> findPartnerList() {
+        List<Partner> list = partnerService.findAll();
+        return RestResponse.success(list);
     }
 
 }

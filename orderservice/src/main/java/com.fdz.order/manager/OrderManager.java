@@ -1,16 +1,19 @@
 package com.fdz.order.manager;
 
+import com.fdz.common.enums.PayStatusEnums;
+import com.fdz.common.enums.PaymentTypeEnums;
+import com.fdz.common.exception.BizException;
+import com.fdz.common.utils.IDGenerator;
 import com.fdz.common.utils.Page;
 import com.fdz.order.domain.*;
+import com.fdz.order.dto.PaymentRecordSearchDto;
 import com.fdz.order.dto.SearchOrdersDto;
-import com.fdz.order.mapper.OrdersLogisticsMapper;
-import com.fdz.order.mapper.OrdersMapper;
-import com.fdz.order.mapper.OrdersProductMapper;
-import com.fdz.order.mapper.OrdersTrackMapper;
+import com.fdz.order.mapper.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +32,15 @@ public class OrderManager {
 
     @Resource
     private OrdersTrackMapper ordersTrackMapper;
+
+    @Resource
+    private PaymentRecordMapper paymentRecordMapper;
+
+    @Resource
+    private AccountMapper accountMapper;
+
+    @Resource
+    private IDGenerator paySnIDGenerator;
 
 
     public int insert(Orders record) {
@@ -173,5 +185,77 @@ public class OrderManager {
 
     public List<OrderStatistics> findOrderStatisticsByBusiness(Date start, Date end) {
         return ordersMapper.findOrderStatisticsByBusiness(start, end);
+    }
+
+    public Integer searchPaymentRecordCount(PaymentRecordSearchDto dto) {
+        return paymentRecordMapper.searchPaymentRecordCount(dto);
+    }
+
+    public List<PaymentRecord> searchPaymentRecord(PaymentRecordSearchDto dto, Page page) {
+        return paymentRecordMapper.searchPaymentRecord(dto, page);
+    }
+
+    public int insertSelective(PaymentRecord record) {
+        return paymentRecordMapper.insertSelective(record);
+    }
+
+    public PaymentRecord selectPaymentRecordByPrimaryKey(Long id) {
+        return paymentRecordMapper.selectByPrimaryKey(id);
+    }
+
+    public int updateByPrimaryKeySelective(PaymentRecord record) {
+        return paymentRecordMapper.updateByPrimaryKeySelective(record);
+    }
+
+    public int insertSelective(Account record) {
+        return accountMapper.insertSelective(record);
+    }
+
+    public Account selectAccountByPrimaryKey(Long id) {
+        return accountMapper.selectByPrimaryKey(id);
+    }
+
+    public int updateByPrimaryKeySelective(Account record) {
+        return accountMapper.updateByPrimaryKeySelective(record);
+    }
+
+    public Account findAccountByPartnerId(Long partnerId) {
+        return accountMapper.findAccountByPartnerId(partnerId);
+    }
+
+    /**
+     * 支付、计算、记录数据
+     *
+     * @param paymentRecord
+     */
+    public void calc(PaymentRecord paymentRecord) {
+        Account account = findAccountByPartnerId(paymentRecord.getPartnerId());
+        PaymentTypeEnums paymentTypeEnums = PaymentTypeEnums.get(paymentRecord.getPaymentType());
+        BigDecimal amount = account.getAmount();
+        switch (paymentTypeEnums) {
+            case RECHARGE: {
+                BigDecimal tmpAmount = paymentRecord.getAmount().abs();
+                amount = amount.add(tmpAmount);
+                paymentRecord.setSurplusAmount(amount);
+                paymentRecord.setAmount(tmpAmount);
+                break;
+            }
+            default: {
+                BigDecimal tmpAmount = paymentRecord.getAmount().abs().multiply(new BigDecimal(-1));
+                if (amount.compareTo(paymentRecord.getAmount()) < 0) {
+                    throw new BizException("没有足够的钱" + paymentTypeEnums.getText());
+                }
+                amount = amount.add(tmpAmount);
+                paymentRecord.setSurplusAmount(amount);
+                paymentRecord.setAmount(tmpAmount);
+                break;
+            }
+        }
+        Account a = new Account(account.getId());
+        a.setAmount(amount);
+        paymentRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
+        paymentRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
+        paymentRecord.setPayTime(new Date());
+        updateByPrimaryKeySelective(paymentRecord);
     }
 }

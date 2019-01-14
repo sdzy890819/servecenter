@@ -2,6 +2,7 @@ package com.fdz.content.controller;
 
 import com.fdz.common.constant.Constants;
 import com.fdz.common.exception.BizException;
+import com.fdz.common.redis.RedisDataManager;
 import com.fdz.common.security.SecurityUtils;
 import com.fdz.common.security.jwt.TokenProvider;
 import com.fdz.common.utils.CookieUtil;
@@ -24,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -41,6 +43,9 @@ public class ManagerLoginController {
 
     @Resource
     private TokenProvider tokenProviderManager;
+
+    @Resource
+    private RedisDataManager redisDataManager;
 
 
     @ApiOperation("登录")
@@ -89,6 +94,15 @@ public class ManagerLoginController {
         ManagerLoginInfoResult managerLoginInfoResult = new ManagerLoginInfoResult();
         managerLoginInfoResult.setRealName(manager.getRealName());
         return RestResponse.success(managerLoginInfoResult);
+    }
+
+    @ApiOperation("退出")
+    @GetMapping("/exit")
+    RestResponse<?> exit(HttpServletRequest request, HttpServletResponse response) {
+        Long userId = SecurityUtils.checkLoginAndGetUserByManager();
+        redisDataManager.delete(UserDisassembly.assembleM(userId));
+        CookieUtil.delCookieVal(request, response, Constants.Common.TOKEN_M);
+        return RestResponse.success(null);
     }
 
 }

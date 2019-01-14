@@ -34,6 +34,8 @@ public class ThirdpartyProductDto {
 
     private Long productId;
 
+    private String partnerName;
+
     private BigDecimal productSalePrice;
 
     private List<String> productImages;

@@ -68,4 +68,8 @@ public interface PartnerService {
     List<Partner> findPartnerByIds(List<Long> partnerIds);
 
     List<Partner> searchPartner(PartnerDto dto, Page page);
+
+    List<Partner> findAll();
+
+    List<PartnerInterfaceConfig> searchConfig(PartnerInterfaceConfig partnerInterfaceConfig, Page page);
 }

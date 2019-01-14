@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta content="" name="description"/>
     <meta content="webthemez" name="author"/>
-    <title>后台管理平台 -- 合作伙伴管理</title>
+    <title>后台管理平台 --  接口配置管理</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
@@ -34,7 +34,7 @@
     <div id="page-wrapper">
         <div class="header">
             <h1 class="page-header">
-                合作伙伴管理
+                接口配置管理
                 <small id="welcomeUserName">Welcome</small>
             </h1>
 
@@ -44,16 +44,19 @@
                 <div class="panel-body">
                     <form class="form-inline" id="searchForm">
                         <div class="form-group">
-                            <label for="search_name">合作伙伴名称</label>
-                            <input type="text" id="search_name" class="form-control" placeholder="渠道名称">
+                            <label for="search_partnerId">合作伙伴</label>
+                            <select id="search_partnerId">
+
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="search_contacts">合作伙伴联系人电话</label>
-                            <input type="text" id="search_contacts" class="form-control" placeholder="渠道联系人电话">
-                        </div>
-                        <div class="form-group">
-                            <label for="search_contactMobile">合作伙伴联系人</label>
-                            <input type="text" id="search_contactMobile" class="form-control" placeholder="渠道联系人">
+                            <label for="search_interfaceType">接口类型</label>
+                            <select id="search_interfaceType">
+                                <option value="">请选择</option>
+                                <option value="1">同步商品接口</option>
+                                <option value="2">同步订单信息接口</option>
+                                <option value="3">同步订单状态</option>
+                            </select>
                         </div>
                         <button type="button" id="search_btn" class="btn btn-default">查询</button>
                     </form>
@@ -61,7 +64,7 @@
             </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        合作伙伴列表
+                        接口配置列表
                     </div>
                     <div class="panel-body">
                         <div>
