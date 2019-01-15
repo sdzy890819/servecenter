@@ -41,6 +41,7 @@ public class ThirdpartyController {
     @PostMapping("/delivery")
     RestResponse<?> delivery(@RequestBody DeliveryDto dto) {
         Long partnerId = SecurityUtils.checkLoginAndGetUserByPartner();
+        orderService.delivery(dto.getSn());
         return RestResponse.success(null);
     }
 

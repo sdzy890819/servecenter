@@ -17,6 +17,8 @@ public class OrderPushVo {
 
     private BigDecimal platformAmount;
 
+    private BigDecimal infoAmount;
+
     private Date buyTime;
 
     private Date confirmTime;

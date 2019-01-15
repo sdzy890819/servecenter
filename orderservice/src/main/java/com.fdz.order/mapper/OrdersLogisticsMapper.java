@@ -12,7 +12,7 @@ public interface OrdersLogisticsMapper {
 
     String SQL = " id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, \n" +
             "    partner_sn, partner_id, receiver, receiver_address, receiver_mobile, logistics, logistics_sn, \n" +
-            "    logistics_status, delivery_status,business_delivery_status ";
+            "    logistics_status, delivery_status,business_delivery_status, logistics_amount ";
 
     String TABLE = " orders_logistics ";
 

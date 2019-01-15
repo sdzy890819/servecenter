@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class PaymentRecordSearchDto {
 
-    private String partnerId;
+    private Long partnerId;
 
     private String paySn;
 
@@ -17,6 +18,8 @@ public class PaymentRecordSearchDto {
     private Byte payStatus;
 
     private Byte paymentType;
+
+    private List<Byte> paymentTypeList;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date payStartTime;

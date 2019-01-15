@@ -20,6 +20,7 @@ import com.fdz.order.vo.OrderProductPushVo;
 import com.fdz.order.vo.OrderPushVo;
 import com.fdz.order.vo.OrderStatusPushVo;
 import com.fdz.order.vo.OrdersLogisticsPushVo;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,9 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private ObjectMapper objectMapper;
 
+    @Resource
+    private IDGenerator paymentIDGenerator;
+
     @Override
     public CashierResult shopping(CashierDto cashierDto, Long partnerId) {
         List<GoodsDto> goodsDtoList = cashierDto.getGoodsList();
@@ -57,6 +61,8 @@ public class OrderServiceImpl implements OrderService {
         goodsDtoList.forEach(a -> ppIds.add(a.getProductId()));
         Map<Long, ThirdpartyProductDto> tpResultMap = findTpResultMap(ppIds);
         BigDecimal amount = BigDecimal.ZERO;
+        BigDecimal platformAmount = BigDecimal.ZERO;
+        BigDecimal costAmount = BigDecimal.ZERO;
         List<OrdersProduct> ordersProducts = new ArrayList<>();
         for (GoodsDto a : goodsDtoList) {
             ThirdpartyProductDto dto = tpResultMap.get(a.getProductId());
@@ -65,6 +71,8 @@ public class OrderServiceImpl implements OrderService {
                 a.setPlatformPrice(dto.getPlatformPrice());
             }
             amount = amount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
+            platformAmount = platformAmount.add(dto.getPlatformPrice().multiply(new BigDecimal(a.getNum())));
+            costAmount = costAmount.add(dto.getPrimeCosts().multiply(new BigDecimal(a.getNum())));
             OrdersProduct ordersProduct = new OrdersProduct();
             ordersProduct.setOrderSn(orderSn);
             ordersProduct.setPartnerSn(cashierDto.getSn());
@@ -81,10 +89,11 @@ public class OrderServiceImpl implements OrderService {
             ordersProduct.setProductModel(dto.getProductModel());
             ordersProduct.setProductId(dto.getProductId());
             ordersProduct.setPlatformPrice(dto.getPlatformPrice());
-            ordersProduct.setProductSalePrice(dto.getSalePrice());
+            ordersProduct.setProductSalePrice(dto.getProductSalePrice());
             ordersProducts.add(ordersProduct);
         }
         ReceivingAddressDto receivingAddressDto = cashierDto.getReceivingAddress();
+        //--物流信息
         OrdersLogistics ordersLogistics = new OrdersLogistics();
         ordersLogistics.setOrderSn(orderSn);
         ordersLogistics.setPartnerSn(cashierDto.getSn());
@@ -94,22 +103,57 @@ public class OrderServiceImpl implements OrderService {
         ordersLogistics.setReceiverMobile(receivingAddressDto.getMobile());
         ordersLogistics.setDeliveryStatus(DeliveryStatusEnums.DONT_DELIVERY.getStatus());
         ordersLogistics.setBusinessDeliveryStatus(DeliveryStatusEnums.DONT_DELIVERY.getStatus());
-
+        PartnerRestResult partnerRestResult = contentService.findPartnerByIdResultMap(Lists.newArrayList(partnerId)).get(partnerId);
+        //--拼接order
         Orders orders = new Orders();
         orders.setOrderSn(orderSn);
+        orders.setPlatformAmount(platformAmount);
+        orders.setCostAmount(costAmount);
         orders.setPartnerSn(cashierDto.getSn());
         orders.setPartnerId(partnerId);
         orders.setAmount(amount);
+        orders.setInfoAmount(partnerRestResult.getServiceRate().multiply(amount));
         orders.setBuyTime(new Date());
         orders.setStatus(OrdersStatus.WAIT_PAY.getStatus());
         orders.setOrderStatus(OrdersFinishStatus.PROCESSING.getStatus());
-        orderManager.insert(orders, ordersProducts, ordersLogistics);
+        List<PaymentRecord> paymentRecords = pay(partnerRestResult, orders);
+        orderManager.insert(orders, ordersProducts, ordersLogistics, paymentRecords);
         CashierResult cashierResult = new CashierResult();
         cashierResult.setOrderSn(orderSn);
         cashierResult.setSn(cashierDto.getSn());
         cashierResult.setGoodsDtos(goodsDtoList);
         sendOrdersExecRecord(orderSn, partnerId);
         return cashierResult;
+    }
+
+    /**
+     * 支付
+     *
+     * @param partner
+     * @param orders
+     * @return
+     */
+    public List<PaymentRecord> pay(PartnerRestResult partner, Orders orders) {
+        List<PaymentRecord> list = new ArrayList<>();
+        PaymentRecord paymentRecord = new PaymentRecord();
+        paymentRecord.setSn(String.valueOf(paymentIDGenerator.getId()));
+        paymentRecord.setOrderSn(orders.getOrderSn());
+        paymentRecord.setPaymentType(PaymentTypeEnums.PAY.getType());
+        paymentRecord.setAmount(orders.getAmount());
+        paymentRecord.setPayRoute(PayRouteEnums.SELF.getRoute());
+        paymentRecord.setFrozen(false);
+        paymentRecord.setPartnerId(orders.getPartnerId());
+        list.add(paymentRecord);
+        PaymentRecord paymentRecord2 = new PaymentRecord();
+        paymentRecord2.setSn(String.valueOf(paymentIDGenerator.getId()));
+        paymentRecord2.setOrderSn(orders.getOrderSn());
+        paymentRecord2.setPaymentType(PaymentTypeEnums.INFO.getType());
+        paymentRecord2.setAmount(orders.getInfoAmount());
+        paymentRecord2.setPayRoute(PayRouteEnums.SELF.getRoute());
+        paymentRecord2.setFrozen(false);
+        paymentRecord2.setPartnerId(orders.getPartnerId());
+        list.add(paymentRecord2);
+        return list;
     }
 
 
@@ -414,4 +458,10 @@ public class OrderServiceImpl implements OrderService {
         paymentRecord.setFrozen(false);
         orderManager.calc(paymentRecord);
     }
+
+    @Override
+    public PaymentRecord findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(Long partnerId, Byte paymentType, String orderSn, Boolean frozen) {
+        return orderManager.findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(partnerId, paymentType, orderSn, frozen);
+    }
+
 }

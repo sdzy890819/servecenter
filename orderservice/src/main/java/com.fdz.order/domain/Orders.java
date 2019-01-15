@@ -17,6 +17,10 @@ public class Orders extends BaseEntity {
 
     private BigDecimal amount;
 
+    private BigDecimal platformAmount;
+
+    private BigDecimal costAmount;
+
     private Date buyTime;
 
     private Date confirmTime;
@@ -32,6 +36,8 @@ public class Orders extends BaseEntity {
     private Byte orderStatus;
 
     private Byte businessDeliveryStatus;
+
+    private BigDecimal infoAmount;
 
     public Orders() {
         super();

@@ -7,6 +7,7 @@ import com.fdz.content.domain.PartnerProduct;
 import com.fdz.content.domain.Product;
 import com.fdz.content.dto.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public interface DtoConvert {
 
     Page convert(PageDto pageDto);
 
+    @Mapping(ignore = true, source = "productImages", target = "productImages")
     Product convert(ProductDto dto);
 
     Product convert(SearchProductDto dto);

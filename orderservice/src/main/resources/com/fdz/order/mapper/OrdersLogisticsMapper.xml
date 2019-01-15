@@ -13,12 +13,13 @@
     <result column="logistics_status" jdbcType="VARCHAR" property="logisticsStatus" />
     <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus" />
     <result column="business_delivery_status"  jdbcType="TINYINT" property="businessDeliveryStatus" />
+    <result column="logistics_amount" property="logisticsAmount" />
   </resultMap>
 
   <sql id="Base_Column_List">
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, 
     partner_sn, partner_id, receiver, receiver_address, receiver_mobile, logistics, logistics_sn, 
-    logistics_status, delivery_status,business_delivery_status
+    logistics_status, delivery_status,business_delivery_status,logistics_amount
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -37,13 +38,13 @@
       is_delete, order_sn, partner_sn, 
       partner_id, receiver, receiver_address, 
       receiver_mobile, logistics, logistics_sn, 
-      logistics_status, delivery_status,business_delivery_status)
+      logistics_status, delivery_status,business_delivery_status, logistics_amount)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{delete,jdbcType=BIT}, #{orderSn,jdbcType=VARCHAR}, #{partnerSn,jdbcType=VARCHAR}, 
       #{partnerId,jdbcType=BIGINT}, #{receiver,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
       #{receiverMobile,jdbcType=VARCHAR}, #{logistics,jdbcType=VARCHAR}, #{logisticsSn,jdbcType=VARCHAR}, 
-      #{logisticsStatus,jdbcType=VARCHAR}, #{deliveryStatus,jdbcType=TINYINT}, #{businessDeliveryStatus})
+      #{logisticsStatus,jdbcType=VARCHAR}, #{deliveryStatus,jdbcType=TINYINT}, #{businessDeliveryStatus},#{logisticsAmount})
   </insert>
   <insert id="insertSelective" parameterType="com.fdz.order.domain.OrdersLogistics">
     insert into orders_logistics
@@ -102,6 +103,10 @@
       <if test="businessDeliveryStatus != null">
         business_delivery_status,
       </if>
+      <if test="logisticsAmount != null">
+        logistics_amount,
+      </if>
+
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -158,6 +163,9 @@
       <if test="businessDeliveryStatus != null">
         #{businessDeliveryStatus},
       </if>
+      <if test="logisticsAmount != null">
+        logisticsAmount,
+      </if>
     </trim>
   </insert>
 
@@ -211,6 +219,9 @@
       <if test="businessDeliveryStatus != null">
         business_delivery_status = #{businessDeliveryStatus},
       </if>
+      <if test="logisticsAmount != null">
+        logistics_amount = #{logisticsAmount},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -232,7 +243,8 @@
       logistics_sn = #{logisticsSn,jdbcType=VARCHAR},
       logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
       delivery_status = #{deliveryStatus,jdbcType=TINYINT},
-      business_delivery_status = #{businessDeliveryStatus}
+      business_delivery_status = #{businessDeliveryStatus},
+      logistics_amount = #{logisticsAmount}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

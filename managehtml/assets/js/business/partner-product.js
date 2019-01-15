@@ -162,9 +162,9 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 if (data.code == 0) {
-                    if (isNotNull(data.data.result)) {
+                    if (isNotNull(data.data.data)) {
                         var ab = "";
-                        data.data.result.forEach(function (val, index) {
+                        data.data.data.forEach(function (val, index) {
                             ab = ab + writeData([val.partnerName, val.productId, val.productName, val.productModel, val.productTypeName, val.salePrice,
                                 val.platformPrice, val.shelf ? "已上架" : "未上架", "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>"]);
                         })

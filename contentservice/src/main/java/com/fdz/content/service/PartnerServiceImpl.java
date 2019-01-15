@@ -297,7 +297,7 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
     public List<PartnerInterfaceConfig> searchConfig(PartnerInterfaceConfig partnerInterfaceConfig, Page page) {
         Integer count = partnerManager.searchConfigCount(partnerInterfaceConfig);
         page.setCount(count);
-        if(page.isQuery()) {
+        if (page.isQuery()) {
             return partnerManager.searchConfig(partnerInterfaceConfig, page);
         }
         return null;

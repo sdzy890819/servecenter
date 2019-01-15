@@ -71,11 +71,14 @@ zuul:
   ignore-local-service: true
   ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
   routes:
-    data-test:
-      path: /v1/data-test/**
-      service-id: data-service
+    orderservice:
+      path: /v1/order/thirdparty/**
+      service-id: orderservice
       strip-prefix: false
-
+    contentservice:
+      path: /v1/content/thirdparty/**
+      service-id: contentservice
+      strip-prefix: false
 
 # ==========================================================================
 # - Hystrix Settings
@@ -88,9 +91,14 @@ hystrix:
         isolation.thread.timeoutInMilliseconds: 60000
         timeout:
           enabled: true
-    thirdparty-loan-service:
+    orderservice:
       execution:
-        isolation.thread.timeoutInMilliseconds: 8000
+        isolation.thread.timeoutInMilliseconds: 3000
+        timeout:
+          enabled: true
+    contentservice:
+      execution:
+        isolation.thread.timeoutInMilliseconds: 3000
         timeout:
           enabled: true
   threadpool:

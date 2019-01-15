@@ -95,20 +95,42 @@ public class OrderManager {
         return ordersProductMapper.insertOrdersProducts(list);
     }
 
-    public int insert(Orders orders, List<OrdersProduct> list, OrdersLogistics ordersLogistics) {
+    public int insert(Orders orders, List<OrdersProduct> list, OrdersLogistics ordersLogistics, List<PaymentRecord> paymentRecords) {
         int p = insertSelective(orders);
         p = p + insertSelective(ordersLogistics);
         p = p + insertOrdersProducts(list);
+        paymentRecords.forEach(a -> calc(a));
         firstInsertStatus(orders.getOrderSn(), orders.getPartnerSn(), orders.getStatus(), (byte) 0);
         return p;
     }
 
     public int update(Orders orders, OrdersLogistics ordersLogistics) {
+        Orders ordersInfo = selectOrdersByPrimaryKey(orders.getId());
+        PaymentRecord paymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.PAY.getType(), ordersInfo.getOrderSn(), true);
+        PaymentRecord infoPaymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.INFO.getType(), ordersInfo.getOrderSn(), true);
+        if (paymentRecord == null || infoPaymentRecord == null) {
+            throw new BizException("未找到帐单信息");
+        }
         if (orders.getOrderStatus() != null) {
             insertStatus(orders.getId(), orders.getStatus());
         }
         int p = updateByPrimaryKeySelective(orders);
         p = p + updateByPrimaryKeySelective(ordersLogistics);
+
+        PaymentRecord payRecord = new PaymentRecord(paymentRecord.getId());
+        payRecord.setFrozen(false);
+        payRecord.setPayTime(new Date());
+        payRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
+        payRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
+        updateByPrimaryKeySelective(payRecord);
+
+        PaymentRecord infoRecord = new PaymentRecord(infoPaymentRecord.getId());
+        infoRecord.setFrozen(false);
+        infoRecord.setPayTime(new Date());
+        infoRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
+        infoRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
+        updateByPrimaryKeySelective(infoRecord);
+
         return p;
     }
 
@@ -257,5 +279,9 @@ public class OrderManager {
         paymentRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
         paymentRecord.setPayTime(new Date());
         updateByPrimaryKeySelective(paymentRecord);
+    }
+
+    public PaymentRecord findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(Long partnerId, Byte paymentType, String orderSn, Boolean frozen) {
+        return paymentRecordMapper.findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(partnerId, paymentType, orderSn, frozen);
     }
 }

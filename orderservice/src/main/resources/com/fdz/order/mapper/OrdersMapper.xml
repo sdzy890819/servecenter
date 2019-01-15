@@ -35,12 +35,15 @@
     <result column="logistics" jdbcType="VARCHAR" property="logistics" />
     <result column="logistics_sn" jdbcType="VARCHAR" property="logisticsSn" />
     <result column="logistics_status" jdbcType="VARCHAR" property="logisticsStatus" />
+    <result column="platform_amount" property="platformAmount" />
+    <result column="cost_amount" property="costAmount" />
+    <result column="info_amount" property="infoAmount" />
   </resultMap>
 
   <sql id="Base_Column_List">
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, 
     partner_sn, partner_id, amount, buy_time, confirm_time, business_delivery_time,
-    end_time, delivery_status, status, order_status,business_delivery_status
+    end_time, delivery_status, status, order_status,business_delivery_status, platform_amount, cost_amount, info_amount
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -61,14 +64,14 @@
       partner_id, amount,
       buy_time, confirm_time, business_delivery_time, 
       end_time, delivery_status, status, 
-      order_status,business_delivery_status)
+      order_status,business_delivery_status, platform_amount, cost_amount, info_amount)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{delete,jdbcType=BIT}, #{orderSn,jdbcType=VARCHAR}, #{partnerSn,jdbcType=VARCHAR}, 
       #{partnerId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL},
       #{buyTime,jdbcType=TIMESTAMP}, #{confirmTime,jdbcType=TIMESTAMP}, #{businessDeliveryTime,jdbcType=TIMESTAMP}, 
       #{endTime,jdbcType=TIMESTAMP}, #{deliveryStatus,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, 
-      #{orderStatus,jdbcType=TINYINT},#{businessDeliveryStatus})
+      #{orderStatus,jdbcType=TINYINT},#{businessDeliveryStatus},#{platformAmount},#{costAmount}, #{infoAmount})
   </insert>
   <insert id="insertSelective" parameterType="com.fdz.order.domain.Orders">
     insert into orders
@@ -130,6 +133,15 @@
       <if test="businessDeliveryStatus != null">
         business_delivery_status,
       </if>
+      <if test="platformAmount != null">
+        platform_amount,
+      </if>
+      <if test="costAmount != null">
+        cost_amount,
+      </if>
+      <if test="infoAmount != null">
+        info_amount,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -189,6 +201,15 @@
       <if test="businessDeliveryStatus != null">
         #{businessDeliveryStatus},
       </if>
+      <if test="platformAmount != null">
+        #{platformAmount},
+      </if>
+      <if test="costAmount != null">
+        #{costAmount},
+      </if>
+      <if test="infoAmount != null">
+        infoAmount,
+      </if>
     </trim>
   </insert>
 
@@ -245,6 +266,15 @@
       <if test="businessDeliveryStatus != null">
         business_delivery_status = #{businessDeliveryStatus},
       </if>
+      <if test="platformAmount != null">
+        platform_amount = #{platformAmount},
+      </if>
+      <if test="costAmount != null">
+        cost_amount = #{costAmount},
+      </if>
+      <if test="infoAmount != null">
+        info_amount = #{infoAmount},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -267,7 +297,10 @@
       delivery_status = #{deliveryStatus,jdbcType=TINYINT},
       status = #{status,jdbcType=TINYINT},
       order_status = #{orderStatus,jdbcType=TINYINT},
-      business_delivery_status = #{businessDeliveryStatus}
+      business_delivery_status = #{businessDeliveryStatus},
+      platform_amount = #{platformAmount},
+      cost_amount = #{costAmount},
+      info_amount = #{infoAmount}
     where id = #{id,jdbcType=BIGINT}
   </update>
 
@@ -276,6 +309,9 @@
     logistics_status  from orders o, orders_logistics l where is_delete = 0
     <if test="search.orderSn != null">
       and o.order_sn = #{search.orderSn}
+    </if>
+    <if test="search.partnerId != null">
+      and o.partner_id = #{search.partnerId}
     </if>
     <if test="search.partnerSn != null">
       and o.partner_sn = #{search.partnerSn}
@@ -299,6 +335,9 @@
     select count(1)  from orders o, orders_logistics l where is_delete = 0
     <if test="search.orderSn != null">
       and o.order_sn = #{search.orderSn}
+    </if>
+    <if test="search.partnerId != null">
+      and o.partner_id = #{search.partnerId}
     </if>
     <if test="search.partnerSn != null">
       and o.partner_sn = #{search.partnerSn}

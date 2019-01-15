@@ -1,6 +1,8 @@
 package com.fdz.content.controller;
 
 
+import com.fdz.common.dto.SearchResult;
+import com.fdz.common.security.SecurityUtils;
 import com.fdz.common.utils.Page;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
@@ -9,7 +11,6 @@ import com.fdz.content.domain.PartnerProduct;
 import com.fdz.content.domain.Product;
 import com.fdz.content.dto.PartnerProductDto;
 import com.fdz.content.dto.SearchPartnerProductDto;
-import com.fdz.common.dto.SearchResult;
 import com.fdz.content.dto.ThirdpartyProductDto;
 import com.fdz.content.service.PartnerService;
 import com.fdz.content.service.ProductService;
@@ -48,6 +49,19 @@ public class PartnerProductController {
         data.setData(list);
         data.setSearchCondition(dto);
         return RestResponse.success(data);
+    }
+
+    @ApiOperation("列表")
+    @PostMapping("/partner/search")
+    RestResponse<?> partnerSearch(@RequestBody SearchPartnerProductDto dto,
+                                  @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                                  @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
+        Long partnerId = SecurityUtils.checkLoginAndGetUserByPartner();
+        if (dto == null) {
+            dto = new SearchPartnerProductDto();
+        }
+        dto.setPartnerId(partnerId);
+        return search(dto, page, pageSize);
     }
 
     @ApiOperation("创建产品")

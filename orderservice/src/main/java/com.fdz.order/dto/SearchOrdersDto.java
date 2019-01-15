@@ -21,4 +21,6 @@ public class SearchOrdersDto {
     private Date buyEndTime;
 
     private Byte deliveryStatus;
+
+    private Long partnerId;
 }

@@ -90,10 +90,11 @@ $(document).ready(function () {
 
     function getVal() {
         var content = {};
-        data.orderSn = $("#txt_id").val();
-        data.logistics = $("#txt_logistics").val();
-        data.logisticsSn = $("#txt_logisticsSn").val();
-        data.logisticsStatus = $("#txt_logisticsStatus").val();
+        content.orderSn = $("#txt_id").val();
+        content.logistics = $("#txt_logistics").val();
+        content.logisticsSn = $("#txt_logisticsSn").val();
+        content.logisticsStatus = $("#txt_logisticsStatus").val();
+        content.logisticsAmount = $("#txt_logisticsAmount").val();
         return content;
     }
 
@@ -102,6 +103,7 @@ $(document).ready(function () {
         $("#txt_logistics").val(data.logistics);
         $("#txt_logisticsSn").val(data.logisticsSn);
         $("#txt_logisticsStatus").val(data.logisticsStatus);
+        $("#txt_logisticsAmount").val(data.logisticsAmount);
     }
 
     function get(id) {
@@ -182,10 +184,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 if (data.code == 0) {
-                    if (isNotNull(data.data.result)) {
+                    if (isNotNull(data.data.data)) {
                         var ab = "";
-                        data.data.result.forEach(function (val, index) {
-                            ab = ab + writeData(["<a href='orders-detail.html?menuName=orders'>" + val.partnerSn + "</a>", val.orderSn,
+                        data.data.data.forEach(function (val, index) {
+                            ab = ab + writeData(["<a href='orders-detail.html?menuName=orders&id="+val.orderSn+"'>" + val.partnerSn + "</a>", val.orderSn,
                                 val.amount, val.ordersLogisticsResult.logistics,
                                 val.ordersLogisticsResult.logisticsSn,
                                 val.ordersLogisticsResult.receiver,

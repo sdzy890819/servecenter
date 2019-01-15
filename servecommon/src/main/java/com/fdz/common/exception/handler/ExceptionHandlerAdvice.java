@@ -26,6 +26,14 @@ public class ExceptionHandlerAdvice {
         return RestResponse.error(e.getCode(), e.getMessage());
     }
 
+    @ExceptionHandler({NullPointerException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public RestResponse<?> handleNullPointerException(NullPointerException e) {
+        log.error("出现空错误,", e);
+        return RestResponse.error("哎呀出现错误了, 好像您有东西未传递哦.");
+    }
+
     @ExceptionHandler({TimeOutException.class})
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
     @ResponseBody

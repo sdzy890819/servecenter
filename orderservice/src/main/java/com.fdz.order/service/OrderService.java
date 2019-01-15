@@ -56,4 +56,8 @@ public interface OrderService {
     Account selectAccountByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(Account record);
+
+    PaymentRecord findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(Long partnerId, Byte paymentType, String orderSn, Boolean frozen);
+
+    Account findAccountByPartnerId(Long partnerId);
 }

@@ -259,6 +259,13 @@
         <if test="p.payEndTime != null">
             and pay_time &lt;= #{p.payEndTime}
         </if>
+        <if test="p.paymentTypeList != null">
+            and payment_type in (
+            <foreach collection="p.paymentTypeList" separator="," item="a" >
+                #{a}
+            </foreach>
+            )
+        </if>
     </select>
 
     <select id="searchPaymentRecord" resultMap="BaseResultMap">
@@ -285,6 +292,13 @@
         </if>
         <if test="p.payEndTime != null">
             and pay_time &lt;= #{p.payEndTime}
+        </if>
+        <if test="p.paymentTypeList != null">
+            and payment_type in (
+            <foreach collection="p.paymentTypeList" separator="," item="a" >
+                #{a}
+            </foreach>
+            )
         </if>
         order by id desc limit #{page.start}, #{page.pageSize};
     </select>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="" name="description"/>
+    <meta content="webthemez" name="author"/>
+    <title>后台管理平台 -- 合作伙伴管理</title>
+    <!-- Bootstrap Styles-->
+    <link href="assets/css/bootstrap.css" rel="stylesheet"/>
+    <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet"/>
+    <!-- Morris Chart Styles-->
+    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet"/>
+    <!-- Custom Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet"/>
+    <!-- Google Fonts-->
+    <link href='assets/css/font.css' rel='stylesheet' type='text/css'/>
+
+</head>
+
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default top-navbar" role="navigation">
+        <div class="navbar-header">
+            <!--#include virtual="/spec/logo.html" -->
+        </div>
+
+        <!--# include virtual="/spec/user.html" -->
+    </nav>
+    <!--# include virtual="/spec/menu.html" -->
+
+    <div id="page-wrapper">
+        <div class="header">
+            <h1 class="page-header">
+                合作伙伴管理
+                <small id="welcomeUserName">Welcome</small>
+            </h1>
+
+        </div>
+        <div id="page-inner">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-inline" id="searchForm">
+                        <div class="form-group">
+                            <label for="search_name">合作伙伴名称</label>
+                            <input type="text" id="search_name" class="form-control" placeholder="渠道名称">
+                        </div>
+                        <div class="form-group">
+                            <label for="search_contacts">合作伙伴联系人电话</label>
+                            <input type="text" id="search_contacts" class="form-control" placeholder="渠道联系人电话">
+                        </div>
+                        <div class="form-group">
+                            <label for="search_contactMobile">合作伙伴联系人</label>
+                            <input type="text" id="search_contactMobile" class="form-control" placeholder="渠道联系人">
+                        </div>
+                        <button type="button" id="search_btn" class="btn btn-default">查询</button>
+                    </form>
+                </div>
+            </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        合作伙伴列表
+                    </div>
+                    <div class="panel-body">
+                        <div>
+                            <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="dataTables_length" id="dataTables-example_length">
+                                            <label>每页个数：
+                                                <select name="dataTables-example_length"
+                                                        aria-controls="dataTables-example" id="pageSize"
+                                                        class="form-control input-sm">
+                                                    <option value="10">10</option>
+                                                    <option value="25">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div id="dataTables-example_filter" style="text-align: right">
+                                            <a href="#" class="btn btn-success" id="add">添加</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <table class="table table-striped table-bordered table-hover dataTable no-footer"
+                                       id="dataTables-example" aria-describedby="dataTables-example_info">
+                                    <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"
+                                            rowspan="1" colspan="1" aria-sort="ascending" style="width: 139px;">
+                                            合作伙伴编号
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                            colspan="1" style="width: 139px;">
+                                            合作伙伴
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                            colspan="1" style="width: 139px;">合作伙伴联系人
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                            colspan="1" style="width: 139px;">合作伙伴联系人电话
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                            colspan="1" style="width: 139px;">性质
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                            colspan="1" style="width: 139px;">渠道服务费
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                            colspan="1" style="width: 139px;">创建日期
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                            colspan="1" style="width: 139px;">操作
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="body"></tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="dataTables_info" id="dataTables-example_info" role="alert"
+                                             aria-live="polite" aria-relevant="all">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                             id="dataTables-example_paginate">
+                                            <ul class="pagination" id="pageBar">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+            </div>
+            <!--# include virtual="/spec/updatePartner.html" -->
+            <!-- /. ROW  -->
+            <!--# include virtual="/spec/publicUpdateUser.html" -->
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+<!-- JS Scripts-->
+<!-- jQuery Js -->
+<script src="assets/js/jquery-1.10.2.js"></script>
+<!-- Bootstrap Js -->
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/js/bootbox.min.js"></script>
+
+<!-- Metis Menu Js -->
+<script src="assets/js/jquery.metisMenu.js"></script>
+<!-- Morris Chart Js -->
+<!-- Custom Js -->
+<script src="assets/js/custom-scripts.js"></script>
+
+
+<script type="text/javascript" src="assets/js/util.js"></script>
+<script type="text/javascript" src="assets/js/business/checklogin.js"></script>
+<script type="text/javascript" src="assets/js/business/partner.js"></script>
+
+</body>
+
+</html>

@@ -1,10 +1,7 @@
 package com.fdz.order.convert;
 
 import com.fdz.order.domain.*;
-import com.fdz.order.dto.OrdersLogisticsResult;
-import com.fdz.order.dto.OrdersProductResult;
-import com.fdz.order.dto.OrdersResult;
-import com.fdz.order.dto.PaymentRecordDto;
+import com.fdz.order.dto.*;
 import com.fdz.order.vo.OrderProductPushVo;
 import com.fdz.order.vo.OrderPushVo;
 import com.fdz.order.vo.OrdersLogisticsPushVo;
@@ -38,4 +35,8 @@ public interface DtoConvert {
     OrderPushVo convert(Orders orders);
 
     PaymentRecord convert(PaymentRecordDto dto);
+
+    RechargeRecordResult convert(PaymentRecord paymentRecord);
+
+    List<RechargeRecordResult> convertPaymentList(List<PaymentRecord> records);
 }

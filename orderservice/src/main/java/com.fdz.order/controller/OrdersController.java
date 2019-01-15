@@ -1,6 +1,7 @@
 package com.fdz.order.controller;
 
 import com.fdz.common.dto.SearchResult;
+import com.fdz.common.security.SecurityUtils;
 import com.fdz.common.utils.Page;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
@@ -38,6 +39,19 @@ public class OrdersController {
         data.setData(results);
         data.setSearchCondition(dto);
         return RestResponse.success(data);
+    }
+
+    @ApiOperation("Partner搜索订单")
+    @PostMapping("/partner/search")
+    RestResponse<SearchResult<List<OrdersResult>>> partnerSearch(@RequestBody SearchOrdersDto dto,
+                                                                 @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                                                                 @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
+        Long partnerId = SecurityUtils.checkLoginAndGetUserByPartner();
+        if (dto == null) {
+            dto = new SearchOrdersDto();
+        }
+        dto.setPartnerId(partnerId);
+        return search(dto, page, pageSize);
     }
 
     @ApiOperation("订单详情")

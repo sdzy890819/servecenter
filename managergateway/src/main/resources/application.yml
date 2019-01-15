@@ -72,8 +72,12 @@ zuul:
   ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
   routes:
     contentservice:
-      path: /v1/partner/login
+      path: /v1/content/**
       service-id: contentservice
+      strip-prefix: false
+    orderservice:
+      path: /v1/order/**
+      service-id: orderservice
       strip-prefix: false
 
 # ==========================================================================
@@ -85,6 +89,16 @@ hystrix:
     contentservice:
       execution:
         isolation.thread.timeoutInMilliseconds: 5000
+        timeout:
+          enabled: true
+    orderservice:
+      execution:
+        isolation.thread.timeoutInMilliseconds: 3000
+        timeout:
+          enabled: true
+    contentservice:
+      execution:
+        isolation.thread.timeoutInMilliseconds: 3000
         timeout:
           enabled: true
   threadpool:

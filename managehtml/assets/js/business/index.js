@@ -13,9 +13,9 @@ function load() {
         dataType: 'json',
         success: function (data) {
             if (data.code == 0) {
-                if (isNotNull(data.data.result)) {
+                if (isNotNull(data.data.data)) {
                     var ab = "";
-                    data.data.result.forEach(function (val, index) {
+                    data.data.data.forEach(function (val, index) {
                         ab = ab + writeData([val.date, val.partnerName, val.waitDeliveryAndAmount, val.deliveryAndAmount]);
                     })
                     $("#body").html(ab);
