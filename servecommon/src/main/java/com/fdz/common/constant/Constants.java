@@ -55,6 +55,8 @@ public final class Constants {
 
     public static final class RedisKey {
         public static final String LOCK_PREFIX = "LOCK_";
+        public static final String MANAGE_LOGIN_LABEL = "MANAGE_LOGIN_LABLE_BY_ID_";
+        public static final String PARTNER_LOGIN_LABEL = "PARTNER_LOGIN_LABEL_BY_ID_";
     }
 
     public static final class Symbol {

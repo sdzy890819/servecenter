@@ -1,5 +1,6 @@
 package com.fdz.common.exception.handler;
 
+import com.fdz.common.exception.AccessBizException;
 import com.fdz.common.exception.BizException;
 import com.fdz.common.exception.TimeOutException;
 import com.fdz.common.web.RestResponse;
@@ -22,6 +23,14 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     public RestResponse<?> handleBizException(BizException e) {
+        log.error("自定义业务错误,", e);
+        return RestResponse.error(e.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler({AccessBizException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestResponse<?> handleAccessBizException(AccessBizException e) {
         log.error("自定义业务错误,", e);
         return RestResponse.error(e.getCode(), e.getMessage());
     }

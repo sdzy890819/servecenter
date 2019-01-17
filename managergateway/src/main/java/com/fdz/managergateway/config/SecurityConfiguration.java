@@ -35,9 +35,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private ObjectMapper objectMapper;
 
     @Resource
-    private AuthenticationManager authenticationManager;
-
-    @Resource
     private UserDetailsService userCheckService;
 
     @Bean
@@ -64,11 +61,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/v1/manager/login").permitAll()
+                .antMatchers("/v1/content/manager/login").permitAll()
                 .antMatchers("/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
-                .apply(securityConfigurerAdapter(authenticationManager));
+                .apply(securityConfigurerAdapter(authenticationManager(), objectMapper));
 
     }
 
@@ -83,8 +80,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-resources/**");
     }
 
-    private JWTConfigurer securityConfigurerAdapter(AuthenticationManager authenticationManager) {
-        return new JWTConfigurer(tokenProvider(), authenticationManager);
+    private JWTConfigurer securityConfigurerAdapter(AuthenticationManager authenticationManager, ObjectMapper objectMapper) {
+        return new JWTConfigurer(tokenProvider(), authenticationManager, objectMapper);
     }
 
     @Bean
@@ -105,7 +102,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userCheckService);
+        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         return daoAuthenticationProvider;
     }
+
+
 }
 

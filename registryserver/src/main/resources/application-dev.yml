@@ -18,4 +18,4 @@ management:
     enabled: false
 
 logging:
-  path: ${logidr}/logs
+  path: ${logdir}/logs

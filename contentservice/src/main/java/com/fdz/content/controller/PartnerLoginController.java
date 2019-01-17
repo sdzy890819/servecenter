@@ -56,12 +56,15 @@ public class PartnerLoginController {
             throw new BizException("用户名、或密码错误");
         }
         String pwd = EncryptUtil.encryptPwd(loginDto.getUserName(), loginDto.getPassword());
+        if (!partnerUser.getPassword().equals(pwd)) {
+            throw new BizException("用户名、或密码错误");
+        }
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(UserDisassembly.assembleP(partnerUser.getId()), pwd);
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication, false);
         String bearJWT = "Bearer " + jwt;
-        CookieUtil.addCookie(response, Constants.Common.TOKEN_P, bearJWT, 0);
+        CookieUtil.addCookie(response, Constants.Common.TOKEN_P, bearJWT, 60*60*2);
         loginResult.setToken(bearJWT);
         return RestResponse.success(loginResult);
     }
@@ -88,14 +91,13 @@ public class PartnerLoginController {
     @ApiOperation("获取当前用户信息")
     @GetMapping("/current-user")
     RestResponse<PartnerLoginInfoResult> currentUser() {
-        Long userId = SecurityUtils.checkLoginAndGetUserByPartner();
-        PartnerUser partnerUser = partnerService.selectPartnerUserByPrimaryKey(userId);
-        Partner partner = partnerService.selectPartnerByPrimaryKey(partnerUser.getPartnerId());
+        Long partnerId = SecurityUtils.checkLoginAndGetUserByPartner();
+        Partner partner = partnerService.selectPartnerByPrimaryKey(partnerId);
         PartnerLoginInfoResult partnerLoginInfoResult = new PartnerLoginInfoResult();
         partnerLoginInfoResult.setParentId(partner.getId());
         partnerLoginInfoResult.setParentName(partner.getName());
         partnerLoginInfoResult.setParentShortName(partner.getShortName());
-        partnerLoginInfoResult.setRealName(partnerUser.getRealName());
+        partnerLoginInfoResult.setRealName(partner.getName());
         return RestResponse.success(partnerLoginInfoResult);
     }
 

@@ -11,20 +11,7 @@
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, product_type_name, 
     sn
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.fdz.content.domain.ProductTypeExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from product_type
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
     <include refid="Base_Column_List" />
@@ -35,12 +22,7 @@
     delete from product_type
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.fdz.content.domain.ProductTypeExample" >
-    delete from product_type
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
+
   <insert id="insert" parameterType="com.fdz.content.domain.ProductType" keyProperty="id" useGeneratedKeys="true">
     insert into product_type (id, create_time, modify_time, 
       create_by, modify_by, remark, 

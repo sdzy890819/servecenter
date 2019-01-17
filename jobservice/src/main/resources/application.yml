@@ -11,7 +11,7 @@ server:
     accesslog:
       enabled: true
       pattern: "%t %a &quot;%r&quot; %s (%D ms)"
-      dir: ${user.home}/undertow/jobservice/access-logs/
+      dir: ${logdir}/undertow/jobservice/access-logs/
   use-forward-headers: true
 
 ## =============================================================
@@ -67,7 +67,7 @@ eureka:
 ## Logging Properties @see LoggingApplicationListener
 ## =============================================================
 logging:
-  path: ${user.home}/logs/jobservice
+  path: ${logdir}/logs/jobservice
   file: jobservice
   pattern:
     level: "[MDC:%X{currentRequestID};%X{userID};%X{remoteIP}] %5p"

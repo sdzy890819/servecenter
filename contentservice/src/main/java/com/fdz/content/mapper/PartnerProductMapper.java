@@ -14,7 +14,7 @@ public interface PartnerProductMapper {
             "    sale_price, platform_price, shelf, partner_id ";
     String TABLE = " partner_product ";
 
-    String RESULT_MAP = " BaseResultMap ";
+    String RESULT_MAP = "BaseResultMap";
 
     String SELECT = "select " + SQL + " from " + TABLE + Constants.Sql.NOT_DELETED;
 

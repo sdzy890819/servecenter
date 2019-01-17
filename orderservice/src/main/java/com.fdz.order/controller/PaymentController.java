@@ -99,6 +99,17 @@ public class PaymentController {
         return RestResponse.success(null);
     }
 
+    @ApiOperation("初始化账户.")
+    @PostMapping("/init/account/{partnerId}")
+    RestResponse initAccount(@PathVariable("partnerId") Long partnerId) {
+        return RestResponse.success(null);
+    }
+
+
+    /**
+     * 机构使用
+     * @return
+     */
     @ApiOperation("获取机构账户信息")
     @GetMapping("/partner/account")
     RestResponse<?> account() {

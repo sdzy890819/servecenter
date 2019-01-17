@@ -57,12 +57,15 @@ public class ManagerLoginController {
             throw new BizException("用户名、或密码错误");
         }
         String pwd = EncryptUtil.encryptPwd(loginDto.getUserName(), loginDto.getPassword());
+        if (!manager.getPassword().equals(pwd)) {
+            throw new BizException("用户名、或密码错误");
+        }
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(UserDisassembly.assembleM(manager.getId()), pwd);
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProviderManager.createToken(authentication, false);
         String bearJWT = "Bearer " + jwt;
-        CookieUtil.addCookie(response, Constants.Common.TOKEN_M, bearJWT, 0);
+        CookieUtil.addCookie(response, Constants.Common.TOKEN_M, bearJWT, 60*60*2);
         loginResult.setToken(bearJWT);
         return RestResponse.success(loginResult);
     }

@@ -26,10 +26,22 @@
                 </div>
                 <div class="form-group">
                     <label>商品图片</label>
-                    <input type="file" value="封面图片上传" name="txt_productCoverImage" id="txt_productCoverImage"/>
-                    <input type="file" value="图片上传" name="txt_productImage1" id="txt_productImage1" />
-                    <input type="file" value="图片上传" name="txt_productImage2" id="txt_productImage2" />
-                    <input type="file" value="图片上传" name="txt_productImage3" id="txt_productImage3" />
+                    <form class="form-inline" id="txt_productCoverImageForm">
+                        <input type="file" name="txt_productCoverImage" id="txt_productCoverImage"  class="form-control"/>
+                        <input type="button" id="txt_productCoverImageButton" value="封面图片上传" class="form-control"/>
+                    </form>
+                    <form class="form-inline" id="txt_productImage1Form">
+                        <input type="file" name="txt_productImage1" id="txt_productImage1"  class="form-control"/>
+                        <input type="button" id="txt_productImage1Button" value="组图（1）上传" class="form-control"/>
+                    </form>
+                    <form class="form-inline" id="txt_productImage2Form">
+                        <input type="file" name="txt_productImage2" id="txt_productImage2"  class="form-control"/>
+                        <input type="button" id="txt_productImage2Button" value="组图（2）上传" class="form-control"/>
+                    </form>
+                    <form class="form-inline" id="txt_productImage3Form">
+                        <input type="file" name="txt_productImage3" id="txt_productImage3"  class="form-control"/>
+                        <input type="button" id="txt_productImage3Button" value="组图（3）上传" class="form-control"/>
+                    </form>
                 </div>
                 <div class="form-group">
                     <label for="txt_primeCosts">进货价格</label>

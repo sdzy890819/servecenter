@@ -1,5 +1,6 @@
 package com.fdz.content.service;
 
+import com.fdz.common.constant.Constants;
 import com.fdz.common.enums.InterfaceExecStatus;
 import com.fdz.common.enums.InterfaceTypeEnums;
 import com.fdz.common.redis.RedisDataManager;
@@ -14,6 +15,7 @@ import com.fdz.content.manager.PartnerManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,6 +33,9 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
 
     @Resource
     private RedisDataManager redisDataManager;
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public PartnerUser findPartnerUserByUserName(String userName) {
@@ -54,10 +59,10 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
                     PartnerUser partnerUser = selectPartnerUserByPrimaryKey(Long.parseLong(username));
                     if (partnerUser != null) {
                         LoginUser loginUser = new LoginUser();
-                        loginUser.setId(partnerUser.getId());
-                        loginUser.setPassword(partnerUser.getPassword());
-                        loginUser.setUserName(username);
-                        redisDataManager.set(username, loginUser, 1, TimeUnit.HOURS);
+                        loginUser.setId(partnerUser.getPartnerId());
+                        loginUser.setPassword(passwordEncoder.encode(partnerUser.getPassword()));
+                        loginUser.setUserName(UserDisassembly.assembleP(partnerUser.getPartnerId()));
+                        redisDataManager.set(Constants.RedisKey.PARTNER_LOGIN_LABEL + loginUser.getUsername(), loginUser, 1, TimeUnit.DAYS);
                         return loginUser;
                     }
                 } catch (NumberFormatException e) {

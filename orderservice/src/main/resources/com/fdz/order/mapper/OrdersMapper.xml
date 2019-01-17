@@ -306,7 +306,7 @@
 
   <select id="searchOrders" resultMap="ordersAndLogistics">
     select <include refid="Base_Column_List" />,receiver, receiver_address, receiver_mobile, logistics, logistics_sn,
-    logistics_status  from orders o, orders_logistics l where is_delete = 0
+    logistics_status  from orders o, orders_logistics l where o.is_delete = 0
     <if test="search.orderSn != null">
       and o.order_sn = #{search.orderSn}
     </if>
@@ -332,7 +332,7 @@
   </select>
 
   <select id="searchOrdersCount" resultType="java.lang.Integer">
-    select count(1)  from orders o, orders_logistics l where is_delete = 0
+    select count(1)  from orders o, orders_logistics l where o.is_delete = 0
     <if test="search.orderSn != null">
       and o.order_sn = #{search.orderSn}
     </if>

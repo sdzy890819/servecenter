@@ -15,7 +15,7 @@ server:
     accesslog:
       enabled: true
       pattern: "%t %a &quot;%r&quot; %s (%D ms)"
-      dir: ${user.home}/undertow/managergateway/access-logs/
+      dir: ${logdir}/undertow/managergateway/access-logs/
 spring:
   application:
     name: managergateway
@@ -62,6 +62,7 @@ eureka:
       health.path: ${management.context-path}/health
 
 zuul:
+  sensitiveHeaders:
   ribbon-isolation-strategy: thread
   semaphore:
     max-semaphores: 2000
@@ -86,11 +87,6 @@ zuul:
 # Disable Hystrix timeout globally (for all services)
 hystrix:
   command:
-    contentservice:
-      execution:
-        isolation.thread.timeoutInMilliseconds: 5000
-        timeout:
-          enabled: true
     orderservice:
       execution:
         isolation.thread.timeoutInMilliseconds: 3000
@@ -124,7 +120,7 @@ ribbon:
 ## Logging Properties @see LoggingApplicationListener
 ## =============================================================
 logging:
-  path: ${user.home}/logs/managergateway
+  path: ${logdir}/logs/managergateway
   file: managergateway
   pattern:
     level: "[MDC:%X{currentSessionId};%X{remoteIP}] %5p"

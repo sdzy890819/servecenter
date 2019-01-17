@@ -1,5 +1,6 @@
 package com.fdz.content.service;
 
+import com.fdz.common.constant.Constants;
 import com.fdz.common.redis.RedisDataManager;
 import com.fdz.common.security.vo.LoginUser;
 import com.fdz.common.utils.StringUtils;
@@ -9,6 +10,7 @@ import com.fdz.content.manager.ManageManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +24,9 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService {
 
     @Resource
     private RedisDataManager redisDataManager;
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Manager findManagerByUserName(String userName) {
@@ -45,10 +50,10 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService {
                     Manager manager = selectManagerByPrimaryKey(Long.parseLong(username));
                     if (manager != null) {
                         LoginUser loginUser = new LoginUser();
-                        loginUser.setPassword(manager.getPassword());
+                        loginUser.setPassword(passwordEncoder.encode(manager.getPassword()));
                         loginUser.setId(manager.getId());
-                        loginUser.setUserName(username);
-                        redisDataManager.set(username, loginUser, 1, TimeUnit.HOURS);
+                        loginUser.setUserName(UserDisassembly.assembleM(manager.getId()));
+                        redisDataManager.set(Constants.RedisKey.MANAGE_LOGIN_LABEL + loginUser.getUsername(), loginUser, 1, TimeUnit.DAYS);
                         return loginUser;
                     }
                 } catch (NumberFormatException e) {
@@ -58,7 +63,6 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService {
         }
         throw new UsernameNotFoundException("不是当前的用户体系");
     }
-
 
 
     public int updateByPrimaryKeySelective(Manager manager) {

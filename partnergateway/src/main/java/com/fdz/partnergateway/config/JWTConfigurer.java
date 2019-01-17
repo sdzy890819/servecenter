@@ -1,5 +1,6 @@
 package com.fdz.partnergateway.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdz.common.constant.Constants;
 import com.fdz.common.security.jwt.JWTAuthenticationFilter;
 import com.fdz.common.security.jwt.TokenProvider;
@@ -13,15 +14,17 @@ public class JWTConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilt
 
     private TokenProvider tokenProvider;
     private AuthenticationManager authenticationManager;
+    private ObjectMapper objectMapper;
 
-    public JWTConfigurer(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    public JWTConfigurer(TokenProvider tokenProvider, AuthenticationManager authenticationManager, ObjectMapper objectMapper) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public void configure(HttpSecurity http) {
-        JWTAuthenticationFilter customFilter = new JWTAuthenticationFilter(tokenProvider, Constants.Common.TOKEN_P, authenticationManager);
+        JWTAuthenticationFilter customFilter = new JWTAuthenticationFilter(tokenProvider, Constants.Common.TOKEN_P, authenticationManager, objectMapper);
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

@@ -2,10 +2,12 @@ package com.fdz.content;
 
 //import com.fdz.order.config.ApplicationProperties;
 
+import com.fdz.content.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
@@ -14,7 +16,7 @@ import org.springframework.core.env.Environment;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-//@EnableConfigurationProperties(ApplicationProperties.class)
+@EnableConfigurationProperties(ApplicationProperties.class)
 @SpringCloudApplication
 @EnableFeignClients
 @EnableZuulProxy

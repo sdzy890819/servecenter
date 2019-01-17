@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -47,7 +46,7 @@ public class Product extends BaseEntity {
     public String getCreateTimeStr() {
         if (this.getCreateTime() != null) {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            return simpleDateFormat.format(new Date(this.getCreateTime()));
+            return simpleDateFormat.format(this.getCreateTime());
         }
         return "";
     }

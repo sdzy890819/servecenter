@@ -28,7 +28,7 @@ public class LogAspect extends BaseAspect {
     @Resource
     private ObjectMapper objectMapper;
 
-    @Pointcut("execution (* com.fdz.*.controller..*.*(..))")
+    @Pointcut("execution (* com.fdz..controller..*.*(..))")
     public void controllerPointcut() {
     }
 

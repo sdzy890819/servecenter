@@ -11,9 +11,9 @@ public class BaseEntity {
 
     private Long id;
 
-    private Long createTime;
+    private Date createTime;
 
-    private Long modifyTime;
+    private Date modifyTime;
 
     private String createBy;
 
@@ -24,8 +24,8 @@ public class BaseEntity {
     private Boolean delete;
 
     public BaseEntity() {
-        createTime = new Date().getTime();
-        modifyTime = new Date().getTime();
+        createTime = new Date();
+        modifyTime = new Date();
         createBy = SecurityUtils.getCurrentLoginUserIdByPartner();
         if (StringUtils.isNotBlank(createBy)) {
             createBy = SecurityUtils.getCurrentLoginUserIdByManager();
@@ -39,7 +39,7 @@ public class BaseEntity {
 
     public BaseEntity(Long id) {
         this.id = id;
-        modifyTime = new Date().getTime();
+        modifyTime = new Date();
         modifyBy = SecurityUtils.getCurrentLoginUserIdByPartner();
         if (StringUtils.isNotBlank(modifyBy)) {
             modifyBy = SecurityUtils.getCurrentLoginUserIdByManager();

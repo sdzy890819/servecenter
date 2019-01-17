@@ -17,7 +17,7 @@ public interface ProductImageMapper {
 
     String TABLE = " product_image ";
 
-    String RESULT_MAP = " BaseResultMap ";
+    String RESULT_MAP = "BaseResultMap";
 
     String SELECT = "select " + SQL + " from " + TABLE + Constants.Sql.NOT_DELETED;
 

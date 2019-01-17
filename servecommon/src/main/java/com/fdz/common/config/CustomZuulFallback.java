@@ -48,7 +48,7 @@ public class CustomZuulFallback implements FallbackProvider {
 
             @Override
             public InputStream getBody() throws IOException {
-                RestResponse restResponse = RestResponse.error("服务错误, 请重试");
+                RestResponse restResponse = RestResponse.error("哎呀，服务好像出去旅游了. 稍等片刻，喝口茶");
                 return new ByteArrayInputStream(objectMapper.writeValueAsBytes(restResponse));
             }
 

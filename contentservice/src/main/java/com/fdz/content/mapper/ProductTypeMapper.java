@@ -14,9 +14,9 @@ public interface ProductTypeMapper {
 
     String SQL = " id, create_time, modify_time, create_by, modify_by, remark, is_delete, product_type_name, \n" +
             "    sn ";
-    String TABLE = " product ";
+    String TABLE = " product_type ";
 
-    String RESULT_MAP = " BaseResultMap ";
+    String RESULT_MAP = "BaseResultMap";
 
     String SELECT = "select " + SQL + " from " + TABLE + Constants.Sql.NOT_DELETED;
 

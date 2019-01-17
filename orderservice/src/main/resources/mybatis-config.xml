@@ -8,7 +8,12 @@
         <package name="com.fdz.order.domain"/>
     </typeAliases>
     <mappers>
-        <package name="com.fdz.order.mapper"/>
         <mapper resource="mybatis-config/BaseEntity.xml" />
+        <mapper resource="com/fdz/order/mapper/AccountMapper.xml" />
+        <mapper resource="com/fdz/order/mapper/OrdersLogisticsMapper.xml" />
+        <mapper resource="com/fdz/order/mapper/OrdersMapper.xml" />
+        <mapper resource="com/fdz/order/mapper/OrdersProductMapper.xml" />
+        <mapper resource="com/fdz/order/mapper/OrdersTrackMapper.xml" />
+        <mapper resource="com/fdz/order/mapper/PaymentRecordMapper.xml" />
     </mappers>
 </configuration>

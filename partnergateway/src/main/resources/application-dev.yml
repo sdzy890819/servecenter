@@ -8,6 +8,8 @@ logging:
     com.fdz: debug
     org.springframework.security: trace
 application:
+  redis:
+    enabled: true
   cors:
     config:
       allow-credentials: true

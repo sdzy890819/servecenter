@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    load(1, $("#pageSize").find("option:selected").val());
+    load(1, $("#pageSize").find("option:selected").val(), {});
     loadProductTypeNo();
     $("#pageSize").change(function () {
         load(1, $(this).val());
@@ -230,10 +230,10 @@ $(document).ready(function () {
     function load(currentPage, pageSize, search) {
         $.ajax({
             async: false,
-            type: "GET",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
             url: '/v1/content/product/search?page=' + currentPage + "&pageSize=" + pageSize,
-            data: search,
+            data: JSON.stringify(search),
             dataType: 'json',
             success: function (data) {
                 if (data.code == 0) {

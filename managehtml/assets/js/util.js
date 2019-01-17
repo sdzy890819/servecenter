@@ -9,7 +9,7 @@ function isNotNull(params) {
 function error(jqXHR, textStatus, errorThrown) {
     if (jqXHR.status != 401) {
         var responseData = JSON.parse(jqXHR.responseText);
-        bootbox.alert(responseData.msg);
+        bootbox.alert(responseData.message);
     } else {
         login();
     }

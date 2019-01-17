@@ -11,4 +11,4 @@ eureka:
       defaultZone: http://localhost:39111/eureka/
 
 logging:
-  path: ${user.home}/logs
+  path: ${logdir}/logs

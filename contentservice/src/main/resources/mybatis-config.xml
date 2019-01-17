@@ -5,10 +5,18 @@
 
 <configuration>
     <typeAliases>
-        <package name="com.fdz.order.domain"/>
+        <package name="com.fdz.content.domain"/>
     </typeAliases>
     <mappers>
-        <package name="com.fdz.order.mapper"/>
         <mapper resource="mybatis-config/BaseEntity.xml" />
+        <mapper resource="com/fdz/content/mapper/InterfaceExecRecordMapper.xml" />
+        <mapper resource="com/fdz/content/mapper/ManagerMapper.xml" />
+        <mapper resource="com/fdz/content/mapper/PartnerInterfaceConfigMapper.xml" />
+        <mapper resource="com/fdz/content/mapper/PartnerMapper.xml" />
+        <mapper resource="com/fdz/content/mapper/PartnerProductMapper.xml" />
+        <mapper resource="com/fdz/content/mapper/PartnerUserMapper.xml" />
+        <mapper resource="com/fdz/content/mapper/ProductImageMapper.xml" />
+        <mapper resource="com/fdz/content/mapper/ProductMapper.xml" />
+        <mapper resource="com/fdz/content/mapper/ProductTypeMapper.xml" />
     </mappers>
 </configuration>
