@@ -65,7 +65,7 @@ public class ManagerLoginController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProviderManager.createToken(authentication, false);
         String bearJWT = "Bearer " + jwt;
-        CookieUtil.addCookie(response, Constants.Common.TOKEN_M, bearJWT, 60*60*2);
+        CookieUtil.addCookie(response, Constants.Common.TOKEN_M, bearJWT, 60 * 60 * 2);
         loginResult.setToken(bearJWT);
         return RestResponse.success(loginResult);
     }

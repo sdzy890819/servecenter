@@ -1,4 +1,4 @@
-package com.ouding.wallet;
+package com.fdz.registry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

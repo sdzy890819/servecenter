@@ -1,14 +1,10 @@
 package com.fdz.common.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fdz.common.constant.Constants;
 import com.fdz.common.utils.CookieUtil;
-import com.fdz.common.web.RestResponse;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -17,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -46,9 +41,9 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
         String jwt = resolveToken(httpServletRequest);
         if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {
             //try {
-                Authentication authentication = this.tokenProvider.getAuthentication(jwt);
-                //authentication = authenticationManager.authenticate(authentication);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication = this.tokenProvider.getAuthentication(jwt);
+            //authentication = authenticationManager.authenticate(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 //            } catch (UsernameNotFoundException e) {
 //                HttpServletResponse response = (HttpServletResponse) servletResponse;
 //                RestResponse<?> restResponse = RestResponse.error(Constants.BusinessCode.USER_NOT_LOGIN, "用户未登录");
