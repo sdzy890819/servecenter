@@ -60,9 +60,11 @@ $(document).ready(function () {
     }
 
     function delBtnClick(id) {
-        bootbox.confirm("确定要删除当前流水吗?", function () {
-            del(id);
-            load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+        bootbox.confirm("确定要删除当前流水吗?", function (result) {
+            if(result) {
+                del(id);
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+            }
         })
     }
 
@@ -162,11 +164,11 @@ $(document).ready(function () {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: '/v1/order/payment-record/search?page=' + currentPage + "&pageSize=" + pageSize,
-            data: JSON.stringify(search),
+            data: JSON.stringify(search, jsonReplacer),
             dataType: 'json',
             success: function (data) {
                 if (data.code == 0) {
-                    if (isNotNull(data.data.data)) {
+                    $("#body").html("");                     if (isNotNull(data.data.data)) {
                         var ab = "";
                         data.data.data.forEach(function (val, index) {
                             ab = ab + writeData([val.partnerName, val.paySn, val.orderSn, val.paymentTypeStr, val.amount, val.surplusAmount,

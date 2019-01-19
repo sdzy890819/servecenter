@@ -40,8 +40,10 @@ $(document).ready(function () {
     });
 
     $(document).on("click", "#listDelivery", function () {
-        bootbox.confirm("您确认要发货吗?", function () {
-            delivery($(this).attr("delivery"));
+        bootbox.confirm("您确认要发货吗?", function (result) {
+            if(result) {
+                delivery($("#listDelivery").attr("delivery"));
+            }
         });
     })
 });
@@ -82,9 +84,11 @@ $(document).ready(function () {
     }
 
     function delBtnClick(id) {
-        bootbox.confirm("确定要终止与此订单的合作么", function () {
-            del(id);
-            load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+        bootbox.confirm("确定要删除当前订单么", function (result) {
+            if(result) {
+                del(id);
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+            }
         })
     }
 
@@ -180,11 +184,11 @@ $(document).ready(function () {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: '/v1/order/search?page=' + currentPage + "&pageSize=" + pageSize,
-            data: JSON.stringify(search),
+            data: JSON.stringify(search, jsonReplacer),
             dataType: 'json',
             success: function (data) {
                 if (data.code == 0) {
-                    if (isNotNull(data.data.data)) {
+                    $("#body").html("");                     if (isNotNull(data.data.data)) {
                         var ab = "";
                         data.data.data.forEach(function (val, index) {
                             ab = ab + writeData(["<a href='orders-detail.html?menuName=orders&id="+val.orderSn+"'>" + val.partnerSn + "</a>", val.orderSn,

@@ -1,16 +1,12 @@
-package com.fdz.content;
+package com.fdz;
 
-//import com.fdz.order.config.ApplicationProperties;
-
-import com.fdz.content.config.ApplicationProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fdz.job.config.ApplicationProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.core.env.Environment;
 
 import java.net.InetAddress;
@@ -18,20 +14,18 @@ import java.net.UnknownHostException;
 
 @EnableConfigurationProperties(ApplicationProperties.class)
 @SpringCloudApplication
+@Slf4j
 @EnableFeignClients
-@EnableZuulProxy
-public class ContentServiceLauncher {
-
-    private static final Logger log = LoggerFactory.getLogger(ContentServiceLauncher.class);
+public class JobServiceLauncher {
 
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplicationBuilder(ContentServiceLauncher.class).build(args);
+        SpringApplication app = new SpringApplicationBuilder(JobServiceLauncher.class).web(true).build();
         Environment env = app.run(args).getEnvironment();
         String protocol = "http";
         if (env.getProperty("server.ssl.key-store") != null) {
             protocol = "https";
         }
-        log.info("--/\n---------------------------------------------------------------------------------------\n\t" +
+        log.info("\n---------------------------------------------------------------------------------------\n\t" +
                         "Application '{}' is running! Access URLs:\n\t" +
                         "Local: \t\t{}://localhost:{}\n\t" +
                         "External: \t{}://{}:{}\n\t" +
@@ -45,4 +39,5 @@ public class ContentServiceLauncher {
                 env.getProperty("server.port"),
                 env.getActiveProfiles());
     }
+
 }

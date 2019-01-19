@@ -264,6 +264,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void businessDelivery(String orderSn) {
         Orders orders = orderManager.findOrdersByOrderSn(orderSn);
+        if (orders == null) {
+            throw new BizException("订单不存在.");
+        }
         if (orders.getOrderStatus() == OrdersStatus.RECEIVED.getStatus()) {
             throw new BizException("订单已经签收，不可更改物流信息");
         }

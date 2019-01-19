@@ -56,23 +56,25 @@ $(document).ready(function () {
     }
 
     function delBtnClick(id) {
-        bootbox.confirm("确定要终止与此合作伙伴的合作么", function () {
-            del(id);
-            load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+        bootbox.confirm("确定要终止与此合作伙伴的合作么", function (result) {
+            if(result) {
+                del(id);
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+            }
         })
     }
 
     function getVal() {
         var content = {};
         content.id = $("#txt_id").val();
-        data.name = $("#txt_name").val();
-        data.shortName = $("#txt_shortName").val();
-        data.nature = $("#txt_nature").val();
-        data.code = $("#txt_code").val();
-        data.contacts = $("#txt_contacts").val();
-        data.contactMobile = $("#txt_contactMobile").val();
-        data.serviceRate = $("#txt_serviceRate").val();
-        data.publicKey = $("#txt_publicKey").val();
+        content.name = $("#txt_name").val();
+        content.shortName = $("#txt_shortName").val();
+        content.nature = $("#txt_nature").val();
+        content.code = $("#txt_code").val();
+        content.contacts = $("#txt_contacts").val();
+        content.contactMobile = $("#txt_contactMobile").val();
+        content.serviceRate = $("#txt_serviceRate").val();
+        content.publicKey = $("#txt_publicKey").val();
         return content;
     }
 
@@ -162,11 +164,11 @@ $(document).ready(function () {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             url: '/v1/content/partner/search?page=' + currentPage + "&pageSize=" + pageSize,
-            data: JSON.stringify(search),
+            data: JSON.stringify(search, jsonReplacer),
             dataType: 'json',
             success: function (data) {
                 if (data.code == 0) {
-                    if (isNotNull(data.data.data)) {
+                    $("#body").html("");                     if (isNotNull(data.data.data)) {
                         var ab = "";
                         data.data.data.forEach(function (val, index) {
                             ab = ab + writeData([val.uniqueKey, val.name, val.contacts, val.contactMobile, val.natureStr, val.serviceRate,

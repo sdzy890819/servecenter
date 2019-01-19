@@ -1,4 +1,4 @@
-package com.fdz.order;
+package com.fdz;
 
 import com.fdz.order.config.ApplicationProperties;
 import org.slf4j.Logger;

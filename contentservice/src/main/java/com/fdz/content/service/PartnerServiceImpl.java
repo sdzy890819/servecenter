@@ -12,6 +12,7 @@ import com.fdz.content.domain.*;
 import com.fdz.content.dto.PartnerDto;
 import com.fdz.content.dto.RecordDto;
 import com.fdz.content.manager.PartnerManager;
+import com.fdz.content.service.order.OrderService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -36,6 +37,9 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
 
     @Resource
     private PasswordEncoder passwordEncoder;
+
+    @Resource
+    private OrderService orderService;
 
     @Override
     public PartnerUser findPartnerUserByUserName(String userName) {
@@ -114,7 +118,9 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
     }
 
     public int insertSelective(Partner partner) {
-        return partnerManager.insertSelective(partner);
+        int p = partnerManager.insertSelective(partner);
+        p = p + (orderService.initAccount(partner.getId()) ? 1 : 0);
+        return p;
     }
 
     public int insertSelective(PartnerInterfaceConfig partnerInterfaceConfig) {

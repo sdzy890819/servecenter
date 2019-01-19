@@ -5,7 +5,6 @@ import com.fdz.common.exception.BizException;
 import com.fdz.common.exception.TimeOutException;
 import com.fdz.common.web.RestResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -16,7 +15,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 @Slf4j
 @ControllerAdvice(annotations = {RestController.class, Service.class, Component.class, Repository.class})
-@ConditionalOnMissingBean(name = {"exceptionHandler"})
 public class ExceptionHandlerAdvice {
 
     @ExceptionHandler({BizException.class})

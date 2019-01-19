@@ -13,7 +13,7 @@ function load() {
         dataType: 'json',
         success: function (data) {
             if (data.code == 0) {
-                if (isNotNull(data.data.data)) {
+                $("#body").html("");                     if (isNotNull(data.data.data)) {
                     var ab = "";
                     data.data.data.forEach(function (val, index) {
                         ab = ab + writeData([val.date, val.partnerName, val.waitDeliveryAndAmount, val.deliveryAndAmount]);

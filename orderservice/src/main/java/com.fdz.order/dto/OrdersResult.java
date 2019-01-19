@@ -39,6 +39,9 @@ public class OrdersResult {
 
     private List<OrdersProductResult> ordersProductResults;
 
+    private BigDecimal platformAmount;
+
+    private BigDecimal infoAmount;
 
     //----
     private String buyTimeStr;

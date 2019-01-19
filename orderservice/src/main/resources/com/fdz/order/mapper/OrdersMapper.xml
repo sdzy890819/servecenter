@@ -14,6 +14,9 @@
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
     <result column="business_delivery_status"  jdbcType="TINYINT" property="businessDeliveryStatus" />
+    <result column="platform_amount" property="platformAmount" />
+    <result column="cost_amount" property="costAmount" />
+    <result column="info_amount" property="infoAmount" />
   </resultMap>
 
   <resultMap id="ordersAndLogistics" type="com.fdz.order.domain.OrdersAndLogistics" extends="baseEntity.base">
@@ -305,8 +308,11 @@
   </update>
 
   <select id="searchOrders" resultMap="ordersAndLogistics">
-    select <include refid="Base_Column_List" />,receiver, receiver_address, receiver_mobile, logistics, logistics_sn,
-    logistics_status  from orders o, orders_logistics l where o.is_delete = 0
+    select o.id, o.create_time, o.modify_time, o.create_by, o.modify_by, o.remark, o.is_delete, o.order_sn,
+    o.partner_sn, o.partner_id, o.amount, o.buy_time, o.confirm_time, o.business_delivery_time,
+    o.end_time, o.delivery_status, o.status, o.order_status, o.business_delivery_status, o.platform_amount, o.cost_amount, o.info_amount ,
+    l.receiver, l.receiver_address, l.receiver_mobile, l.logistics, l.logistics_sn,
+    l.logistics_status  from orders o, orders_logistics l where o.is_delete = 0
     <if test="search.orderSn != null">
       and o.order_sn = #{search.orderSn}
     </if>

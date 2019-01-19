@@ -45,4 +45,10 @@ public class OrdersAndLogistics extends BaseEntity {
 
     private String logisticsStatus;
 
+    private BigDecimal platformAmount;
+
+    private BigDecimal costAmount;
+
+    private BigDecimal infoAmount;
+
 }

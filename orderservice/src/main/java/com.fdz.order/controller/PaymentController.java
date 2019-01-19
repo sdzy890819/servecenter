@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -102,12 +103,19 @@ public class PaymentController {
     @ApiOperation("初始化账户.")
     @PostMapping("/init/account/{partnerId}")
     RestResponse initAccount(@PathVariable("partnerId") Long partnerId) {
+        Account account = new Account();
+        account.setAmount(BigDecimal.ZERO);
+        account.setFreezingAmount(BigDecimal.ZERO);
+        account.setPartnerId(partnerId);
+        account.setRemark("初始化数据");
+        orderService.insertSelective(account);
         return RestResponse.success(null);
     }
 
 
     /**
      * 机构使用
+     *
      * @return
      */
     @ApiOperation("获取机构账户信息")

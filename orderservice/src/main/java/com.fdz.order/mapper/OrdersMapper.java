@@ -15,8 +15,8 @@ import java.util.List;
 public interface OrdersMapper {
 
     String SQL = " id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, \n" +
-            "    partner_sn, partner_id, partner_product_id, amount, buy_time, confirm_time, business_delivery_time, \n" +
-            "    end_time, delivery_status, status, order_status, business_delivery_status, platform_amount, cost_amount,info_amount ";
+            "    partner_sn, partner_id, amount, buy_time, confirm_time, business_delivery_time,\n" +
+            "    end_time, delivery_status, status, order_status,business_delivery_status, platform_amount, cost_amount, info_amount ";
 
     String TABLE = " orders ";
 

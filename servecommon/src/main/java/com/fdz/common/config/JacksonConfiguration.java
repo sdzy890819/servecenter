@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fdz.common.utils.ObjectMapperConfUtils;
 import com.fdz.common.web.jackson.LocalDateTimestampDeserializer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Configuration
 public class JacksonConfiguration {
 

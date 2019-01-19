@@ -1,6 +1,6 @@
-package com.fdz.managergateway;
+package com.fdz;
 
-import com.fdz.managergateway.config.ApplicationProperties;
+import com.fdz.partnergateway.config.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -18,12 +18,12 @@ import java.net.UnknownHostException;
 @SpringCloudApplication
 @EnableFeignClients
 @EnableZuulProxy
-public class ManagerGatewayLauncher {
+public class PartnerGatewayLauncher {
 
-    private static final Logger log = LoggerFactory.getLogger(ManagerGatewayLauncher.class);
+    private static final Logger log = LoggerFactory.getLogger(PartnerGatewayLauncher.class);
 
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplicationBuilder(ManagerGatewayLauncher.class).build(args);
+        SpringApplication app = new SpringApplicationBuilder(PartnerGatewayLauncher.class).build(args);
         Environment env = app.run(args).getEnvironment();
         String protocol = "http";
         if (env.getProperty("server.ssl.key-store") != null) {

@@ -1,4 +1,4 @@
-package com.fdz.content.config;
+package com.fdz.common.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
