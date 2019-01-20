@@ -123,7 +123,7 @@ $(document).ready(function () {
         bootbox.confirm("确定要删除此商品么", function (result) {
             if(result) {
                 del(id);
-                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val(), searchVo());
             }
         })
     }
@@ -243,7 +243,7 @@ $(document).ready(function () {
                         var ab = "";
                         data.data.data.forEach(function (val, index) {
                             ab = ab + writeData(["<img src='" + val.productCoverImage + "' width='100px'/>", val.productName, val.productModel, val.primeCosts, val.salePrice, val.status ? "已上架" : "已下架",
-                                val.createTimeStr, "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a><a href='#' id='listDelete' delete='\" + val.id + \"' class='btn btn-danger btn-sm' >删除</a>"]);
+                                val.createTimeStr, "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a><a href='#' id='listDelete' delete='\ + val.id + "' class='btn btn-danger btn-sm' >删除</a>"]);
                         })
                         $("#body").html(ab);
                     }

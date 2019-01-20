@@ -10,10 +10,7 @@ import com.fdz.content.convert.DtoConvert;
 import com.fdz.content.domain.Product;
 import com.fdz.content.domain.ProductImage;
 import com.fdz.content.domain.ProductType;
-import com.fdz.content.dto.PageDataResult;
-import com.fdz.content.dto.ProductDto;
-import com.fdz.content.dto.ProductResult;
-import com.fdz.content.dto.SearchProductDto;
+import com.fdz.content.dto.*;
 import com.fdz.content.service.PartnerService;
 import com.fdz.content.service.ProductService;
 import io.swagger.annotations.Api;
@@ -45,6 +42,51 @@ public class ProductController {
     RestResponse<List<ProductType>> allType() {
         List<ProductType> list = productService.findAllTypes();
         return RestResponse.success(list);
+    }
+
+    @ApiOperation("商品分类详情")
+    @GetMapping("/type/detail/{id}")
+    RestResponse<ProductType> detailType(@PathVariable("id") Long id) {
+        return RestResponse.success(productService.selectProductTypeByPrimaryKey(id));
+    }
+
+
+    @ApiOperation("商品分类删除")
+    @GetMapping("/type/delete/{id}")
+    RestResponse<?> deleteType(@PathVariable("id") Long id) {
+        ProductType old = productService.selectProductTypeByPrimaryKey(id);
+        int count = productService.queryProductByType(old.getSn());
+        if (count > 0) {
+            throw new BizException("当前商品分类有产品在使用，不可以被删除");
+        }
+        ProductType productType = new ProductType(id);
+        productType.setDelete(true);
+        productService.updateByPrimaryKeySelective(productType);
+        return RestResponse.success(null);
+    }
+
+    @ApiOperation("新增商品分类")
+    @PostMapping("/type/create")
+    RestResponse<?> createType(@RequestBody ProductTypeDto dto) {
+        ProductType productType = dtoConvert.convert(dto);
+        int count = productService.queryTypeBySnAndNameCount(dto.getProductTypeName(), dto.getSn());
+        if (count > 0) {
+            throw new BizException("商品分类已经存在");
+        }
+        productService.insertSelective(productType);
+        return RestResponse.success(null);
+    }
+
+    @ApiOperation("修改商品分类")
+    @PostMapping("/type/update")
+    RestResponse<?> updateType(@RequestBody ProductTypeDto dto) {
+        ProductType productType = dtoConvert.convert(dto);
+        int count = productService.queryTypeBySnAndNameCount(dto.getProductTypeName(), dto.getSn());
+        if (count > 1) {
+            throw new BizException("商品分类已经存在");
+        }
+        productService.updateByPrimaryKeySelective(productType);
+        return RestResponse.success(null);
     }
 
 
@@ -112,6 +154,7 @@ public class ProductController {
         Product product = new Product(id);
         product.setStatus(status);
         productService.updateByPrimaryKeySelective(product);
+        partnerService.syncProduct(product.getId());
         return RestResponse.success(null);
     }
 
@@ -125,6 +168,7 @@ public class ProductController {
         Product product = new Product(id);
         product.setDelete(true);
         productService.updateByPrimaryKeySelective(product);
+        partnerService.syncProduct(product.getId());
         return RestResponse.success(null);
     }
 
@@ -140,6 +184,12 @@ public class ProductController {
     @ApiOperation("修改产品")
     @PostMapping("/update")
     RestResponse update(@RequestBody ProductDto dto) {
+        if (!dto.getStatus()) {
+            Integer count = partnerService.countPartnerProductByProductId(dto.getId());
+            if (count != null && count > 0) {
+                throw new BizException("还有合作伙伴配置当前产品，不可下架");
+            }
+        }
         Product product = dtoConvert.convert(dto);
         productService.updateByPrimaryKeySelective(product);
         partnerService.syncProduct(product.getId());

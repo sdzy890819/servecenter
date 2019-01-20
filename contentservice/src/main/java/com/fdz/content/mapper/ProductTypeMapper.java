@@ -2,10 +2,7 @@ package com.fdz.content.mapper;
 
 import com.fdz.common.constant.Constants;
 import com.fdz.content.domain.ProductType;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -43,4 +40,8 @@ public interface ProductTypeMapper {
     @Select(SELECT + Constants.Sql.DEFAULT_ORDER)
     @ResultMap(RESULT_MAP)
     List<ProductType> findAllTypes();
+
+    @Select("select count(1) from " + TABLE + Constants.Sql.NOT_DELETED + " and (product_type_name = #{typeName} OR sn = #{sn}) ")
+    @ResultType(Integer.class)
+    int queryTypeBySnAndNameCount(@Param("typeName") String typeName, @Param("sn") String sn);
 }

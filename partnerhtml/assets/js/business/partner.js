@@ -59,7 +59,7 @@ $(document).ready(function () {
         bootbox.confirm("确定要终止与此合作伙伴的合作么", function (result) {
             if(result) {
                 del(id);
-                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val(), searchVo());
             }
         })
     }
@@ -174,7 +174,7 @@ $(document).ready(function () {
                             ab = ab + writeData([val.uniqueKey, val.name, val.contacts, val.contactMobile, val.natureStr, val.serviceRate,
                                 val.createTimeStr,
                                 "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>" +
-                                "<a href='#' id='listDelete' delete='\" + val.id + \"' class='btn btn-danger btn-sm' >删除</a>"]);
+                                "<a href='#' id='listDelete' delete='" + val.id + "' class='btn btn-danger btn-sm' >删除</a>"]);
                         })
                         $("#body").html(ab);
                     }

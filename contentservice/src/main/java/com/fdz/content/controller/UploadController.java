@@ -1,6 +1,7 @@
 package com.fdz.content.controller;
 
 
+import com.fdz.common.aspect.ann.NotTracked;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
 import com.fdz.content.oss.OssClientManager;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Random;
 
 @RestController
 @ApiVersion("1")
@@ -26,9 +28,16 @@ public class UploadController {
 
 
     @ApiOperation("上传信息")
-    @PostMapping("/image")
+    @NotTracked
+    @PostMapping(value = "/image")
     RestResponse upload(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        String name = System.currentTimeMillis() + "-" + file.getName();
+        String[] fileName = file.getOriginalFilename().split(".");
+        String suffix = fileName[fileName.length - 1].toLowerCase();
+        if ("jpeg".equals(suffix)) {
+            suffix = "jpg";
+        }
+        Random random = new Random();
+        String name = System.currentTimeMillis() + random.nextInt(10000) + "." + suffix;
         String pathName = ossClientManager.upload(name, file.getInputStream());
         return RestResponse.success(pathName);
     }

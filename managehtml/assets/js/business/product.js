@@ -27,43 +27,46 @@ $(document).ready(function () {
         }
     });
 
-    $("#txt_productImage1").click(function () {
-        clickImageAndUpload($(this));
+    $("#txt_productImage1Button").click(function () {
+        clickImageAndUpload(new FormData($("#txt_productImage1Form")[0]), "txt_productImage1Img");
     });
 
-    $("#txt_productImage2").click(function () {
-        clickImageAndUpload($(this));
+    $("#txt_productImage2Button").click(function () {
+        clickImageAndUpload(new FormData($("#txt_productImage2Form")[0]), "txt_productImage2Img");
     });
 
-    $("#txt_productImage3").click(function () {
-        clickImageAndUpload($(this));
+    $("#txt_productImage3Button").click(function () {
+        clickImageAndUpload(new FormData($("#txt_productImage3Form")[0]), "txt_productImage3Img");
     });
 
-    $("#txt_productCoverImage").click(function () {
-        clickImageAndUpload($(this));
+    $("#txt_productCoverImageButton").click(function () {
+        clickImageAndUpload(new FormData($("#txt_productCoverImageForm")[0]), "txt_productCoverImageImg");
     });
+
 });
-    function clickImageAndUpload(fileObj) {
-        if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-            bootbox.alert("请选择图片");
+var uploading = false;
+    function clickImageAndUpload(form, id) {
+        if(uploading) {
+            bootbox.alert("有文件正在上传, 请稍后再上传新的文件");
             return;
         }
-        var formData = new FormData();
-        var file = fileObj;
-        formData.append("file", file.files.get(0));
         $.ajax({
             url: "/v1/content/upload/image",
-            data: formData,
+            data: form,
             type: "post",
             dataType: "json",
             cache: false,//上传文件无需缓存
             processData: false,//用于对data参数进行序列化处理 这里必须false
             contentType: false, //必须
+            beforeSend: function(){
+                uploading = true;
+            },
             success: function (result) {
                 if (result.code == 0) {
                     bootbox.alert("上传完成");
-                    file.value = result.data;
+                    $("#" + id).attr("src", result.data);
                 }
+                uploading = false;
             },
         })
     }
@@ -123,7 +126,7 @@ $(document).ready(function () {
         bootbox.confirm("确定要删除此商品么", function (result) {
             if(result) {
                 del(id);
-                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val(), searchVo());
             }
         })
     }
@@ -133,16 +136,16 @@ $(document).ready(function () {
         content.id = $("#txt_id").val();
         content.productName = $("#txt_productName").val();
         content.productDescription = $("#txt_productDescription").val();
-        content.productCoverImage = $("#txt_productCoverImage").val();
+        content.productCoverImage = $("#txt_productCoverImageImg").attr("src");
         content.productTypeNo = $("#txt_productTypeNo").val();
         content.primeCosts = $("#txt_primeCosts").val();
         content.salePrice = $("#txt_salePrice").val();
         content.status = $("#txt_status").val();
         content.productModel = $("#txt_productModel").val();
         content.productImages = [];
-        content.productImages[0] = $("#txt_productImages1").val();
-        content.productImages[1] = $("#txt_productImages2").val();
-        content.productImages[2] = $("#txt_productImages3").val();
+        content.productImages[0] = $("#txt_productImage1Img").attr("src");
+        content.productImages[1] = $("#txt_productImage2Img").attr("src");
+        content.productImages[2] = $("#txt_productImage3Img").attr("src");
         return content;
     }
 
@@ -150,14 +153,14 @@ $(document).ready(function () {
         $("#txt_id").val(data.id);
         $("#txt_productName").val(data.productName);
         $("#txt_productDescription").val(data.productDescription);
-        $("#txt_productCoverImage").val(data.productCoverImage);
+        $("#txt_productCoverImageImg").attr("src", data.productCoverImage);
         $("#txt_productTypeNo").val(data.productTypeNo);
         $("#txt_primeCosts").val(data.primeCosts);
         $("#txt_salePrice").val(data.salePrice);
-        $("#txt_status").val(data.status);
+        $("#txt_status").val(data.status + "");
         $("#txt_productModel").val(data.productModel);
         data.productImages.forEach(function (val, index) {
-            $("#txt_productImage" + (index + 1) ).val(val.productImage);
+            $("#txt_productImage" + (index + 1) + "Img").attr("src", val.productImage);
         })
     }
 
@@ -243,7 +246,7 @@ $(document).ready(function () {
                         var ab = "";
                         data.data.data.forEach(function (val, index) {
                             ab = ab + writeData(["<img src='" + val.productCoverImage + "' width='100px'/>", val.productName, val.productModel, val.primeCosts, val.salePrice, val.status ? "已上架" : "已下架",
-                                val.createTimeStr, "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a><a href='#' id='listDelete' delete='\" + val.id + \"' class='btn btn-danger btn-sm' >删除</a>"]);
+                                val.createTimeStr, "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a><a href='#' id='listDelete' delete='" + val.id + "' class='btn btn-danger btn-sm' >删除</a>"]);
                         })
                         $("#body").html(ab);
                     }

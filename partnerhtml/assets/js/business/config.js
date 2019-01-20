@@ -59,7 +59,7 @@ $(document).ready(function () {
         bootbox.confirm("确定要删除当前接口配置吗？", function (result) {
             if(result) {
                 del(id);
-                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val(), searchVo());
             }
         })
     }
@@ -163,7 +163,7 @@ $(document).ready(function () {
                         data.data.data.forEach(function (val, index) {
                             ab = ab + writeData([val.partnerName, val.interfaceTypeStr, val.interfaceUrl,
                                 "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>" +
-                                "<a href='#' id='listDelete' delete='\" + val.id + \"' class='btn btn-danger btn-sm' >删除</a>"]);
+                                "<a href='#' id='listDelete' delete='\ + val.id + "' class='btn btn-danger btn-sm' >删除</a>"]);
                         })
                         $("#body").html(ab);
                     }

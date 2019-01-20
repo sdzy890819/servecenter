@@ -130,25 +130,27 @@ public class ProductServiceImpl implements ProductService {
         List<String> snlist = new ArrayList<>();
         productMap.forEach((k, v) -> snlist.add(v.getProductTypeNo()));
         Map<Long, List<String>> productImagesMap = findImagesByIdsResultMap(productIds);
-        Map<Long, ProductType> productTypeMap = findTypeBySnResultMap(snlist);
+        Map<String, ProductType> productTypeMap = findTypeBySnResultMap(snlist);
         List<ThirdpartProductDto> result = new ArrayList<>();
         list.stream().forEach(a -> {
-            Product product = productMap.get(a.getId());
-            List<String> productImages = productImagesMap.get(a.getId());
-            ProductType productType = productTypeMap.get(product.getProductTypeNo());
-            ThirdpartProductDto thirdpartProductDto = new ThirdpartProductDto();
-            thirdpartProductDto.setPlatformPrice(a.getPlatformPrice());
-            thirdpartProductDto.setProductCoverImage(product.getProductCoverImage());
-            thirdpartProductDto.setProductDescription(product.getProductDescription());
-            thirdpartProductDto.setProductModel(product.getProductModel());
-            thirdpartProductDto.setProductName(product.getProductName());
-            thirdpartProductDto.setProductTypeNo(product.getProductTypeNo());
-            thirdpartProductDto.setProductTypeName(productType.getProductTypeName());
-            thirdpartProductDto.setSalePrice(a.getSalePrice());
-            thirdpartProductDto.setShelf(a.getShelf() && product.getStatus());
-            thirdpartProductDto.setProductImages(productImages);
-            thirdpartProductDto.setId(a.getId());
-            result.add(thirdpartProductDto);
+            Product product = productMap.get(a.getProductId());
+            if (product != null) {
+                List<String> productImages = productImagesMap.get(a.getProductId());
+                ProductType productType = productTypeMap.get(product.getProductTypeNo());
+                ThirdpartProductDto thirdpartProductDto = new ThirdpartProductDto();
+                thirdpartProductDto.setPlatformPrice(a.getPlatformPrice());
+                thirdpartProductDto.setProductCoverImage(product.getProductCoverImage());
+                thirdpartProductDto.setProductDescription(product.getProductDescription());
+                thirdpartProductDto.setProductModel(product.getProductModel());
+                thirdpartProductDto.setProductName(product.getProductName());
+                thirdpartProductDto.setProductTypeNo(product.getProductTypeNo());
+                thirdpartProductDto.setProductTypeName(productType.getProductTypeName());
+                thirdpartProductDto.setSalePrice(a.getSalePrice());
+                thirdpartProductDto.setShelf(a.getShelf() && product.getStatus());
+                thirdpartProductDto.setProductImages(productImages);
+                thirdpartProductDto.setId(a.getId());
+                result.add(thirdpartProductDto);
+            }
         });
         return result;
     }
@@ -164,30 +166,35 @@ public class ProductServiceImpl implements ProductService {
         List<String> snlist = new ArrayList<>();
         productMap.forEach((k, v) -> snlist.add(v.getProductTypeNo()));
         Map<Long, List<String>> productImagesMap = findImagesByIdsResultMap(productIds);
-        Map<Long, ProductType> productTypeMap = findTypeBySnResultMap(snlist);
+        Map<String, ProductType> productTypeMap = findTypeBySnResultMap(snlist);
         Map<Long, Partner> partnerMap = partnerService.findPartnerByIdResultMap(partnerIds);
         List<ThirdpartyProductDto> result = new ArrayList<>();
         list.stream().forEach(a -> {
-            Product product = productMap.get(a.getId());
-            List<String> productImages = productImagesMap.get(a.getId());
-            ProductType productType = productTypeMap.get(product.getProductTypeNo());
-            ThirdpartyProductDto thirdpartProductDto = new ThirdpartyProductDto();
-            thirdpartProductDto.setPlatformPrice(a.getPlatformPrice());
-            thirdpartProductDto.setProductCoverImage(product.getProductCoverImage());
-            thirdpartProductDto.setProductDescription(product.getProductDescription());
-            thirdpartProductDto.setProductModel(product.getProductModel());
-            thirdpartProductDto.setPartnerId(a.getPartnerId());
-            thirdpartProductDto.setPartnerName(partnerMap.get(a.getPartnerId()) != null ? partnerMap.get(a.getPartnerId()).getName() : "");
-            thirdpartProductDto.setProductId(product.getId());
-            thirdpartProductDto.setProductName(product.getProductName());
-            thirdpartProductDto.setProductTypeNo(product.getProductTypeNo());
-            thirdpartProductDto.setProductTypeName(productType.getProductTypeName());
-            thirdpartProductDto.setSalePrice(a.getSalePrice());
-            thirdpartProductDto.setShelf(a.getShelf() && product.getStatus());
-            thirdpartProductDto.setProductImages(productImages);
-            thirdpartProductDto.setId(a.getId());
-            thirdpartProductDto.setProductSalePrice(product.getSalePrice());
-            result.add(thirdpartProductDto);
+            Product product = productMap.get(a.getProductId());
+            if (product != null) {
+                List<String> productImages = productImagesMap.get(a.getProductId());
+                ProductType productType = productTypeMap.get(product.getProductTypeNo());
+                if (productType == null) {
+                    productType = new ProductType();
+                }
+                ThirdpartyProductDto thirdpartProductDto = new ThirdpartyProductDto();
+                thirdpartProductDto.setPlatformPrice(a.getPlatformPrice());
+                thirdpartProductDto.setProductCoverImage(product.getProductCoverImage());
+                thirdpartProductDto.setProductDescription(product.getProductDescription());
+                thirdpartProductDto.setProductModel(product.getProductModel());
+                thirdpartProductDto.setPartnerId(a.getPartnerId());
+                thirdpartProductDto.setPartnerName(partnerMap.get(a.getPartnerId()) != null ? partnerMap.get(a.getPartnerId()).getName() : "");
+                thirdpartProductDto.setProductId(product.getId());
+                thirdpartProductDto.setProductName(product.getProductName());
+                thirdpartProductDto.setProductTypeNo(product.getProductTypeNo());
+                thirdpartProductDto.setProductTypeName(productType.getProductTypeName());
+                thirdpartProductDto.setSalePrice(a.getSalePrice());
+                thirdpartProductDto.setShelf(a.getShelf() && product.getStatus());
+                thirdpartProductDto.setProductImages(productImages);
+                thirdpartProductDto.setId(a.getId());
+                thirdpartProductDto.setProductSalePrice(product.getSalePrice());
+                result.add(thirdpartProductDto);
+            }
         });
         return result;
     }
@@ -201,11 +208,11 @@ public class ProductServiceImpl implements ProductService {
         return productManager.findTypeBySn(snlist);
     }
 
-    public Map<Long, ProductType> findTypeBySnResultMap(List<String> snlist) {
+    public Map<String, ProductType> findTypeBySnResultMap(List<String> snlist) {
         List<ProductType> list = productManager.findTypeBySn(snlist);
-        Map<Long, ProductType> result = new HashMap<>();
+        Map<String, ProductType> result = new HashMap<>();
         if (StringUtils.isNotEmpty(list)) {
-            list.stream().forEach(a -> result.put(a.getId(), a));
+            list.stream().forEach(a -> result.put(a.getSn(), a));
         }
         return result;
     }
@@ -315,5 +322,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findAll() {
         return productManager.findAll();
+    }
+
+    @Override
+    public int queryTypeBySnAndNameCount(String typeName, String sn) {
+        return productManager.queryTypeBySnAndNameCount(typeName, sn);
+    }
+
+    @Override
+    public int queryProductByType(String productTypeNo) {
+        return productManager.queryProductByType(productTypeNo);
     }
 }

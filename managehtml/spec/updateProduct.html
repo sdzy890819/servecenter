@@ -11,7 +11,7 @@
                 <div class="form-group">
                     <label for="txt_productName">商品名称</label>
                     <input type="text" name="txt_productName" class="form-control" id="txt_productName"
-                           placeholder="公司名">
+                           placeholder="商品名称">
                 </div>
                 <div class="form-group">
                     <label for="txt_productDescription">商品说明</label>
@@ -26,21 +26,31 @@
                 </div>
                 <div class="form-group">
                     <label>商品图片</label>
-                    <form class="form-inline" id="txt_productCoverImageForm">
-                        <input type="file" name="txt_productCoverImage" id="txt_productCoverImage"  class="form-control"/>
+                    <form class="form-inline" id="txt_productCoverImageForm" enctype='multipart/form-data'>
+                        <input type="file" name="file" id="txt_productCoverImage" accept="image/*" class="form-control"/>
                         <input type="button" id="txt_productCoverImageButton" value="封面图片上传" class="form-control"/>
+
                     </form>
-                    <form class="form-inline" id="txt_productImage1Form">
-                        <input type="file" name="txt_productImage1" id="txt_productImage1"  class="form-control"/>
+                    <form class="form-inline" id="txt_productImage1Form" enctype='multipart/form-data'>
+                        <input type="file" name="file" id="txt_productImage1" accept="image/*" class="form-control"/>
                         <input type="button" id="txt_productImage1Button" value="组图（1）上传" class="form-control"/>
+
                     </form>
-                    <form class="form-inline" id="txt_productImage2Form">
-                        <input type="file" name="txt_productImage2" id="txt_productImage2"  class="form-control"/>
+                    <form class="form-inline" id="txt_productImage2Form" enctype='multipart/form-data'>
+                        <input type="file" name="file" id="txt_productImage2" accept="image/*" class="form-control"/>
                         <input type="button" id="txt_productImage2Button" value="组图（2）上传" class="form-control"/>
+
                     </form>
-                    <form class="form-inline" id="txt_productImage3Form">
-                        <input type="file" name="txt_productImage3" id="txt_productImage3"  class="form-control"/>
+                    <form class="form-inline" id="txt_productImage3Form" enctype='multipart/form-data'>
+                        <input type="file" name="file" id="txt_productImage3" accept="image/*" class="form-control"/>
                         <input type="button" id="txt_productImage3Button" value="组图（3）上传" class="form-control"/>
+
+                    </form>
+                    <form class="form-inline">
+                        <img src="" id="txt_productCoverImageImg" alt="封面图" placeholder="封面图" class="form-control" style="height: 90px">
+                        <img src="" id="txt_productImage1Img" alt="组图(1)" placeholder="组图(1)" class="form-control" style="height: 90px">
+                        <img src="" id="txt_productImage2Img" alt="组图(2)" placeholder="组图(2)" class="form-control" style="height: 90px">
+                        <img src="" id="txt_productImage3Img" alt="组图(3)" placeholder="组图(3)" class="form-control" style="height: 90px">
                     </form>
                 </div>
                 <div class="form-group">

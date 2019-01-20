@@ -5,6 +5,7 @@ import com.fdz.common.enums.PaymentTypeEnums;
 import com.fdz.common.exception.BizException;
 import com.fdz.common.utils.IDGenerator;
 import com.fdz.common.utils.Page;
+import com.fdz.common.utils.StringUtils;
 import com.fdz.order.domain.*;
 import com.fdz.order.dto.PaymentRecordSearchDto;
 import com.fdz.order.dto.SearchOrdersDto;
@@ -116,22 +117,28 @@ public class OrderManager {
         }
         int p = updateByPrimaryKeySelective(orders);
         p = p + updateByPrimaryKeySelective(ordersLogistics);
-
-        PaymentRecord payRecord = new PaymentRecord(paymentRecord.getId());
-        payRecord.setFrozen(false);
-        payRecord.setPayTime(new Date());
-        payRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
-        payRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
-        updateByPrimaryKeySelective(payRecord);
-
-        PaymentRecord infoRecord = new PaymentRecord(infoPaymentRecord.getId());
-        infoRecord.setFrozen(false);
-        infoRecord.setPayTime(new Date());
-        infoRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
-        infoRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
-        updateByPrimaryKeySelective(infoRecord);
-
+        if (paymentRecord.getFrozen()) {
+            updateRecord(paymentRecord);
+        }
+        if (infoPaymentRecord.getFrozen()) {
+            updateRecord(infoPaymentRecord);
+        }
         return p;
+    }
+
+    private void updateRecord(PaymentRecord old) {
+        PaymentRecord infoRecord = new PaymentRecord(old.getId());
+        infoRecord.setFrozen(false);
+        if (old.getPayTime() == null) {
+            infoRecord.setPayTime(new Date());
+        }
+        if (StringUtils.isNotNull(old.getPaySn())) {
+            infoRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
+        }
+        if (old.getPayStatus() == null) {
+            infoRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
+        }
+        updateByPrimaryKeySelective(infoRecord);
     }
 
 
@@ -278,7 +285,8 @@ public class OrderManager {
         paymentRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
         paymentRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
         paymentRecord.setPayTime(new Date());
-        updateByPrimaryKeySelective(paymentRecord);
+        updateByPrimaryKeySelective(a);
+        insertSelective(paymentRecord);
     }
 
     public PaymentRecord findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(Long partnerId, Byte paymentType, String orderSn, Boolean frozen) {

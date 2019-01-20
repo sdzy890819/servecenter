@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -137,9 +138,14 @@ public class PartnerController {
     }
 
     @ApiOperation("根据所有id获取合作伙伴信息")
-    @PostMapping("/v1/content/partner/ids")
+    @PostMapping("/ids")
     RestResponse<Map<Long, Partner>> findPartnerByIdResultMap(@RequestBody List<Long> partnerIds) {
-        return RestResponse.success(partnerService.findPartnerByIds(partnerIds));
+        List<Partner> list = partnerService.findPartnerByIds(partnerIds);
+        Map<Long, Partner> result = new HashMap<>();
+        if (StringUtils.isNotEmpty(list)) {
+            list.forEach(a -> result.put(a.getId(), a));
+        }
+        return RestResponse.success(result);
     }
 
     @ApiOperation("获取合作伙伴列表")

@@ -40,7 +40,7 @@ public interface ProductImageMapper {
     @Select("delete from " + TABLE + " where product_id = #{productId}")
     int deleteByProductId(@Param("productId") Long productId);
 
-    @Select(SELECT + Constants.Sql.DEFAULT_ORDER)
+    @Select(SELECT + " and product_id = #{productId} " + Constants.Sql.DEFAULT_ORDER)
     @ResultMap(RESULT_MAP)
     List<ProductImage> findProductImages(@Param("productId") Long productId);
 }

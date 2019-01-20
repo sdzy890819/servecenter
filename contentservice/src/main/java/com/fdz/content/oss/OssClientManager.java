@@ -15,9 +15,9 @@ public class OssClientManager {
 
     static {
         clientConfiguration.setMaxConnections(200);
-        clientConfiguration.setSocketTimeout(20000);//毫秒
-        clientConfiguration.setConnectionRequestTimeout(5000);
-        clientConfiguration.setMaxErrorRetry(4);
+        clientConfiguration.setSocketTimeout(10000);//毫秒
+        clientConfiguration.setConnectionRequestTimeout(2000);
+        clientConfiguration.setMaxErrorRetry(2);
     }
 
     private String accessKeyId;

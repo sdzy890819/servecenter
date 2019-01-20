@@ -6,6 +6,7 @@ import com.fdz.common.exception.TimeOutException;
 import com.fdz.common.web.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,14 @@ public class ExceptionHandlerAdvice {
     public RestResponse<?> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
         log.error("数据异常,", e);
         return RestResponse.error("数据已存在");
+    }
+
+    @ExceptionHandler({AccessDeniedException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public RestResponse<?> handlerAccessDenied(Exception e) {
+        log.error("用户登陆已失效，请重新登陆,");
+        return RestResponse.error("用户登陆已失效，请重新登陆");
     }
 
 

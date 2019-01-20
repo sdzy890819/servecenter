@@ -45,7 +45,7 @@ public class PaymentController {
 
     @ApiOperation("还款记录信息")
     @PostMapping("/search")
-    RestResponse<SearchResult<List<PaymentRecord>>> search(PaymentRecordSearchDto dto,
+    RestResponse<SearchResult<List<PaymentRecord>>> search(@RequestBody PaymentRecordSearchDto dto,
                                                            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                            @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
         Page pageObj = new Page(page, pageSize);
@@ -65,7 +65,7 @@ public class PaymentController {
 
     @ApiOperation("还款记录信息")
     @PostMapping("/partner/search")
-    RestResponse<SearchResult<List<PaymentRecord>>> partnerSearch(PaymentRecordSearchDto dto,
+    RestResponse<SearchResult<List<PaymentRecord>>> partnerSearch(@RequestBody PaymentRecordSearchDto dto,
                                                                   @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
                                                                   @RequestParam(value = "pageSize", required = false, defaultValue = "20") Integer pageSize) {
         Long partnerId = SecurityUtils.checkLoginAndGetUserByPartner();

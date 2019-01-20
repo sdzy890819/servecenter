@@ -22,8 +22,8 @@ function loadPartnerInfo(callback) {
 
 function setTableData(data) {
     $("#show_partnerName").html(data.partnerName);
-    $("#show_contract").html(data.partnerName);
-    $("#show_contractMobile").html(data.contractMobile);
+    $("#show_contacts").html(data.contacts);
+    $("#show_contactMobile").html(data.contactMobile);
     $("#show_amount").html(data.amount);
     $("#show_freezingAmount").html(data.freezingAmount);
 }
@@ -31,7 +31,7 @@ function setTableData(data) {
 function load(currentPage, pageSize) {
     $.ajax({
         async: false,
-        type: "GET",
+        type: "POST",
         contentType: "application/json; charset=utf-8",
         url: '/v1/order/payment-record/partner/index?page=' + currentPage + "&pageSize=" + pageSize,
         dataType: 'json',

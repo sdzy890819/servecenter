@@ -94,7 +94,7 @@ hystrix:
           enabled: true
     contentservice:
       execution:
-        isolation.thread.timeoutInMilliseconds: 3000
+        isolation.thread.timeoutInMilliseconds: 8000
         timeout:
           enabled: true
   threadpool:

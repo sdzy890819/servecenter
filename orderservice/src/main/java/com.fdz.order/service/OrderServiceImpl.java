@@ -378,7 +378,7 @@ public class OrderServiceImpl implements OrderService {
                     partnerIds.add(a.getPartnerId());
                 }
             });
-            Map<Long, PartnerRestResult> partnerMap = contentService.findPartnerByIdResultMap(partnerIds);
+            Map<Long, PartnerRestResult> partnerMap = StringUtils.isNotEmpty(partnerIds) ? contentService.findPartnerByIdResultMap(partnerIds) : new HashMap<>(0);
             Map<String, DeliveryInfo> resultMap = new HashMap<>();
             deliveryList.forEach(a -> {
                 String tmp = a.getOrderDate() + a.getPartnerId();

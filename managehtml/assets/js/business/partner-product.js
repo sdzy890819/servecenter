@@ -61,7 +61,7 @@ $(document).ready(function () {
         bootbox.confirm("确定要删除此商品么", function (result) {
             if(result) {
                 del(id);
-                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val(), searchVo());
             }
         })
     }
@@ -168,7 +168,7 @@ $(document).ready(function () {
                         var ab = "";
                         data.data.data.forEach(function (val, index) {
                             ab = ab + writeData([val.partnerName, val.productId, val.productName, val.productModel, val.productTypeName, val.salePrice,
-                                val.platformPrice, val.shelf ? "已上架" : "未上架", "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>"]);
+                                val.platformPrice, val.shelf ? "已上架" : "已下架", "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>"]);
                         })
                         $("#body").html(ab);
                     }

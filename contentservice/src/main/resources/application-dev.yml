@@ -40,12 +40,12 @@ application:
   redis:
     enabled: true
   oss:
-    access-key-id: LTAIozJy7JLSdOti
-    access-key-secret: ZmiVvbJeZMsVB5uh1xSMnhTXfqH8BV
-    bucket-name: alfar-backend-assets
-    images-dir: images
-    endpoint: oss-cn-beijing-internal.aliyuncs.com
-    public-endpoint: oss-cn-beijing-internal.aliyuncs.com
+    access-key-id: LTAIONaQrTw1ygEM
+    access-key-secret: GTYEQHj0NJoZc8qHRkOTlO10JknIET
+    bucket-name: jiejiejie-publics
+    images-dir: test
+    endpoint: oss-cn-beijing.aliyuncs.com
+    public-endpoint: oss-cn-beijing.aliyuncs.com
   security-conf:
     authentication:
       jwt:

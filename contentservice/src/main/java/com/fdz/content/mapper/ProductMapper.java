@@ -46,7 +46,11 @@ public interface ProductMapper {
     @ResultMap(RESULT_MAP)
     List<Product> listProduct(@Param("page") Page page);
 
-    @Select(SELECT + Constants.Sql.DEFAULT_ORDER)
+    @Select(SELECT + " and status = 1 " + Constants.Sql.DEFAULT_ORDER)
     @ResultMap(RESULT_MAP)
     List<Product> findAll();
+
+    @Select("select count(1) from " + TABLE + Constants.Sql.NOT_DELETED + " and product_type_no = #{productTypeNo}")
+    @ResultType(Integer.class)
+    int queryProductByType(@Param("productTypeNo") String productTypeNo);
 }

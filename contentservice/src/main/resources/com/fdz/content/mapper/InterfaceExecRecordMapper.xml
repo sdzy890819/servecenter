@@ -12,7 +12,7 @@
 
   <sql id="Base_Column_List" >
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, partner_id, 
-    interface_url, interface_type, status, exec_time, data
+    interface_url, interface_type, status, exec_time, `data`
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -30,7 +30,7 @@
     insert into interface_exec_record (id, create_time, modify_time, 
       create_by, modify_by, remark, 
       is_delete, partner_id, interface_url, 
-      interface_type, status, exec_time, data
+      interface_type, status, exec_time, `data`
       )
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
@@ -78,7 +78,7 @@
         exec_time,
       </if>
       <if test="data != null">
-        data,
+        `data`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -155,7 +155,7 @@
         exec_time = #{execTime,jdbcType=TIMESTAMP},
       </if>
       <if test="data != null">
-        data = #{data},
+        `data` = #{data},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -172,14 +172,14 @@
       interface_type = #{interfaceType,jdbcType=TINYINT},
       status = #{status,jdbcType=TINYINT},
       exec_time = #{execTime,jdbcType=TIMESTAMP},
-      data = #{data}
+      `data` = #{data}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="insertInterfaceExecRecordList" resultType="java.lang.Integer">
     insert into interface_exec_record (id, create_time, modify_time,
       create_by, modify_by, remark,
       is_delete, partner_id, interface_url,
-      interface_type, status, exec_time,data
+      interface_type, status, exec_time,`data`
       )
     values
     <foreach collection="list" separator="," item="a">

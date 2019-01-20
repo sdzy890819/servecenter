@@ -240,7 +240,9 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
                     execRecords.add(record);
                 }
             });
-            insertInterfaceExecRecordList(execRecords);
+            if (StringUtils.isNotEmpty(execRecords)) {
+                insertInterfaceExecRecordList(execRecords);
+            }
         }
     }
 

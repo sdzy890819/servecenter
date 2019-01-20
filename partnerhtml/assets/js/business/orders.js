@@ -87,7 +87,7 @@ $(document).ready(function () {
         bootbox.confirm("确定要终止与此订单的合作么", function (result) {
             if(result) {
                 del(id);
-                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val(), searchVo());
             }
         })
     }

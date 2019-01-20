@@ -61,6 +61,9 @@ public class PartnerProductController {
             dto = new SearchPartnerProductDto();
         }
         dto.setPartnerId(partnerId);
+        if (dto.getShelf() == null) {
+            dto.setShelf(true);
+        }
         return search(dto, page, pageSize);
     }
 

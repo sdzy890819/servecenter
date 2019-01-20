@@ -118,10 +118,12 @@ public class ProductManager {
         if (StringUtils.isNotEmpty(images)) {
             List<ProductImage> list = new ArrayList<>();
             images.forEach(a -> {
-                ProductImage productImage = new ProductImage();
-                productImage.setProductId(id);
-                productImage.setProductImage(a);
-                list.add(productImage);
+                if (StringUtils.isNotNull(a)) {
+                    ProductImage productImage = new ProductImage();
+                    productImage.setProductId(id);
+                    productImage.setProductImage(a);
+                    list.add(productImage);
+                }
             });
             return productImageMapper.insertList(list);
         }
@@ -142,6 +144,14 @@ public class ProductManager {
 
     public List<Product> findAll() {
         return productMapper.findAll();
+    }
+
+    public int queryTypeBySnAndNameCount(String typeName, String sn) {
+        return productTypeMapper.queryTypeBySnAndNameCount(typeName, sn);
+    }
+
+    public int queryProductByType(String productTypeNo) {
+        return productMapper.queryProductByType(productTypeNo);
     }
 
 }

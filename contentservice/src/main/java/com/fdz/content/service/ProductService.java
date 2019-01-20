@@ -54,4 +54,8 @@ public interface ProductService {
     List<ProductImage> findProductImages(Long productId);
 
     List<Product> findAll();
+
+    int queryTypeBySnAndNameCount(String typeName, String sn);
+
+    int queryProductByType(String productTypeNo);
 }

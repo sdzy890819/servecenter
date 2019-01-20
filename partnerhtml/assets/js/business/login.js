@@ -25,7 +25,7 @@ $(document).ready(function () {
         loginSubmit();
     })
 
-    $("#pwd").keydown(function () {
+    $("#login-password").keydown(function () {
         if (event.keyCode == 13) {
             loginSubmit();
         }

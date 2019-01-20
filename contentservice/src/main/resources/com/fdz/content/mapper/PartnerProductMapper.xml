@@ -182,7 +182,7 @@
        and shelf = #{p.shelf}
     </if>
     <if test="p.partnerId != null">
-       and partner_id = #{p.partnerId, jdbcType=BIGINT},
+       and partner_id = #{p.partnerId}
     </if>
   </select>
     <select id="searchPartnerProduct" resultMap="BaseResultMap">
@@ -200,7 +200,7 @@
             and shelf = #{p.shelf}
         </if>
         <if test="p.partnerId != null">
-          and partner_id = #{p.partnerId, jdbcType=BIGINT},
+          and partner_id = #{p.partnerId}
         </if>
         order by id desc limit #{page.start}, #{page.pageSize}
     </select>

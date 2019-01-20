@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta content="" name="description"/>
     <meta content="webthemez" name="author"/>
-    <title>后台管理平台 -- 合作伙伴商品管理</title>
+    <title>后台管理平台 -- 产品分类管理</title>
     <!-- Bootstrap Styles-->
     <link href="assets/css/bootstrap.css" rel="stylesheet"/>
     <!-- FontAwesome Styles-->
@@ -34,30 +34,16 @@
     <div id="page-wrapper">
         <div class="header">
             <h1 class="page-header">
-                商品列表
+                产品分类管理
                 <small id="welcomeUserName">Welcome</small>
             </h1>
 
         </div>
         <div id="page-inner">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form class="form-inline" id="searchForm">
-                        <div class="form-group">
-                            <label for="search_shelf">状态</label>
-                            <select id="search_shelf" class="form-control">
-                                <option value="">请选择</option>
-                                <option value="true">已上架</option>
-                                <option value="false">已下架</option>
-                            </select>
-                        </div>
-                        <button type="button" id="search_btn" class="btn btn-default">查询</button>
-                    </form>
-                </div>
-            </div>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    商品列表
+                    产品分类列表
                 </div>
                 <div class="panel-body">
                     <div>
@@ -65,20 +51,12 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="dataTables_length" id="dataTables-example_length">
-                                        <label>每页个数：
-                                            <select name="dataTables-example_length"
-                                                    aria-controls="dataTables-example" id="pageSize"
-                                                    class="form-control input-sm">
-                                                <option value="10">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select></label>
+
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div id="dataTables-example_filter" style="text-align: right">
-
+                                        <a href="#" class="btn btn-success" id="add">添加</a>
                                     </div>
                                 </div>
                             </div>
@@ -88,56 +66,24 @@
                                 <tr role="row">
                                     <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
                                         colspan="1" style="width: 139px;">
-                                        商品编号
+                                        产品编号
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                        colspan="1" style="width: 139px;">
-                                        商品名称
+                                        colspan="1" style="width: 139px;">产品分类名称
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                        colspan="1" style="width: 139px;">
-                                        商品型号
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                        colspan="1" style="width: 139px;">
-                                        商品类别
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                        colspan="1" style="width: 139px;">
-                                        进货价格
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                        colspan="1" style="width: 139px;">
-                                        销售价格
-                                    </th>
-                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                        colspan="1" style="width: 139px;">
-                                        状态
+                                        colspan="1" style="width: 139px;">操作
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody id="body"></tbody>
                             </table>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="dataTables_info" id="dataTables-example_info" role="alert"
-                                         aria-live="polite" aria-relevant="all">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="dataTables_paginate paging_simple_numbers"
-                                         id="dataTables-example_paginate">
-                                        <ul class="pagination" id="pageBar">
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
                 </div>
             </div>
+            <!--# include virtual="/spec/updateType.html" -->
             <!-- /. ROW  -->
             <!--# include virtual="/spec/publicUpdateUser.html" -->
         </div>
@@ -162,7 +108,7 @@
 
 <script type="text/javascript" src="assets/js/util.js"></script>
 <script type="text/javascript" src="assets/js/business/checklogin.js"></script>
-<script type="text/javascript" src="assets/js/business/partner-product.js"></script>
+<script type="text/javascript" src="assets/js/business/type.js"></script>
 
 </body>
 

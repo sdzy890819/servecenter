@@ -63,18 +63,18 @@ $(document).ready(function () {
         bootbox.confirm("确定要删除当前流水吗?", function (result) {
             if(result) {
                 del(id);
-                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val());
+                load($("li.paginate_button.active").find("a").text(), $("#pageSize").find("option:selected").val(), searchVo());
             }
         })
     }
 
     function getVal() {
         var content = {};
-        data.partnerId = $("#txt_partnerId").val();
-        data.sn = $("#txt_sn").val();
-        data.orderSn = $("#txt_orderSn").val();
-        data.paymentType = $("#txt_paymentType").val();
-        data.amount = $("#txt_amount").val();
+        content.partnerId = $("#txt_partnerId").val();
+        content.sn = $("#txt_sn").val();
+        content.orderSn = $("#txt_orderSn").val();
+        content.paymentType = $("#txt_paymentType").val();
+        content.amount = $("#txt_amount").val();
         return content;
     }
 

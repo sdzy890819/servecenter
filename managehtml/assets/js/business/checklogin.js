@@ -55,6 +55,9 @@ $(document).ready(function () {
             error: error
         });
     });
+
+    var menu = getQueryString()["menuName"];
+    $('a[menuName|="' + menu + '"]').addClass("active-menu");
 });
 
 function writeData(data) {

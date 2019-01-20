@@ -58,7 +58,8 @@ public class ContentService {
         return contentRestClient.findPartnerByIdResultMap(partnerIds).getData();
     }
 
-    public Map<Long, PartnerRestResult> findPartnerByIdResultMapFallback(List<Long> partnerIds) {
+    public Map<Long, PartnerRestResult> findPartnerByIdResultMapFallback(List<Long> partnerIds, Throwable throwable) {
+        log.error(" 找不到相应的合作机构信息, {}", throwable);
         return new HashMap<>(0);
     }
 
