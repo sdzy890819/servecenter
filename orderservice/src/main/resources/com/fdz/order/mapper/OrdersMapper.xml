@@ -312,7 +312,7 @@
     o.partner_sn, o.partner_id, o.amount, o.buy_time, o.confirm_time, o.business_delivery_time,
     o.end_time, o.delivery_status, o.status, o.order_status, o.business_delivery_status, o.platform_amount, o.cost_amount, o.info_amount ,
     l.receiver, l.receiver_address, l.receiver_mobile, l.logistics, l.logistics_sn,
-    l.logistics_status  from orders o, orders_logistics l where o.is_delete = 0
+    l.logistics_status  from orders o, orders_logistics l where o.is_delete = 0 and o.order_sn = l.order_sn
     <if test="search.orderSn != null">
       and o.order_sn = #{search.orderSn}
     </if>
@@ -338,7 +338,7 @@
   </select>
 
   <select id="searchOrdersCount" resultType="java.lang.Integer">
-    select count(1)  from orders o, orders_logistics l where o.is_delete = 0
+    select count(1)  from orders o, orders_logistics l where o.is_delete = 0 and o.order_sn = l.order_sn
     <if test="search.orderSn != null">
       and o.order_sn = #{search.orderSn}
     </if>
