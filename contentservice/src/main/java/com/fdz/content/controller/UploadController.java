@@ -31,7 +31,7 @@ public class UploadController {
     @NotTracked
     @PostMapping(value = "/image")
     RestResponse upload(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        String[] fileName = file.getOriginalFilename().split(".");
+        String[] fileName = file.getOriginalFilename().split("\\.");
         String suffix = fileName[fileName.length - 1].toLowerCase();
         if ("jpeg".equals(suffix)) {
             suffix = "jpg";
@@ -41,4 +41,5 @@ public class UploadController {
         String pathName = ossClientManager.upload(name, file.getInputStream());
         return RestResponse.success(pathName);
     }
+
 }
