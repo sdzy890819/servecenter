@@ -40,10 +40,10 @@ application:
   redis:
     enabled: true
   oss:
-    access-key-id: LTAIONaQrTw1ygEM
-    access-key-secret: GTYEQHj0NJoZc8qHRkOTlO10JknIET
-    bucket-name: jiejiejie-publics
-    images-dir: test
+    access-key-id: LTAICsjYMFe7mZpR
+    access-key-secret: 6KUram7SDvH5dnqJXxVoQ7S2mpM8Zb
+    bucket-name: hongbo-public-img
+    images-dir: img
     endpoint: oss-cn-beijing.aliyuncs.com
     public-endpoint: oss-cn-beijing.aliyuncs.com
   security-conf:
