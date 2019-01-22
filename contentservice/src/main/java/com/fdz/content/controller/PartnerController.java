@@ -14,6 +14,7 @@ import com.fdz.content.domain.PartnerUser;
 import com.fdz.content.dto.PageDataResult;
 import com.fdz.content.dto.PartnerDto;
 import com.fdz.content.dto.PartnerResult;
+import com.fdz.content.dto.PartnerUserDto;
 import com.fdz.content.service.PartnerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -153,6 +154,45 @@ public class PartnerController {
     RestResponse<List<Partner>> findPartnerList() {
         List<Partner> list = partnerService.findAll();
         return RestResponse.success(list);
+    }
+
+    @ApiOperation("获取机构用户信息")
+    @GetMapping("/user/{partnerId}")
+    RestResponse user(@PathVariable("partnerId") Long partnerId) {
+        PartnerUser partnerUser = partnerService.findUserByPartnerId(partnerId);
+        return RestResponse.success(partnerUser);
+    }
+
+
+    @ApiOperation("合作伙伴用户信息")
+    @PostMapping("/user/update")
+    RestResponse updateUser(@RequestBody PartnerUserDto dto) {
+        if (dto.getPartnerId() == null) {
+            throw new BizException("机构ID不可以为空");
+        }
+        PartnerUser old = partnerService.findUserByPartnerId(dto.getPartnerId());
+        if (old != null) {
+            PartnerUser partnerUser = new PartnerUser(old.getId());
+            if (StringUtils.isNotBlank(dto.getUserName())) {
+                partnerUser.setUserName(dto.getUserName());
+            }
+            if (StringUtils.isNotBlank(dto.getPassword())) {
+                partnerUser.setPassword(EncryptUtil.encryptPwd(StringUtils.isNotBlank(dto.getUserName()) ? dto.getUserName() : old.getUserName(), dto.getPassword()));
+            }
+            if (StringUtils.isNotBlank(dto.getRealName())) {
+                partnerUser.setRealName(dto.getRealName());
+            }
+            partnerService.updateByPrimaryKeySelective(partnerUser);
+        } else {
+            if (StringUtils.isBlank(dto.getUserName()) || StringUtils.isBlank(dto.getPassword())) {
+                throw new BizException("用户名或者密码不可以为空");
+            }
+            PartnerUser partnerUser = dtoConvert.convert(dto);
+            String pwd = EncryptUtil.encryptPwd(partnerUser.getUserName(), partnerUser.getPassword());
+            partnerUser.setPassword(pwd);
+            partnerService.insertSelective(partnerUser);
+        }
+        return RestResponse.success(null);
     }
 
 }

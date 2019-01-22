@@ -1,5 +1,6 @@
 package com.fdz.order.dto;
 
+import com.fdz.common.enums.DeliveryStatusEnums;
 import com.fdz.common.enums.OrdersStatus;
 import lombok.Data;
 
@@ -18,6 +19,8 @@ public class OrdersResult {
     private Long partnerId;
 
     private BigDecimal amount;
+
+    private BigDecimal costAmount;
 
     private Date buyTime;
 
@@ -50,10 +53,48 @@ public class OrdersResult {
 
     private String statusStr;
 
+    private String deliveryStatusStr;
+
+    private String businessDeliveryStatusStr;
+
+    private String confirmTimeStr;
+
+    private String endTimeStr;
+
+    public String getConfirmTimeStr() {
+        if (confirmTime != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return simpleDateFormat.format(confirmTime);
+        }
+        return "";
+    }
+
+    public String getEndTimeStr() {
+        if (endTime != null) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            return simpleDateFormat.format(endTime);
+        }
+        return "";
+    }
+
+    public String getDeliveryStatusStr() {
+        if (deliveryStatus != null) {
+            return DeliveryStatusEnums.get(deliveryStatus).getStatusText();
+        }
+        return "";
+    }
+
+    public String getBusinessDeliveryStatusStr() {
+        if (businessDeliveryStatus != null) {
+            return DeliveryStatusEnums.get(businessDeliveryStatus).getStatusText();
+        }
+        return "";
+    }
+
     public String getStatusStr() {
         if (status != null) {
             OrdersStatus ordersStatus = OrdersStatus.get(status);
-            return ordersStatus.getStatusText();
+            return ordersStatus.getText();
         }
         return "";
     }

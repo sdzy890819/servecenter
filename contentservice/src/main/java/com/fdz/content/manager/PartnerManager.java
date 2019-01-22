@@ -33,6 +33,10 @@ public class PartnerManager {
         return partnerUserMapper.findPartnerUserByUserName(userName);
     }
 
+    public PartnerUser findUserByPartnerId(Long partnerId) {
+        return partnerUserMapper.findUserByPartnerId(partnerId);
+    }
+
 
     public PartnerUser selectPartnerUserByPrimaryKey(Long id) {
         return partnerUserMapper.selectByPrimaryKey(id);

@@ -13,6 +13,8 @@ public interface PartnerService {
 
     PartnerUser findPartnerUserByUserName(String userName);
 
+    PartnerUser findUserByPartnerId(Long partnerId);
+
     PartnerUser selectPartnerUserByPrimaryKey(Long id);
 
     Partner selectPartnerByPrimaryKey(Long id);

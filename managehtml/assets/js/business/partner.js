@@ -26,6 +26,15 @@ $(document).ready(function () {
         }
     });
 
+    $("#btn_submit2").click(function () {
+        if (isNotNull($("#txt2_password").val())) {
+            saveUser(getUserVal());
+        } else {
+            bootbox.alert("保存的时候密码不可以为空，填写的密码会自动修改");
+        }
+
+    });
+
 
     $("#search_btn").click(function () {
         load(1, $("#pageSize").find("option:selected").val(), searchVo());
@@ -33,6 +42,10 @@ $(document).ready(function () {
 
     $(document).on("click", "#listUpdate", function () {
         updateClick($(this).attr("update"));
+    });
+
+    $(document).on("click", "#listUser", function () {
+        userClick($(this).attr("user"));
     });
 
     $(document).on("click", "#listDelete", function () {
@@ -46,6 +59,13 @@ function searchVo() {
     searchVo.contacts = $("#search_contacts").val();
     searchVo.contactMobile = $("#search_contactMobile").val();
     return searchVo;
+}
+
+function userClick(id) {
+    $("#myModalLabel2").text("机构用户-唯一,只可修改 不会增加");
+    $('#myModal2').modal();
+    $("#txt2_id").val(id);
+    getUser($("#txt2_id").val());
 }
 
 function updateClick(id) {
@@ -88,6 +108,54 @@ function setVal(data) {
     $("#txt_contactMobile").val(data.contactMobile);
     $("#txt_serviceRate").val(data.serviceRate);
     $("#txt_publicKey").val(data.publicKey);
+}
+
+function getUserVal() {
+    var content = {};
+    content.partnerId = $("#txt2_id").val();
+    content.userName = $("#txt2_userName").val();
+    content.password = $("#txt2_password").val();
+    content.realName = $("#txt2_realName").val();
+    return content;
+}
+
+function setUserVal(data) {
+    $("#txt2_userName").val(data.userName);
+    //$("#txt2_password").val(data.password);
+    $("#txt2_realName").val(data.realName);
+}
+
+function saveUser(data) {
+    $.ajax({
+        async: false,
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: '/v1/content/partner/user/update',
+        data: JSON.stringify(data, jsonReplacer),
+        dataType: 'json',
+        success: function (data) {
+            if (data.code == 0) {
+                bootbox.alert("创建成功!");
+            }
+        },
+        error: error
+    });
+}
+
+function getUser(id) {
+    $.ajax({
+        async: false,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: '/v1/content/partner/user/' + id,
+        dataType: 'json',
+        success: function (data) {
+            if (data.code == 0) {
+                setUserVal(data.data);
+            }
+        },
+        error: error
+    });
 }
 
 function get(id) {
@@ -174,6 +242,7 @@ function load(currentPage, pageSize, search) {
                     data.data.data.forEach(function (val, index) {
                         ab = ab + writeData([val.uniqueKey, val.name, val.contacts, val.contactMobile, val.natureStr, val.serviceRate,
                             val.createTimeStr,
+                            "<a href='#' id='listUser' user='" + val.id + "' class='btn btn-info btn-sm' >用户</a>" +
                             "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>" +
                             "<a href='#' id='listDelete' delete='" + val.id + "' class='btn btn-danger btn-sm' >删除</a>"]);
                     })

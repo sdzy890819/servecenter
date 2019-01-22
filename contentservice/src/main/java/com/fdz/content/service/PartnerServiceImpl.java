@@ -47,6 +47,11 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
     }
 
     @Override
+    public PartnerUser findUserByPartnerId(Long partnerId) {
+        return partnerManager.findUserByPartnerId(partnerId);
+    }
+
+    @Override
     public PartnerUser selectPartnerUserByPrimaryKey(Long id) {
         return partnerManager.selectPartnerUserByPrimaryKey(id);
     }

@@ -17,6 +17,7 @@
     <link href="assets/css/custom-styles.css" rel="stylesheet"/>
     <!-- Google Fonts-->
     <link href='assets/css/font.css' rel='stylesheet' type='text/css'/>
+    <link href="assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -34,7 +35,7 @@
     <div id="page-wrapper">
         <div class="header">
             <h1 class="page-header">
-                渠道管理
+                订单管理
                 <small id="welcomeUserName">Welcome</small>
             </h1>
 
@@ -57,15 +58,15 @@
                         </div>
                         <div class="form-group">
                             <label for="search_buyStartTime">下单日期</label>
-                            <input type="text" id="search_buyStartTime" class="form-control" placeholder="下单开始时间 yyyy-MM-dd HH:mm:ss"> -
-                            <input type="text" id="search_buyEndTime" class="form-control" placeholder="下单结束时间 yyyy-MM-dd HH:mm:ss">
+                            <input type="text" id="search_buyStartTime" class="form-control" placeholder="yyyy-MM-dd" data-date-format="yyyy-mm-dd"> -
+                            <input type="text" id="search_buyEndTime" class="form-control" placeholder="yyyy-MM-dd" data-date-format="yyyy-mm-dd">
                         </div>
                         <div class="form-group">
-                            <label for="search_deliveryStatus">订单状态</label>
+                            <label for="search_deliveryStatus">发货状态</label>
                             <select id="search_deliveryStatus" class="form-control">
                                 <option value="">请选择</option>
-                                <option value="false">待发货</option>
-                                <option value="true">已发货</option>
+                                <option value="0">待发货</option>
+                                <option value="1">已发货</option>
                             </select>
                         </div>
 
@@ -182,10 +183,11 @@
 <!-- Custom Js -->
 <script src="assets/js/custom-scripts.js"></script>
 
-
+<script type="text/javascript" src="assets/js/bootstrap-datetimepicker.min.js"></script>
 <script type="text/javascript" src="assets/js/util.js"></script>
 <script type="text/javascript" src="assets/js/business/checklogin.js"></script>
 <script type="text/javascript" src="assets/js/business/orders.js"></script>
+
 
 </body>
 

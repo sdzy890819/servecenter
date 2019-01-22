@@ -2,10 +2,7 @@ package com.fdz.content.convert;
 
 import com.fdz.common.dto.PageDto;
 import com.fdz.common.utils.Page;
-import com.fdz.content.domain.Partner;
-import com.fdz.content.domain.PartnerProduct;
-import com.fdz.content.domain.Product;
-import com.fdz.content.domain.ProductType;
+import com.fdz.content.domain.*;
 import com.fdz.content.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -34,4 +31,6 @@ public interface DtoConvert {
     List<ProductResult> convert(List<Product> products);
 
     ProductType convert(ProductTypeDto dto);
+
+    PartnerUser convert(PartnerUserDto dto);
 }

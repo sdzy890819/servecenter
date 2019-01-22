@@ -3,6 +3,7 @@ package com.fdz.order.controller;
 import com.fdz.common.dto.SearchResult;
 import com.fdz.common.security.SecurityUtils;
 import com.fdz.common.utils.Page;
+import com.fdz.common.utils.StringUtils;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
 import com.fdz.order.domain.OrdersLogistics;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -58,6 +60,10 @@ public class OrdersController {
     @GetMapping("/detail/{orderSn}")
     RestResponse<OrdersResult> detail(@PathVariable("orderSn") String orderSn) {
         OrdersResult ordersResult = orderService.findOrdersResult(orderSn);
+        String partnerId = SecurityUtils.getCurrentLoginUserIdByPartner();
+        if (StringUtils.isNotBlank(partnerId)) {
+            ordersResult.setCostAmount(BigDecimal.ZERO);
+        }
         return RestResponse.success(ordersResult);
     }
 

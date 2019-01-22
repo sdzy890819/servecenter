@@ -326,13 +326,13 @@
       and l.receiver_mobile = #{search.receiverMobile}
     </if>
     <if test="search.buyStartTime != null">
-      and l.buy_time  >= #{search.buyStartTime}
+      and o.buy_time  >= #{search.buyStartTime}
     </if>
     <if test="search.buyEndTime != null">
-      and l.buy_time &lt;= #{search.buyEndTime}
+      and o.buy_time &lt;= #{search.buyEndTime}
     </if>
     <if test="search.deliveryStatus != null">
-      and l.delivery_status = #{search.deliveryStatus}
+      and o.delivery_status = #{search.deliveryStatus}
     </if>
     order by o.id desc limit #{page.start}, #{page.pageSize}
   </select>
@@ -352,13 +352,13 @@
       and l.receiver_mobile = #{search.receiverMobile}
     </if>
     <if test="search.buyStartTime != null">
-      and l.buy_time  >= #{search.buyStartTime}
+      and o.buy_time  >= #{search.buyStartTime}
     </if>
     <if test="search.buyEndTime != null">
-      and l.buy_time &lt;= #{search.buyEndTime}
+      and o.buy_time &lt;= #{search.buyEndTime}
     </if>
     <if test="search.deliveryStatus != null">
-      and l.delivery_status = #{search.deliveryStatus}
+      and o.delivery_status = #{search.deliveryStatus}
     </if>
   </select>
 </mapper>

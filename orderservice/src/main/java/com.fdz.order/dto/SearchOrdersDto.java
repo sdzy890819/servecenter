@@ -14,10 +14,10 @@ public class SearchOrdersDto {
 
     private String receiverMobile;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date buyStartTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date buyEndTime;
 
     private Byte deliveryStatus;

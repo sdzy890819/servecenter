@@ -75,7 +75,7 @@ function writeDataByMap(data) {
     var html = "";
     if (isNotNull(data)) {
         data.forEach(function (val, index) {
-            html = "<tr>"
+            html = html + "<tr>"
             html = html + "<td class='center'>" + val.key + "</td>";
             html = html + "<td class='center'>" + val.val + "</td>";
             html = html + "</tr>";
