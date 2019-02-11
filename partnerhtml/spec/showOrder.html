@@ -1,0 +1,56 @@
+<div class="modal fade bs-example-modal-lg" id="myModalShow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabelShow"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>机构订单号：</td>
+                            <td id="showPartnerSn"></td>
+                            <td>订单时间：</td>
+                            <td id="showOrderTime"></td>
+                        </tr>
+                        <tr>
+                            <td>收件人：</td>
+                            <td id="showReceiver"></td>
+                            <td>收件人电话：</td>
+                            <td id="showReceiverMobile"></td>
+                        </tr>
+                        <tr>
+                            <td>收件地址：</td>
+                            <td colspan="3" id="showReceiverAddress"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <tr>
+                            <th>商品编号</th>
+                            <th>商品名称</th>
+                            <th>商品型号</th>
+                            <th>商品类型</th>
+                            <th>商品价格</th>
+                            <th>平台价格</th>
+                            <th>商品数量</th>
+                        </tr>
+                        <tbody id="productShow">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

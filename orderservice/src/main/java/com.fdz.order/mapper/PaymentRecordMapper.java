@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface PaymentRecordMapper {
 
-    String SQL = " id, create_time, modify_time, create_by, modify_by, remark, is_delete, sn, order_sn, \n" +
+    String SQL = " id, create_time, modify_time, create_by, modify_by, remark, is_delete, sn, order_sn, partner_sn, \n" +
             "    payment_type, amount, surplus_amount, pay_time, pay_status, pay_sn, pay_route, partner_id, frozen ";
 
     String TABLE = " payment_record ";

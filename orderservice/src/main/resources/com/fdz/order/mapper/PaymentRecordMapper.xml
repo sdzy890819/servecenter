@@ -16,7 +16,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, create_time, modify_time, create_by, modify_by, remark, is_delete, sn, order_sn, 
+    id, create_time, modify_time, create_by, modify_by, remark, is_delete, sn, order_sn,
     payment_type, amount, surplus_amount, pay_time, pay_status, pay_sn, pay_route, partner_id, frozen
   </sql>
 

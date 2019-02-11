@@ -98,6 +98,7 @@ function searchVo() {
     searchVo.buyStartTime = $("#search_buyStartTime").val();
     searchVo.buyEndTime = $("#search_buyEndTime").val();
     searchVo.deliveryStatus = $("#search_deliveryStatus").val();
+    searchVo.partnerName = $("#search_partnerName").val();
     return searchVo;
 }
 

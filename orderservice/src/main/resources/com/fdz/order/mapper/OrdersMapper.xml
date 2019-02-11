@@ -319,6 +319,9 @@
     <if test="search.partnerId != null">
       and o.partner_id = #{search.partnerId}
     </if>
+    <if test="search.partnerName != null">
+      and o.partner_id in (select id from partner where `name` = #{search.partnerName})
+    </if>
     <if test="search.partnerSn != null">
       and o.partner_sn = #{search.partnerSn}
     </if>
@@ -344,6 +347,9 @@
     </if>
     <if test="search.partnerId != null">
       and o.partner_id = #{search.partnerId}
+    </if>
+    <if test="search.partnerName != null">
+      and o.partner_id in (select id from partner where `name` = #{search.partnerName})
     </if>
     <if test="search.partnerSn != null">
       and o.partner_sn = #{search.partnerSn}

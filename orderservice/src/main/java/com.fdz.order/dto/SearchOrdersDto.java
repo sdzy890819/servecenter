@@ -23,4 +23,6 @@ public class SearchOrdersDto {
     private Byte deliveryStatus;
 
     private Long partnerId;
+
+    private String partnerName;
 }

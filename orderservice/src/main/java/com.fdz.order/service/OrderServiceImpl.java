@@ -136,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
     public List<PaymentRecord> pay(PartnerRestResult partner, Orders orders) {
         List<PaymentRecord> list = new ArrayList<>();
         PaymentRecord paymentRecord = new PaymentRecord();
-        paymentRecord.setSn(String.valueOf(paymentIDGenerator.getId()));
+        paymentRecord.setSn(orders.getPartnerSn());
         paymentRecord.setOrderSn(orders.getOrderSn());
         paymentRecord.setPaymentType(PaymentTypeEnums.PAY.getType());
         paymentRecord.setAmount(orders.getAmount());
@@ -145,7 +145,7 @@ public class OrderServiceImpl implements OrderService {
         paymentRecord.setPartnerId(orders.getPartnerId());
         list.add(paymentRecord);
         PaymentRecord paymentRecord2 = new PaymentRecord();
-        paymentRecord2.setSn(String.valueOf(paymentIDGenerator.getId()));
+        paymentRecord2.setSn(orders.getPartnerSn());
         paymentRecord2.setOrderSn(orders.getOrderSn());
         paymentRecord2.setPaymentType(PaymentTypeEnums.INFO.getType());
         paymentRecord2.setAmount(orders.getInfoAmount());
