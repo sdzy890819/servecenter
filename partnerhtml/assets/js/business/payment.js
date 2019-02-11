@@ -170,7 +170,7 @@ function load(currentPage, pageSize, search) {
                 if (isNotNull(data.data.data)) {
                     var ab = "";
                     data.data.data.forEach(function (val, index) {
-                        ab = ab + writeData([val.paySn, val.orderSn, val.paymentTypeStr, val.amount, val.surplusAmount,
+                        ab = ab + writeData([val.paySn, val.sn, val.orderSn, val.paymentTypeStr, val.amount, val.surplusAmount,
                             val.payTimeStr, val.payStatusStr]);
                     })
                     $("#body").html(ab);
