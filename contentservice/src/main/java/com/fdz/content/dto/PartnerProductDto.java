@@ -18,4 +18,6 @@ public class PartnerProductDto {
     private Boolean shelf;
 
     private Long partnerId;
+
+    private BigDecimal serviceFee;
 }

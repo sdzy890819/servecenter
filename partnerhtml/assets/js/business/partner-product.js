@@ -66,6 +66,7 @@ function getVal() {
     content.salePrice = $("#txt_salePrice").val();
     content.platformPrice = $("#txt_platformPrice").val();
     content.shelf = $("#txt_shelf").val();
+    content.serviceFee = $("#txt_serviceFee").val();
     return content;
 }
 
@@ -76,6 +77,7 @@ function setVal(data) {
     $("#txt_salePrice").val(data.salePrice);
     $("#txt_platformPrice").val(data.platformPrice);
     $("#txt_shelf").val(data.shelf);
+    $("#txt_serviceFee").val(data.serviceFee);
 }
 
 function get(id) {

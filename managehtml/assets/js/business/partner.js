@@ -93,7 +93,7 @@ function getVal() {
     content.code = $("#txt_code").val();
     content.contacts = $("#txt_contacts").val();
     content.contactMobile = $("#txt_contactMobile").val();
-    content.serviceRate = $("#txt_serviceRate").val();
+    //content.serviceRate = $("#txt_serviceRate").val();
     content.publicKey = $("#txt_publicKey").val();
     return content;
 }
@@ -106,7 +106,7 @@ function setVal(data) {
     $("#txt_code").val(data.code);
     $("#txt_contacts").val(data.contacts);
     $("#txt_contactMobile").val(data.contactMobile);
-    $("#txt_serviceRate").val(data.serviceRate);
+    //$("#txt_serviceRate").val(data.serviceRate);
     $("#txt_publicKey").val(data.publicKey);
 }
 

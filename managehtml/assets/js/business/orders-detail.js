@@ -3,8 +3,6 @@ $(document).ready(function () {
     get(getQueryString()['id']);
 
 
-
-
 });
 
 function setVal(data) {
@@ -66,7 +64,10 @@ function setVal(data) {
 
     var tmp11 = {};
     tmp11.key = "收货人地址";
-    tmp11.val = data.ordersLogisticsResult.receiverAddress;
+    tmp11.val = data.ordersLogisticsResult.receiverProvince + " " +
+        data.ordersLogisticsResult.receiverCity + " " +
+        data.ordersLogisticsResult.receiverArea + " " +
+        data.ordersLogisticsResult.receiverAddress;
     dataMap.push(tmp11);
     var tmp12 = {};
     tmp12.key = "收货人联系电话";

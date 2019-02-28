@@ -8,11 +8,12 @@
     <result column="platform_price" property="platformPrice" jdbcType="DECIMAL" />
     <result column="shelf" property="shelf" jdbcType="BIT" />
     <result column="partner_id" property="partnerId" jdbcType="BIGINT" />
+    <result column="service_fee" property="serviceFee" />
   </resultMap>
 
   <sql id="Base_Column_List" >
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, product_id, 
-    sale_price, platform_price, shelf, partner_id
+    sale_price, platform_price, shelf, partner_id, service_fee
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -30,11 +31,11 @@
     insert into partner_product (id, create_time, modify_time, 
       create_by, modify_by, remark, 
       is_delete, product_id, sale_price, 
-      platform_price, shelf, partner_id)
+      platform_price, shelf, partner_id, service_fee)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{delete,jdbcType=BIT}, #{productId,jdbcType=BIGINT}, #{salePrice,jdbcType=DECIMAL}, 
-      #{platformPrice,jdbcType=DECIMAL}, #{shelf,jdbcType=BIT},#{partnerId,jdbcType=BIGINT})
+      #{platformPrice,jdbcType=DECIMAL}, #{shelf,jdbcType=BIT},#{partnerId,jdbcType=BIGINT}, #{serviceFee})
   </insert>
   <insert id="insertSelective" parameterType="com.fdz.content.domain.PartnerProduct" keyProperty="id" useGeneratedKeys="true">
     insert into partner_product
@@ -75,6 +76,9 @@
       <if test="partnerId != null">
         partner_id,
       </if>
+      <if test="serviceFee != null">
+        service_fee,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -113,6 +117,9 @@
       <if test="partnerId != null">
         #{partnerId,jdbcType=BIGINT},
       </if>
+      <if test="serviceFee != null">
+        #{serviceFee},
+      </if>
     </trim>
   </insert>
 
@@ -148,6 +155,9 @@
       <if test="partnerId != null">
         partner_id = #{partnerId, jdbcType=BIGINT},
       </if>
+      <if test="serviceFee != null">
+        service_fee = #{serviceFee},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -163,7 +173,8 @@
       sale_price = #{salePrice,jdbcType=DECIMAL},
       platform_price = #{platformPrice,jdbcType=DECIMAL},
       shelf = #{shelf,jdbcType=BIT},
-      partner_id = #{partnerId, jdbcType=BIGINT}
+      partner_id = #{partnerId, jdbcType=BIGINT},
+      service_fee = #{serviceFee}
     where id = #{id,jdbcType=BIGINT}
   </update>
 

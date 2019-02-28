@@ -11,7 +11,7 @@ import java.util.List;
 public interface PartnerProductMapper {
 
     String SQL = " id, create_time, modify_time, create_by, modify_by, remark, is_delete, product_id, \n" +
-            "    sale_price, platform_price, shelf, partner_id ";
+            "    sale_price, platform_price, shelf, partner_id, service_fee ";
     String TABLE = " partner_product ";
 
     String RESULT_MAP = "BaseResultMap";

@@ -14,6 +14,8 @@ public class PartnerProduct extends BaseEntity {
 
     private BigDecimal platformPrice;
 
+    private BigDecimal serviceFee;
+
     private Boolean shelf;
 
     private Long partnerId;

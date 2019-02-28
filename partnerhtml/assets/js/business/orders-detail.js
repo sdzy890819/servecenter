@@ -4,7 +4,9 @@ function orderDetail(data) {
     $("#showOrderTime").html(data.buyTimeStr);
     $("#showReceiver").html(data.ordersLogisticsResult.receiver);
     $("#showReceiverMobile").html(data.ordersLogisticsResult.receiverMobile);
-    $("#showReceiverAddress").html(data.ordersLogisticsResult.receiverAddress);
+    $("#showReceiverAddress").html(data.ordersLogisticsResult.receiverProvince + " " +
+        data.ordersLogisticsResult.receiverCity + " " +
+        data.ordersLogisticsResult.receiverArea + " " + data.ordersLogisticsResult.receiverAddress);
     var body = "";
     if (data.ordersProductResults != null) {
         data.ordersProductResults.forEach(function (val) {
