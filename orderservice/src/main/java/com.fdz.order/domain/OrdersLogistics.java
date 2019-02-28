@@ -16,6 +16,12 @@ public class OrdersLogistics extends BaseEntity {
 
     private String receiver;
 
+    private String receiverProvince;
+
+    private String receiverCity;
+
+    private String receiverArea;
+
     private String receiverAddress;
 
     private String receiverMobile;

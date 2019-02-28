@@ -8,6 +8,12 @@ public class OrdersLogisticsResult {
 
     private String receiver;
 
+    private String receiverProvince;
+
+    private String receiverCity;
+
+    private String receiverArea;
+
     private String receiverAddress;
 
     private String receiverMobile;
@@ -21,7 +27,6 @@ public class OrdersLogisticsResult {
     private Byte deliveryStatus;
 
     private Byte businessDeliveryStatus;
-
 
     private String deliveryStatusStr;
 

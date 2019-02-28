@@ -100,6 +100,9 @@ public class OrderServiceImpl implements OrderService {
         ordersLogistics.setPartnerId(partnerId);
         ordersLogistics.setReceiver(receivingAddressDto.getName());
         ordersLogistics.setReceiverAddress(receivingAddressDto.getAddress());
+        ordersLogistics.setReceiverProvince(receivingAddressDto.getProvince());
+        ordersLogistics.setReceiverCity(receivingAddressDto.getCity());
+        ordersLogistics.setReceiverArea(receivingAddressDto.getArea());
         ordersLogistics.setReceiverMobile(receivingAddressDto.getMobile());
         ordersLogistics.setDeliveryStatus(DeliveryStatusEnums.DONT_DELIVERY.getStatus());
         ordersLogistics.setBusinessDeliveryStatus(DeliveryStatusEnums.DONT_DELIVERY.getStatus());

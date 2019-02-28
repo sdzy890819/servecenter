@@ -1,231 +1,263 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fdz.order.mapper.OrdersLogisticsMapper">
-  <resultMap id="BaseResultMap" type="com.fdz.order.domain.OrdersLogistics" extends="baseEntity.base">
-    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
-    <result column="partner_sn" jdbcType="VARCHAR" property="partnerSn" />
-    <result column="partner_id" jdbcType="BIGINT" property="partnerId" />
-    <result column="receiver" jdbcType="VARCHAR" property="receiver" />
-    <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
-    <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
-    <result column="logistics" jdbcType="VARCHAR" property="logistics" />
-    <result column="logistics_sn" jdbcType="VARCHAR" property="logisticsSn" />
-    <result column="logistics_status" jdbcType="VARCHAR" property="logisticsStatus" />
-    <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus" />
-    <result column="business_delivery_status"  jdbcType="TINYINT" property="businessDeliveryStatus" />
-    <result column="logistics_amount" property="logisticsAmount" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.fdz.order.domain.OrdersLogistics" extends="baseEntity.base">
+        <result column="order_sn" jdbcType="VARCHAR" property="orderSn"/>
+        <result column="partner_sn" jdbcType="VARCHAR" property="partnerSn"/>
+        <result column="partner_id" jdbcType="BIGINT" property="partnerId"/>
+        <result column="receiver" jdbcType="VARCHAR" property="receiver"/>
+        <result column="receiver_province" jdbcType="VARCHAR" property="receiverProvince"/>
+        <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity"/>
+        <result column="receiver_area" jdbcType="VARCHAR" property="receiverArea"/>
+        <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress"/>
+        <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile"/>
+        <result column="logistics" jdbcType="VARCHAR" property="logistics"/>
+        <result column="logistics_sn" jdbcType="VARCHAR" property="logisticsSn"/>
+        <result column="logistics_status" jdbcType="VARCHAR" property="logisticsStatus"/>
+        <result column="delivery_status" jdbcType="TINYINT" property="deliveryStatus"/>
+        <result column="business_delivery_status" jdbcType="TINYINT" property="businessDeliveryStatus"/>
+        <result column="logistics_amount" property="logisticsAmount"/>
+    </resultMap>
 
-  <sql id="Base_Column_List">
+    <sql id="Base_Column_List">
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, order_sn, 
     partner_sn, partner_id, receiver, receiver_address, receiver_mobile, logistics, logistics_sn, 
-    logistics_status, delivery_status,business_delivery_status,logistics_amount
+    logistics_status, delivery_status,business_delivery_status,logistics_amount,receiver_province,receiver_city,receiver_area
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from orders_logistics
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from orders_logistics
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from orders_logistics
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.fdz.order.domain.OrdersLogistics">
+    <insert id="insert" parameterType="com.fdz.order.domain.OrdersLogistics">
     insert into orders_logistics (id, create_time, modify_time, 
       create_by, modify_by, remark, 
       is_delete, order_sn, partner_sn, 
       partner_id, receiver, receiver_address, 
       receiver_mobile, logistics, logistics_sn, 
-      logistics_status, delivery_status,business_delivery_status, logistics_amount)
+      logistics_status, delivery_status,business_delivery_status, logistics_amount,receiver_province,receiver_city,receiver_area)
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{delete,jdbcType=BIT}, #{orderSn,jdbcType=VARCHAR}, #{partnerSn,jdbcType=VARCHAR}, 
       #{partnerId,jdbcType=BIGINT}, #{receiver,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, 
       #{receiverMobile,jdbcType=VARCHAR}, #{logistics,jdbcType=VARCHAR}, #{logisticsSn,jdbcType=VARCHAR}, 
-      #{logisticsStatus,jdbcType=VARCHAR}, #{deliveryStatus,jdbcType=TINYINT}, #{businessDeliveryStatus},#{logisticsAmount})
+      #{logisticsStatus,jdbcType=VARCHAR}, #{deliveryStatus,jdbcType=TINYINT}, #{businessDeliveryStatus},#{logisticsAmount}
+      ,#{receiverProvince},#{receiverCity},#{receiverArea})
   </insert>
-  <insert id="insertSelective" parameterType="com.fdz.order.domain.OrdersLogistics">
-    insert into orders_logistics
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="modifyTime != null">
-        modify_time,
-      </if>
-      <if test="createBy != null">
-        create_by,
-      </if>
-      <if test="modifyBy != null">
-        modify_by,
-      </if>
-      <if test="remark != null">
-        remark,
-      </if>
-      <if test="delete != null">
-        is_delete,
-      </if>
-      <if test="orderSn != null">
-        order_sn,
-      </if>
-      <if test="partnerSn != null">
-        partner_sn,
-      </if>
-      <if test="partnerId != null">
-        partner_id,
-      </if>
-      <if test="receiver != null">
-        receiver,
-      </if>
-      <if test="receiverAddress != null">
-        receiver_address,
-      </if>
-      <if test="receiverMobile != null">
-        receiver_mobile,
-      </if>
-      <if test="logistics != null">
-        logistics,
-      </if>
-      <if test="logisticsSn != null">
-        logistics_sn,
-      </if>
-      <if test="logisticsStatus != null">
-        logistics_status,
-      </if>
-      <if test="deliveryStatus != null">
-        delivery_status,
-      </if>
-      <if test="businessDeliveryStatus != null">
-        business_delivery_status,
-      </if>
-      <if test="logisticsAmount != null">
-        logistics_amount,
-      </if>
+    <insert id="insertSelective" parameterType="com.fdz.order.domain.OrdersLogistics">
+        insert into orders_logistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="createBy != null">
+                create_by,
+            </if>
+            <if test="modifyBy != null">
+                modify_by,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="delete != null">
+                is_delete,
+            </if>
+            <if test="orderSn != null">
+                order_sn,
+            </if>
+            <if test="partnerSn != null">
+                partner_sn,
+            </if>
+            <if test="partnerId != null">
+                partner_id,
+            </if>
+            <if test="receiver != null">
+                receiver,
+            </if>
+            <if test="receiverAddress != null">
+                receiver_address,
+            </if>
+            <if test="receiverMobile != null">
+                receiver_mobile,
+            </if>
+            <if test="logistics != null">
+                logistics,
+            </if>
+            <if test="logisticsSn != null">
+                logistics_sn,
+            </if>
+            <if test="logisticsStatus != null">
+                logistics_status,
+            </if>
+            <if test="deliveryStatus != null">
+                delivery_status,
+            </if>
+            <if test="businessDeliveryStatus != null">
+                business_delivery_status,
+            </if>
+            <if test="logisticsAmount != null">
+                logistics_amount,
+            </if>
+            <if test="receiverProvince != null">
+                receiver_province,
+            </if>
+            <if test="receiverCity != null">
+                receiver_city,
+            </if>
+            <if test="receiverArea != null">
+                receiver_area,
+            </if>
 
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=BIGINT},
-      </if>
-      <if test="modifyTime != null">
-        #{modifyTime,jdbcType=BIGINT},
-      </if>
-      <if test="createBy != null">
-        #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="modifyBy != null">
-        #{modifyBy,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="delete != null">
-        #{delete,jdbcType=BIT},
-      </if>
-      <if test="orderSn != null">
-        #{orderSn,jdbcType=VARCHAR},
-      </if>
-      <if test="partnerSn != null">
-        #{partnerSn,jdbcType=VARCHAR},
-      </if>
-      <if test="partnerId != null">
-        #{partnerId,jdbcType=BIGINT},
-      </if>
-      <if test="receiver != null">
-        #{receiver,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverAddress != null">
-        #{receiverAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverMobile != null">
-        #{receiverMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="logistics != null">
-        #{logistics,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsSn != null">
-        #{logisticsSn,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsStatus != null">
-        #{logisticsStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryStatus != null">
-        #{deliveryStatus,jdbcType=TINYINT},
-      </if>
-      <if test="businessDeliveryStatus != null">
-        #{businessDeliveryStatus},
-      </if>
-      <if test="logisticsAmount != null">
-        logisticsAmount,
-      </if>
-    </trim>
-  </insert>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=BIGINT},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyBy != null">
+                #{modifyBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="delete != null">
+                #{delete,jdbcType=BIT},
+            </if>
+            <if test="orderSn != null">
+                #{orderSn,jdbcType=VARCHAR},
+            </if>
+            <if test="partnerSn != null">
+                #{partnerSn,jdbcType=VARCHAR},
+            </if>
+            <if test="partnerId != null">
+                #{partnerId,jdbcType=BIGINT},
+            </if>
+            <if test="receiver != null">
+                #{receiver,jdbcType=VARCHAR},
+            </if>
+            <if test="receiverAddress != null">
+                #{receiverAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="receiverMobile != null">
+                #{receiverMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="logistics != null">
+                #{logistics,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsSn != null">
+                #{logisticsSn,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsStatus != null">
+                #{logisticsStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryStatus != null">
+                #{deliveryStatus,jdbcType=TINYINT},
+            </if>
+            <if test="businessDeliveryStatus != null">
+                #{businessDeliveryStatus},
+            </if>
+            <if test="logisticsAmount != null">
+                #{logisticsAmount},
+            </if>
+            <if test="receiverProvince != null">
+                #{receiverProvince},
+            </if>
+            <if test="receiverCity != null">
+                #{receiverCity},
+            </if>
+            <if test="receiverArea != null">
+                #{receiverArea},
+            </if>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.fdz.order.domain.OrdersLogistics">
-    update orders_logistics
-    <set>
+        </trim>
+    </insert>
 
-      <if test="modifyTime != null">
-        modify_time = #{modifyTime,jdbcType=BIGINT},
-      </if>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fdz.order.domain.OrdersLogistics">
+        update orders_logistics
+        <set>
 
-      <if test="modifyBy != null">
-        modify_by = #{modifyBy,jdbcType=VARCHAR},
-      </if>
-      <if test="remark != null">
-        remark = #{remark,jdbcType=VARCHAR},
-      </if>
-      <if test="delete != null">
-        is_delete = #{delete,jdbcType=BIT},
-      </if>
-      <if test="orderSn != null">
-        order_sn = #{orderSn,jdbcType=VARCHAR},
-      </if>
-      <if test="partnerSn != null">
-        partner_sn = #{partnerSn,jdbcType=VARCHAR},
-      </if>
-      <if test="partnerId != null">
-        partner_id = #{partnerId,jdbcType=BIGINT},
-      </if>
-      <if test="receiver != null">
-        receiver = #{receiver,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverAddress != null">
-        receiver_address = #{receiverAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="receiverMobile != null">
-        receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="logistics != null">
-        logistics = #{logistics,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsSn != null">
-        logistics_sn = #{logisticsSn,jdbcType=VARCHAR},
-      </if>
-      <if test="logisticsStatus != null">
-        logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="deliveryStatus != null">
-        delivery_status = #{deliveryStatus,jdbcType=TINYINT},
-      </if>
-      <if test="businessDeliveryStatus != null">
-        business_delivery_status = #{businessDeliveryStatus},
-      </if>
-      <if test="logisticsAmount != null">
-        logistics_amount = #{logisticsAmount},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fdz.order.domain.OrdersLogistics">
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=BIGINT},
+            </if>
+
+            <if test="modifyBy != null">
+                modify_by = #{modifyBy,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="delete != null">
+                is_delete = #{delete,jdbcType=BIT},
+            </if>
+            <if test="orderSn != null">
+                order_sn = #{orderSn,jdbcType=VARCHAR},
+            </if>
+            <if test="partnerSn != null">
+                partner_sn = #{partnerSn,jdbcType=VARCHAR},
+            </if>
+            <if test="partnerId != null">
+                partner_id = #{partnerId,jdbcType=BIGINT},
+            </if>
+            <if test="receiver != null">
+                receiver = #{receiver,jdbcType=VARCHAR},
+            </if>
+            <if test="receiverAddress != null">
+                receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="receiverMobile != null">
+                receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="logistics != null">
+                logistics = #{logistics,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsSn != null">
+                logistics_sn = #{logisticsSn,jdbcType=VARCHAR},
+            </if>
+            <if test="logisticsStatus != null">
+                logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryStatus != null">
+                delivery_status = #{deliveryStatus,jdbcType=TINYINT},
+            </if>
+            <if test="businessDeliveryStatus != null">
+                business_delivery_status = #{businessDeliveryStatus},
+            </if>
+            <if test="logisticsAmount != null">
+                logistics_amount = #{logisticsAmount},
+            </if>
+            <if test="receiverProvince != null">
+                receiver_province = #{receiverProvince},
+            </if>
+            <if test="receiverCity != null">
+                receiver_city = #{receiverCity},
+            </if>
+            <if test="receiverArea != null">
+                receiver_area = #{receiverArea},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fdz.order.domain.OrdersLogistics">
     update orders_logistics
     set
       modify_time = #{modifyTime,jdbcType=BIGINT},
@@ -244,7 +276,10 @@
       logistics_status = #{logisticsStatus,jdbcType=VARCHAR},
       delivery_status = #{deliveryStatus,jdbcType=TINYINT},
       business_delivery_status = #{businessDeliveryStatus},
-      logistics_amount = #{logisticsAmount}
+      logistics_amount = #{logisticsAmount},
+      receiver_province = #{receiverProvince},
+      receiver_city = #{receiverCity},
+      receiver_area = #{receiverArea}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
