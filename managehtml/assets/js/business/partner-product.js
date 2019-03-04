@@ -84,7 +84,7 @@ function setVal(data) {
     $("#txt_productId").val(data.productId);
     $("#txt_salePrice").val(data.salePrice);
     $("#txt_platformPrice").val(data.platformPrice);
-    $("#txt_shelf").val(data.shelf);
+    $("#txt_shelf").val(data.shelf + "");
     $("#txt_serviceFee").val(data.serviceFee);
 }
 
