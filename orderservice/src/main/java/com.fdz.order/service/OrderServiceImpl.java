@@ -63,6 +63,7 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal amount = BigDecimal.ZERO;
         BigDecimal platformAmount = BigDecimal.ZERO;
         BigDecimal costAmount = BigDecimal.ZERO;
+        BigDecimal infoAmount = BigDecimal.ZERO;
         List<OrdersProduct> ordersProducts = new ArrayList<>();
         for (GoodsDto a : goodsDtoList) {
             ThirdpartyProductDto dto = tpResultMap.get(a.getProductId());
@@ -73,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
             amount = amount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
             platformAmount = platformAmount.add(dto.getPlatformPrice().multiply(new BigDecimal(a.getNum())));
             costAmount = costAmount.add(dto.getPrimeCosts().multiply(new BigDecimal(a.getNum())));
+            infoAmount = infoAmount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
             OrdersProduct ordersProduct = new OrdersProduct();
             ordersProduct.setOrderSn(orderSn);
             ordersProduct.setPartnerSn(cashierDto.getSn());
@@ -115,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
         orders.setPartnerSn(cashierDto.getSn());
         orders.setPartnerId(partnerId);
         orders.setAmount(amount);
-        orders.setInfoAmount(partnerRestResult.getServiceRate().multiply(amount));
+        orders.setInfoAmount(infoAmount);
         orders.setBuyTime(new Date());
         orders.setStatus(OrdersStatus.WAIT_PAY.getStatus());
         orders.setOrderStatus(OrdersFinishStatus.PROCESSING.getStatus());

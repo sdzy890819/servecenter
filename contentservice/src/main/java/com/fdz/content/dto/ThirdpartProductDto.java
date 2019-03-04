@@ -28,6 +28,8 @@ public class ThirdpartProductDto {
 
     private String productModel;
 
+    private BigDecimal serviceFee;
+
     private List<String> productImages;
 
 }

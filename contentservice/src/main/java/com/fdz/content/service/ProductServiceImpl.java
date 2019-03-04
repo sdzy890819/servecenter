@@ -149,6 +149,7 @@ public class ProductServiceImpl implements ProductService {
                 thirdpartProductDto.setShelf(a.getShelf() && product.getStatus());
                 thirdpartProductDto.setProductImages(productImages);
                 thirdpartProductDto.setId(a.getId());
+                thirdpartProductDto.setServiceFee(a.getServiceFee());
                 result.add(thirdpartProductDto);
             }
         });
@@ -193,6 +194,7 @@ public class ProductServiceImpl implements ProductService {
                 thirdpartProductDto.setProductImages(productImages);
                 thirdpartProductDto.setId(a.getId());
                 thirdpartProductDto.setProductSalePrice(product.getSalePrice());
+                thirdpartProductDto.setServiceFee(a.getServiceFee());
                 result.add(thirdpartProductDto);
             }
         });

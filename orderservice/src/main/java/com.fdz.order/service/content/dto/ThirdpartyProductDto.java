@@ -36,6 +36,8 @@ public class ThirdpartyProductDto {
 
     private BigDecimal productSalePrice;
 
+    private BigDecimal serviceFee;
+
     private List<String> productImages;
 
 }
