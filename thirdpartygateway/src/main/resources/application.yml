@@ -44,7 +44,7 @@ management:
   context-path: /management
   security:
     enabled: false
-  port: 6607
+  port: 6608
   health:
     redis:
       enabled: false
