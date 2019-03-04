@@ -98,6 +98,7 @@ public class ProductServiceImpl implements ProductService {
         thirdpartProductDto.setProductImages(productImages != null ? productImages.get(product.getId()) : null);
         thirdpartProductDto.setId(partnerProductId);
         thirdpartProductDto.setProductSalePrice(product.getSalePrice());
+        thirdpartProductDto.setServiceFee(partnerProduct.getServiceFee());
         return thirdpartProductDto;
     }
 
