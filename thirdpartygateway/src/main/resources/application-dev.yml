@@ -7,7 +7,20 @@ logging:
     root: info
     com.fdz: debug
     org.springframework.security: trace
+spring:
+  redis:
+    host: 39.106.221.165
+    port: 6379
+    timeout: 2000
+    password: cms-new-123!@#
+    pool:
+      max-wait: 2000 # 2 seconds
+      max-idle: 10
+      min-idle: 0
+      max-active: 10
 application:
+  redis:
+    enabled: true
   cors:
     config:
       allow-credentials: true

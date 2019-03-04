@@ -16,6 +16,7 @@ import com.fdz.thirdpartygateway.vo.ThirdpartyRequest;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.Charset;
@@ -39,7 +40,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
 
     @Override
     public String filterType() {
-        return "pre";
+        return FilterConstants.PRE_TYPE;
     }
 
     @Override
@@ -71,7 +72,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
                     if (true) {
                         String decodeData = RSAUtil.resultAnalysis(data, applicationProperties.getMyRsaKey().getPrivateKey());
                         log.debug("打印解密后的数据信息: {}", decodeData);
-                        HttpServletRequest servletRequest = ServletUtils.buildRequest(request, decodeData.getBytes(Charset.forName("UTF-8")));
+                        HttpServletRequest servletRequest = ServletUtils.buildRequest(request, decodeData.getBytes(Charset.forName("UTF-8")), null);
                         ctx.getZuulRequestHeaders().put("content-type", APPLICATION_JSON_CHARSET_UTF_8);
                         ctx.getZuulRequestHeaders().put(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.PARTNER_CHANNEL);
                         ctx.getZuulRequestHeaders().put(Constants.Common.UNIQUE_KEY_HEADER, partnerRestResult.getUniqueKey());

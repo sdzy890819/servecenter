@@ -1,5 +1,6 @@
 package com.fdz.thirdpartygateway.utils;
 
+import com.fdz.common.utils.StringUtils;
 import com.netflix.zuul.http.ServletInputStreamWrapper;
 
 import javax.servlet.ServletInputStream;
@@ -34,8 +35,18 @@ public class ServletUtils {
         return map;
     }
 
-    public static HttpServletRequest buildRequest(HttpServletRequest request, byte[] bodyBytes) {
+    public static HttpServletRequest buildRequest(HttpServletRequest request, byte[] bodyBytes, String uri) {
         return new HttpServletRequestWrapper(request) {
+
+            @Override
+            public String getRequestURI() {
+                if (StringUtils.isNotBlank(uri)) {
+                    return uri;
+                } else {
+                    return super.getRequestURI();
+                }
+            }
+
             @Override
             public ServletInputStream getInputStream() throws IOException {
                 return new ServletInputStreamWrapper(bodyBytes);
