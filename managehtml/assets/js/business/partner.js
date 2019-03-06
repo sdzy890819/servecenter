@@ -58,7 +58,7 @@ $(document).ready(function () {
 })
 
 function showClick(id) {
-    get(id, showKey);
+    getData(id, showKey);
 }
 
 function showKey(data) {
