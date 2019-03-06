@@ -62,9 +62,14 @@ function showClick(id) {
 }
 
 function showKey(data) {
-    var html = "<p><span>自生成公钥：</span>" + data.myPublicKey + "</p>";
-    html = html + "<p><span>合作方公钥：</span> " + data.publicKey + "</p>";
-    bootbox.alert(html);
+    var html = "自生成公钥：" + data.myPublicKey;
+    var html2 = "合作方公钥：" + data.publicKey;
+    bootbox.alert({
+        size: "large",
+        title: html,
+        message: html2,
+        className: 'rubberBand animated'
+    });
 }
 
 function searchVo() {
