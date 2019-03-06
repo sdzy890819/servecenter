@@ -60,8 +60,8 @@ public class RSAUtil {
         Key privateKey = keyPair.getPrivate();
         String privateKeyStr = Base64.encodeBase64URLSafeString(privateKey.getEncoded());
         Map<String, String> keyPairMap = new HashMap<String, String>();
-        keyPairMap.put("publicKey", publicKeyStr);
-        keyPairMap.put("privateKey", privateKeyStr);
+        keyPairMap.put(PUBLIC_KEY, publicKeyStr);
+        keyPairMap.put(PRIVATE_KEY, privateKeyStr);
         return keyPairMap;
     }
 
@@ -221,5 +221,6 @@ public class RSAUtil {
         log.info("解密结果:{}", decData);
         return decData;
     }
+
 }
 

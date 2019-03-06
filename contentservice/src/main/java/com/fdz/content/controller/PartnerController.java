@@ -74,7 +74,7 @@ public class PartnerController {
         partner.setUniqueKey(uniqueKey);
         Map<String, String> map = RSAUtil.initRSAKey(RSAUtil.ALGORITHM_RSA_PRIVATE_KEY_LENGTH);
         partner.setMyKey(map.get(RSAUtil.PRIVATE_KEY));
-        partner.setPublicKey(map.get(RSAUtil.PUBLIC_KEY));
+        partner.setMyPublicKey(map.get(RSAUtil.PUBLIC_KEY));
         partnerService.insertSelective(partner);
         return RestResponse.success(null);
     }
@@ -112,7 +112,7 @@ public class PartnerController {
                 if (StringUtils.isBlank(partner.getMyKey()) && StringUtils.isBlank(partner.getMyPublicKey())) {
                     Map<String, String> map = RSAUtil.initRSAKey(RSAUtil.ALGORITHM_RSA_PRIVATE_KEY_LENGTH);
                     partner.setMyKey(map.get(RSAUtil.PRIVATE_KEY));
-                    partner.setPublicKey(map.get(RSAUtil.PUBLIC_KEY));
+                    partner.setMyPublicKey(map.get(RSAUtil.PUBLIC_KEY));
                 }
                 partnerService.updateByPrimaryKeySelective(partner);
             } else {
