@@ -263,10 +263,9 @@ function load(currentPage, pageSize, search) {
                 if (isNotNull(data.data.data)) {
                     var ab = "";
                     data.data.data.forEach(function (val, index) {
-                        ab = ab + writeData([val.uniqueKey, val.name, val.contacts, val.contactMobile, val.natureStr,
+                        ab = ab + writeData(["<a href='#' id='listShowKey' showKey='" + val.id + "'>" + val.uniqueKey + "</a>", val.name, val.contacts, val.contactMobile, val.natureStr,
                             val.createTimeStr,
                             "<a href='#' id='listUser' user='" + val.id + "' class='btn btn-info btn-sm' >用户</a>" +
-                            "<a href='#' id='listShowKey' showKey='" + val.id + "' class='btn btn-info btn-sm' >查看密匙</a>" +
                             "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>" +
                             "<a href='#' id='listDelete' delete='" + val.id + "' class='btn btn-danger btn-sm' >删除</a>"]);
                     })
