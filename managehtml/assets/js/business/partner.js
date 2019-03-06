@@ -66,8 +66,8 @@ function showKey(data) {
     var html2 = "合作方公钥：" + data.publicKey;
     bootbox.alert({
         size: "large",
-        title: html,
-        message: html2,
+        title: "<span style='word-wrap: break-word'>" + html + "</span>",
+        message: "<span style='word-wrap: break-word'>" + html2 + "</span>",
         className: 'rubberBand animated'
     });
 }
