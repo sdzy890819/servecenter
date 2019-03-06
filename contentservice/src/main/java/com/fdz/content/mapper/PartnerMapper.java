@@ -15,7 +15,7 @@ import java.util.List;
 public interface PartnerMapper {
 
     String SQL = " id, create_time, modify_time, create_by, modify_by, remark, is_delete, `name`, short_name,\n" +
-            "    nature, code, contacts, contact_mobile, service_rate, public_key,unique_key ";
+            "    nature, code, contacts, contact_mobile, service_rate, public_key,unique_key,my_key,my_public_key ";
 
     String TABLE = " partner ";
 

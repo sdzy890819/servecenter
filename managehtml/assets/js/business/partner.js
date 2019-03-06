@@ -44,6 +44,10 @@ $(document).ready(function () {
         updateClick($(this).attr("update"));
     });
 
+    $(document).on("click", "#listShowKey", function () {
+        showClick($(this).attr("showKey"));
+    });
+
     $(document).on("click", "#listUser", function () {
         userClick($(this).attr("user"));
     });
@@ -52,6 +56,16 @@ $(document).ready(function () {
         delBtnClick($(this).attr("delete"));
     });
 })
+
+function showClick(id) {
+    get(id, showKey);
+}
+
+function showKey(data) {
+    var html = "<p><span>自生成公钥：</span>" + data.myPublicKey + "</p>";
+    html = html + "<p><span>合作方公钥：</span> " + data.publicKey + "</p>";
+    bootbox.alert(html);
+}
 
 function searchVo() {
     var searchVo = {};
@@ -159,6 +173,10 @@ function getUser(id) {
 }
 
 function get(id) {
+    getData(id, setVal);
+}
+
+function getData(id, func) {
     $.ajax({
         async: false,
         type: "GET",
@@ -167,7 +185,7 @@ function get(id) {
         dataType: 'json',
         success: function (data) {
             if (data.code == 0) {
-                setVal(data.data);
+                func(data.data);
             }
         },
         error: error
@@ -243,6 +261,7 @@ function load(currentPage, pageSize, search) {
                         ab = ab + writeData([val.uniqueKey, val.name, val.contacts, val.contactMobile, val.natureStr,
                             val.createTimeStr,
                             "<a href='#' id='listUser' user='" + val.id + "' class='btn btn-info btn-sm' >用户</a>" +
+                            "<a href='#' id='listShowKey' showKey='" + val.id + "' class='btn btn-info btn-sm' >查看密匙</a>" +
                             "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>" +
                             "<a href='#' id='listDelete' delete='" + val.id + "' class='btn btn-danger btn-sm' >删除</a>"]);
                     })

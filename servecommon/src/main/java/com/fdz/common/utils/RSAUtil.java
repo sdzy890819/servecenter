@@ -29,6 +29,8 @@ public class RSAUtil {
     public static final String ALGORITHM_AES_PKCS7 = "AES";
     public static final String ALGORITHM_DES = "DES";
     public static final String ALGORITHM_DE_SEDE = "DESede";
+    public static final String PRIVATE_KEY = "privateKey";
+    public static final String PUBLIC_KEY = "publicKey";
 
     /**
      * 初始化RSA算法密钥对

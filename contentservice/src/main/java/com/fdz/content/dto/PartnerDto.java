@@ -27,4 +27,8 @@ public class PartnerDto {
 
     private String uniqueKey;
 
+    private String myKey;
+
+    private String myPublicKey;
+
 }

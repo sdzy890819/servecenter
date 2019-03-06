@@ -5,6 +5,7 @@ import com.fdz.common.exception.BizException;
 import com.fdz.common.security.SecurityUtils;
 import com.fdz.common.utils.EncryptUtil;
 import com.fdz.common.utils.Page;
+import com.fdz.common.utils.RSAUtil;
 import com.fdz.common.utils.StringUtils;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
@@ -71,6 +72,9 @@ public class PartnerController {
         Partner partner = dtoConvert.convert(dto);
         String uniqueKey = EncryptUtil.md5(UUID.randomUUID().toString());
         partner.setUniqueKey(uniqueKey);
+        Map<String, String> map = RSAUtil.initRSAKey(RSAUtil.ALGORITHM_RSA_PRIVATE_KEY_LENGTH);
+        partner.setMyKey(map.get(RSAUtil.PRIVATE_KEY));
+        partner.setPublicKey(map.get(RSAUtil.PUBLIC_KEY));
         partnerService.insertSelective(partner);
         return RestResponse.success(null);
     }
@@ -104,6 +108,11 @@ public class PartnerController {
                 }
                 if (StringUtils.isNotBlank(dto.getPublicKey())) {
                     partner.setPublicKey(dto.getPublicKey());
+                }
+                if (StringUtils.isBlank(partner.getMyKey()) && StringUtils.isBlank(partner.getMyPublicKey())) {
+                    Map<String, String> map = RSAUtil.initRSAKey(RSAUtil.ALGORITHM_RSA_PRIVATE_KEY_LENGTH);
+                    partner.setMyKey(map.get(RSAUtil.PRIVATE_KEY));
+                    partner.setPublicKey(map.get(RSAUtil.PUBLIC_KEY));
                 }
                 partnerService.updateByPrimaryKeySelective(partner);
             } else {

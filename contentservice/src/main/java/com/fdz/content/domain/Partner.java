@@ -28,6 +28,10 @@ public class Partner extends BaseEntity {
 
     private String uniqueKey;
 
+    private String myKey;
+
+    private String myPublicKey;
+
 //    private boolean encode;
 
     public Partner() {
