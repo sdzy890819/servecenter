@@ -25,17 +25,17 @@ public abstract class RsaRestRequest extends RestRequest {
         super();
     }
 
-    public <Result> ThirdpartyResponse<Result> request(String url, String channel, Map<String, Object> data, String publicKey) {
-        return request(url, channel, data, publicKey, new TypeReference<ThirdpartyResponse<Result>>() {
+    public <Result> ThirdpartyResponse<Result> request(String url, String channel, Map<String, Object> data, String publicKey, String privateKey) {
+        return request(url, channel, data, publicKey, privateKey, new TypeReference<ThirdpartyResponse<Result>>() {
         });
     }
 
-    public <Result> ThirdpartyResponse<Result> request(String url, String channel, Map<String, Object> data, String publicKey, TypeReference typeReference) {
-        ThirdpartyResult thirdpartyResult = request(url, initParam(channel, data, publicKey));
+    public <Result> ThirdpartyResponse<Result> request(String url, String channel, Map<String, Object> data, String publicKey, String privateKey, TypeReference typeReference) {
+        ThirdpartyResult thirdpartyResult = request(url, initParam(channel, data, publicKey, privateKey));
         if (StringUtils.isNotBlank(thirdpartyResult.getRespData()) && StringUtils.isNotBlank(thirdpartyResult.getRespSign())) {
             boolean bool = RSAUtil.inspectionSign(thirdpartyResult.getRespData(), thirdpartyResult.getRespSign(), publicKey);
             if (bool) {
-                String decodeData = RSAUtil.resultAnalysis(thirdpartyResult.getRespData(), getPrivateKey());
+                String decodeData = RSAUtil.resultAnalysis(thirdpartyResult.getRespData(), privateKey);
                 if (StringUtils.isNotBlank(decodeData)) {
                     try {
                         ThirdpartyResponse<Result> result = getObjectMapper().readValue(decodeData, typeReference);
@@ -69,12 +69,12 @@ public abstract class RsaRestRequest extends RestRequest {
         }
     }
 
-    private ThirdpartyVo initParam(String channel, Map<String, Object> data, String publicKey) {
+    private ThirdpartyVo initParam(String channel, Map<String, Object> data, String publicKey, String privateKey) {
         ThirdpartyVo thirdpartyVo = new ThirdpartyVo();
         thirdpartyVo.setChannel(channel);
         try {
             String encodeData = RSAUtil.buildRSAEncryptByPublicKey(getObjectMapper().writeValueAsString(data), publicKey);
-            String sign = RSAUtil.buildRSASignByPrivateKey(encodeData, getPrivateKey());
+            String sign = RSAUtil.buildRSASignByPrivateKey(encodeData, privateKey);
             thirdpartyVo.setData(encodeData);
             thirdpartyVo.setSign(sign);
         } catch (JsonProcessingException e) {
@@ -83,5 +83,4 @@ public abstract class RsaRestRequest extends RestRequest {
         return thirdpartyVo;
     }
 
-    protected abstract String getPrivateKey();
 }

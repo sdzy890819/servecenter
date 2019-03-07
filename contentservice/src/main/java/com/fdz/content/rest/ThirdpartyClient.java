@@ -29,20 +29,15 @@ public class ThirdpartyClient extends RsaRestRequest {
     @Resource
     private ApplicationProperties applicationProperties;
 
-    @Override
-    protected String getPrivateKey() {
-        return applicationProperties.getMyRsaKey().getPrivateKey();
-    }
-
     /**
      * @param url
      * @return
      */
-    public boolean sync(String url, String channel, Object data, String publicKey) {
+    public boolean sync(String url, String channel, Object data, String publicKey, String privateKey) {
         try {
             Map<String, Object> dataMap = objectMapper.readValue(objectMapper.writeValueAsString(data), new TypeReference<Map<String, Object>>() {
             });
-            ThirdpartyResponse thirdpartyResponse = request(url, channel, dataMap, publicKey);
+            ThirdpartyResponse thirdpartyResponse = request(url, channel, dataMap, publicKey, privateKey);
             return thirdpartyResponse.isSuccess();
         } catch (IOException e) {
             throw new BizException("JSON转字符串错误, 请查证", e);
