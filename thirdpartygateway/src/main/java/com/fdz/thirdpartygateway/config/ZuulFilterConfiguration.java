@@ -35,9 +35,9 @@ public class ZuulFilterConfiguration {
         return new RsaPostFilter(contentService, applicationProperties, objectMapper);
     }
 
-//    @Bean
-//    public UrlPathFilter urlPathFilter() {
-//        return new UrlPathFilter();
-//    }
+    /*@Bean
+    public UrlPathFilter urlPathFilter() {
+        return new UrlPathFilter();
+    }*/
 
 }

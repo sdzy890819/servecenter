@@ -3,15 +3,16 @@ package com.fdz.thirdpartygateway.service.content.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 public class PartnerRestResult {
 
     private Long id;
 
-    private Long createTime;
+    private Date createTime;
 
-    private Long modifyTime;
+    private Date modifyTime;
 
     private String createBy;
 
@@ -38,5 +39,9 @@ public class PartnerRestResult {
     private String publicKey;
 
     private String uniqueKey;
+
+    private String myKey;
+
+    private String myPublicKey;
 
 }

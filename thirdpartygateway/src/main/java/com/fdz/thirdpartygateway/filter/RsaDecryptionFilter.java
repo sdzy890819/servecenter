@@ -69,8 +69,8 @@ public class RsaDecryptionFilter extends ZuulFilter {
                         throw new BizException("渠道不存在.");
                     }
                     boolean bool = RSAUtil.inspectionSign(data, thirdpartyRequest.getSign(), partnerRestResult.getPublicKey());
-                    if (true) {
-                        String decodeData = RSAUtil.resultAnalysis(data, applicationProperties.getMyRsaKey().getPrivateKey());
+                    if (bool) {
+                        String decodeData = RSAUtil.resultAnalysis(data, partnerRestResult.getMyKey());
                         log.debug("打印解密后的数据信息: {}", decodeData);
                         HttpServletRequest servletRequest = ServletUtils.buildRequest(request, decodeData.getBytes(Charset.forName("UTF-8")), null);
                         ctx.getZuulRequestHeaders().put("content-type", APPLICATION_JSON_CHARSET_UTF_8);
@@ -84,7 +84,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
         } catch (BizException e) {
             throw e;
         } catch (Exception e) {
-            throw new BizException("不要说话，KISS ME ", e);
+            throw new BizException("不要说话 ", e);
         }
         return null;
     }

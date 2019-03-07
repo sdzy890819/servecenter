@@ -79,6 +79,10 @@ zuul:
       path: /v1/content/thirdparty/**
       service-id: contentservice
       strip-prefix: false
+    thirdpartyservice:
+      path: /v1/thirdparty/**
+      service-id: thirdpartygateway
+      strip-prefix: false
 
 # ==========================================================================
 # - Hystrix Settings

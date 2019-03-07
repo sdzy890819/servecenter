@@ -37,7 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors().and().csrf().disable().headers().frameOptions().disable()
                 .and()
-                .addFilterBefore(rsaAuthenticationFilter(objectMapper), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new RsaAuthenticationFilter(objectMapper), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
@@ -46,10 +46,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Bean
-    public RsaAuthenticationFilter rsaAuthenticationFilter(ObjectMapper objectMapper) {
-        return new RsaAuthenticationFilter(objectMapper);
-    }
 
     @Override
     public void configure(WebSecurity web) {

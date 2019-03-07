@@ -35,7 +35,7 @@ public interface PartnerMapper {
 
     int updateByPrimaryKey(Partner record);
 
-    @Select(SELECT + " and unique_key = #{userName} order by id desc limit 1")
+    @Select(SELECT + " and unique_key = #{uniqueKey} order by id desc limit 1")
     @ResultMap(RESULT_MAP)
     Partner findPartnerByUniqueKey(@Param("uniqueKey") String uniqueKey);
 

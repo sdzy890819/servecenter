@@ -45,22 +45,33 @@ public class RsaAuthenticationFilter extends GenericFilterBean {
         if (StringUtils.isNotBlank(body)) {
             Map<String, Object> args = objectMapper.readValue(body, new TypeReference<Map<String, Object>>() {
             });
-            String principal = "THIRD_PARTY";
-            Object channelType = args.get("channel");
-            if (channelType != null && ThirdpartyRequest.CHANNEL_TYPE.equals((String) channelType)) {
-                request.setAttribute(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.PARTNER_CHANNEL);
-                principal = "PARTNER";
-            }
             String uri = null;
+            String version = String.valueOf(args.get("version"));
             if (request.getRequestURI().equals("/v1/thirdparty/interface")) {
                 String method = String.valueOf(args.get("method"));
                 if (StringUtils.isNotBlank(method)) {
-                    uri = "/v1/" + method.replace("\\.", "/");
+                    uri = "/" + version + "/" + method.replaceAll("\\.", "/");
+                    request.getRequestDispatcher(uri).forward(ServletUtils.buildRequest(request, body.getBytes(Charset.forName("UTF-8")), null), servletResponse);
+                    return;
                 }
             }
+            String principal = "THIRD_PARTY";
+            Object channelType = args.get("channelType");
+            if (channelType != null && ThirdpartyRequest.CHANNEL_TYPE.equals(channelType)) {
+                request.setAttribute(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.PARTNER_CHANNEL);
+                principal = "PARTNER";
+            }
+
+//            String version = String.valueOf(args.get("version"));
+//            if (request.getRequestURI().equals("/v1/thirdparty/interface")) {
+//                String method = String.valueOf(args.get("method"));
+//                if (StringUtils.isNotBlank(method)) {
+//                    uri = "/" + version + "/" + method.replaceAll("\\.", "/");
+//                }
+//            }
             Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, null);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            filterChain.doFilter(ServletUtils.buildRequest(request, body.getBytes(Charset.forName("UTF-8")), uri), servletResponse);
+            filterChain.doFilter(ServletUtils.buildRequest(request, body.getBytes(Charset.forName("UTF-8")), null), servletResponse);
         }
     }
 
