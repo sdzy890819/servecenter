@@ -52,83 +52,92 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public CashierResult shopping(CashierDto cashierDto, Long partnerId) {
-        List<GoodsDto> goodsDtoList = cashierDto.getGoodsList();
-        if (StringUtils.isEmpty(goodsDtoList)) {
-            throw new BizException("产品不可以为空!");
-        }
-        String orderSn = String.valueOf(orderIDGenerator.getId());
-        List<Long> ppIds = new ArrayList<>();
-        goodsDtoList.forEach(a -> ppIds.add(a.getProductId()));
-        Map<Long, ThirdpartyProductDto> tpResultMap = findTpResultMap(ppIds);
-        BigDecimal amount = BigDecimal.ZERO;
-        BigDecimal platformAmount = BigDecimal.ZERO;
-        BigDecimal costAmount = BigDecimal.ZERO;
-        BigDecimal infoAmount = BigDecimal.ZERO;
-        List<OrdersProduct> ordersProducts = new ArrayList<>();
-        for (GoodsDto a : goodsDtoList) {
-            ThirdpartyProductDto dto = tpResultMap.get(a.getProductId());
-            if (!a.getPlatformPrice().equals(dto.getPlatformPrice())) {
-                log.error("商家传递的平台售价跟自有平台售价不一致.");
-                a.setPlatformPrice(dto.getPlatformPrice());
+        Orders oldOrders = orderManager.findOrdersByPartnerSn(cashierDto.getSn());
+        if (oldOrders != null) {
+            CashierResult cashierResult = new CashierResult();
+            cashierResult.setOrderSn(oldOrders.getOrderSn());
+            cashierResult.setSn(cashierDto.getSn());
+            cashierResult.setGoodsDtos(cashierDto.getGoodsList());
+            return cashierResult;
+        } else {
+            List<GoodsDto> goodsDtoList = cashierDto.getGoodsList();
+            if (StringUtils.isEmpty(goodsDtoList)) {
+                throw new BizException("产品不可以为空!");
             }
-            amount = amount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
-            platformAmount = platformAmount.add(dto.getPlatformPrice().multiply(new BigDecimal(a.getNum())));
-            costAmount = costAmount.add(dto.getPrimeCosts().multiply(new BigDecimal(a.getNum())));
-            infoAmount = infoAmount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
-            OrdersProduct ordersProduct = new OrdersProduct();
-            ordersProduct.setOrderSn(orderSn);
-            ordersProduct.setPartnerSn(cashierDto.getSn());
-            ordersProduct.setPartnerId(partnerId);
-            ordersProduct.setPartnerProductId(a.getProductId());
-            ordersProduct.setProductName(dto.getProductName());
-            ordersProduct.setProductNum(a.getNum());
-            ordersProduct.setProductTypeNo(dto.getProductTypeNo());
-            ordersProduct.setProductTypeName(dto.getProductTypeName());
-            ordersProduct.setProductDescription(dto.getProductDescription());
-            ordersProduct.setProductCoverImage(dto.getProductCoverImage());
-            ordersProduct.setPrimeCosts(dto.getPrimeCosts());
-            ordersProduct.setSalePrice(dto.getSalePrice());
-            ordersProduct.setProductModel(dto.getProductModel());
-            ordersProduct.setProductId(dto.getProductId());
-            ordersProduct.setPlatformPrice(dto.getPlatformPrice());
-            ordersProduct.setProductSalePrice(dto.getProductSalePrice());
-            ordersProducts.add(ordersProduct);
+            String orderSn = String.valueOf(orderIDGenerator.getId());
+            List<Long> ppIds = new ArrayList<>();
+            goodsDtoList.forEach(a -> ppIds.add(a.getProductId()));
+            Map<Long, ThirdpartyProductDto> tpResultMap = findTpResultMap(ppIds);
+            BigDecimal amount = BigDecimal.ZERO;
+            BigDecimal platformAmount = BigDecimal.ZERO;
+            BigDecimal costAmount = BigDecimal.ZERO;
+            BigDecimal infoAmount = BigDecimal.ZERO;
+            List<OrdersProduct> ordersProducts = new ArrayList<>();
+            for (GoodsDto a : goodsDtoList) {
+                ThirdpartyProductDto dto = tpResultMap.get(a.getProductId());
+                if (!a.getPlatformPrice().equals(dto.getPlatformPrice())) {
+                    log.error("商家传递的平台售价跟自有平台售价不一致.");
+                    a.setPlatformPrice(dto.getPlatformPrice());
+                }
+                amount = amount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
+                platformAmount = platformAmount.add(dto.getPlatformPrice().multiply(new BigDecimal(a.getNum())));
+                costAmount = costAmount.add(dto.getPrimeCosts().multiply(new BigDecimal(a.getNum())));
+                infoAmount = infoAmount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
+                OrdersProduct ordersProduct = new OrdersProduct();
+                ordersProduct.setOrderSn(orderSn);
+                ordersProduct.setPartnerSn(cashierDto.getSn());
+                ordersProduct.setPartnerId(partnerId);
+                ordersProduct.setPartnerProductId(a.getProductId());
+                ordersProduct.setProductName(dto.getProductName());
+                ordersProduct.setProductNum(a.getNum());
+                ordersProduct.setProductTypeNo(dto.getProductTypeNo());
+                ordersProduct.setProductTypeName(dto.getProductTypeName());
+                ordersProduct.setProductDescription(dto.getProductDescription());
+                ordersProduct.setProductCoverImage(dto.getProductCoverImage());
+                ordersProduct.setPrimeCosts(dto.getPrimeCosts());
+                ordersProduct.setSalePrice(dto.getSalePrice());
+                ordersProduct.setProductModel(dto.getProductModel());
+                ordersProduct.setProductId(dto.getProductId());
+                ordersProduct.setPlatformPrice(dto.getPlatformPrice());
+                ordersProduct.setProductSalePrice(dto.getProductSalePrice());
+                ordersProducts.add(ordersProduct);
+            }
+            ReceivingAddressDto receivingAddressDto = cashierDto.getReceivingAddress();
+            //--物流信息
+            OrdersLogistics ordersLogistics = new OrdersLogistics();
+            ordersLogistics.setOrderSn(orderSn);
+            ordersLogistics.setPartnerSn(cashierDto.getSn());
+            ordersLogistics.setPartnerId(partnerId);
+            ordersLogistics.setReceiver(receivingAddressDto.getName());
+            ordersLogistics.setReceiverAddress(receivingAddressDto.getAddress());
+            ordersLogistics.setReceiverProvince(receivingAddressDto.getProvince());
+            ordersLogistics.setReceiverCity(receivingAddressDto.getCity());
+            ordersLogistics.setReceiverArea(receivingAddressDto.getArea());
+            ordersLogistics.setReceiverMobile(receivingAddressDto.getMobile());
+            ordersLogistics.setDeliveryStatus(DeliveryStatusEnums.DONT_DELIVERY.getStatus());
+            ordersLogistics.setBusinessDeliveryStatus(DeliveryStatusEnums.DONT_DELIVERY.getStatus());
+            PartnerRestResult partnerRestResult = contentService.findPartnerByIdResultMap(Lists.newArrayList(partnerId)).get(partnerId);
+            //--拼接order
+            Orders orders = new Orders();
+            orders.setOrderSn(orderSn);
+            orders.setPlatformAmount(platformAmount);
+            orders.setCostAmount(costAmount);
+            orders.setPartnerSn(cashierDto.getSn());
+            orders.setPartnerId(partnerId);
+            orders.setAmount(amount);
+            orders.setInfoAmount(infoAmount);
+            orders.setBuyTime(new Date());
+            orders.setStatus(OrdersStatus.WAIT_PAY.getStatus());
+            orders.setOrderStatus(OrdersFinishStatus.PROCESSING.getStatus());
+            List<PaymentRecord> paymentRecords = pay(partnerRestResult, orders);
+            orderManager.insert(orders, ordersProducts, ordersLogistics, paymentRecords);
+            CashierResult cashierResult = new CashierResult();
+            cashierResult.setOrderSn(orderSn);
+            cashierResult.setSn(cashierDto.getSn());
+            cashierResult.setGoodsDtos(goodsDtoList);
+            sendOrdersExecRecord(orderSn, partnerId);
+            return cashierResult;
         }
-        ReceivingAddressDto receivingAddressDto = cashierDto.getReceivingAddress();
-        //--物流信息
-        OrdersLogistics ordersLogistics = new OrdersLogistics();
-        ordersLogistics.setOrderSn(orderSn);
-        ordersLogistics.setPartnerSn(cashierDto.getSn());
-        ordersLogistics.setPartnerId(partnerId);
-        ordersLogistics.setReceiver(receivingAddressDto.getName());
-        ordersLogistics.setReceiverAddress(receivingAddressDto.getAddress());
-        ordersLogistics.setReceiverProvince(receivingAddressDto.getProvince());
-        ordersLogistics.setReceiverCity(receivingAddressDto.getCity());
-        ordersLogistics.setReceiverArea(receivingAddressDto.getArea());
-        ordersLogistics.setReceiverMobile(receivingAddressDto.getMobile());
-        ordersLogistics.setDeliveryStatus(DeliveryStatusEnums.DONT_DELIVERY.getStatus());
-        ordersLogistics.setBusinessDeliveryStatus(DeliveryStatusEnums.DONT_DELIVERY.getStatus());
-        PartnerRestResult partnerRestResult = contentService.findPartnerByIdResultMap(Lists.newArrayList(partnerId)).get(partnerId);
-        //--拼接order
-        Orders orders = new Orders();
-        orders.setOrderSn(orderSn);
-        orders.setPlatformAmount(platformAmount);
-        orders.setCostAmount(costAmount);
-        orders.setPartnerSn(cashierDto.getSn());
-        orders.setPartnerId(partnerId);
-        orders.setAmount(amount);
-        orders.setInfoAmount(infoAmount);
-        orders.setBuyTime(new Date());
-        orders.setStatus(OrdersStatus.WAIT_PAY.getStatus());
-        orders.setOrderStatus(OrdersFinishStatus.PROCESSING.getStatus());
-        List<PaymentRecord> paymentRecords = pay(partnerRestResult, orders);
-        orderManager.insert(orders, ordersProducts, ordersLogistics, paymentRecords);
-        CashierResult cashierResult = new CashierResult();
-        cashierResult.setOrderSn(orderSn);
-        cashierResult.setSn(cashierDto.getSn());
-        cashierResult.setGoodsDtos(goodsDtoList);
-        sendOrdersExecRecord(orderSn, partnerId);
-        return cashierResult;
     }
 
     /**
