@@ -6,6 +6,7 @@ import lombok.Data;
 public class ThirdpartyResponse<Result> {
 
     public static final int SUCCESS_CODE = 200;
+    public static final int ERROR_CODE = 400;
 
     private int code;
 
