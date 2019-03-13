@@ -6,6 +6,13 @@ function isNotNull(params) {
     return params != null && params != "" && params != undefined;
 }
 
+function outStr(params) {
+    if (isNotNull(params)) {
+        return params;
+    }
+    return "";
+}
+
 function error(jqXHR, textStatus, errorThrown) {
     if (jqXHR.status != 401) {
         var responseData = JSON.parse(jqXHR.responseText);

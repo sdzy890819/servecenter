@@ -170,8 +170,8 @@ function load(currentPage, pageSize, search) {
                 if (isNotNull(data.data.data)) {
                     var ab = "";
                     data.data.data.forEach(function (val, index) {
-                        ab = ab + writeData([val.paySn, val.sn, val.orderSn, val.paymentTypeStr, val.amount, val.surplusAmount,
-                            val.payTimeStr, val.payStatusStr]);
+                        ab = ab + writeData([outStr(val.paySn), outStr(val.sn), outStr(val.orderSn), outStr(val.paymentTypeStr), outStr(val.amount), outStr(val.surplusAmount),
+                            outStr(val.payTimeStr), outStr(val.payStatusStr)]);
                     })
                     $("#body").html(ab);
                 }

@@ -6,6 +6,13 @@ function isNotNull(params) {
     return params != null && params != "" && params != undefined;
 }
 
+function outStr(params) {
+    if (isNotNull(params)) {
+        return params;
+    }
+    return "";
+}
+
 function error(jqXHR, textStatus, errorThrown) {
     if (jqXHR.status != 401) {
         var responseData = JSON.parse(jqXHR.responseText);
@@ -54,11 +61,11 @@ function formatDateTime(inputTime) {
     var second = date.getSeconds();
     minute = minute < 10 ? ('0' + minute) : minute;
     second = second < 10 ? ('0' + second) : second;
-    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+    return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
 }
 
 function jsonReplacer(key, value) {
-    if(isNotNull(value)) {
+    if (isNotNull(value)) {
         return value;
     }
 }
