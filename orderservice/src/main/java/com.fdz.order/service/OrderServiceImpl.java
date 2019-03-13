@@ -146,7 +146,7 @@ public class OrderServiceImpl implements OrderService {
         paymentRecord.setPaymentType(PaymentTypeEnums.PAY.getType());
         paymentRecord.setAmount(orders.getAmount());
         paymentRecord.setPayRoute(PayRouteEnums.SELF.getRoute());
-        paymentRecord.setFrozen(false);
+        paymentRecord.setFrozen(true);
         paymentRecord.setPartnerId(orders.getPartnerId());
         list.add(paymentRecord);
         PaymentRecord paymentRecord2 = new PaymentRecord();
@@ -155,7 +155,7 @@ public class OrderServiceImpl implements OrderService {
         paymentRecord2.setPaymentType(PaymentTypeEnums.INFO.getType());
         paymentRecord2.setAmount(orders.getInfoAmount());
         paymentRecord2.setPayRoute(PayRouteEnums.SELF.getRoute());
-        paymentRecord2.setFrozen(false);
+        paymentRecord2.setFrozen(true);
         paymentRecord2.setPartnerId(orders.getPartnerId());
         list.add(paymentRecord2);
         return list;

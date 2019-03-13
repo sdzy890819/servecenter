@@ -211,7 +211,7 @@
         #{costAmount},
       </if>
       <if test="infoAmount != null">
-        infoAmount,
+        #{infoAmount},
       </if>
     </trim>
   </insert>

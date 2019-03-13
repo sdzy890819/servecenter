@@ -196,6 +196,7 @@ public class ProductServiceImpl implements ProductService {
                 thirdpartProductDto.setId(a.getId());
                 thirdpartProductDto.setProductSalePrice(product.getSalePrice());
                 thirdpartProductDto.setServiceFee(a.getServiceFee());
+                thirdpartProductDto.setPrimeCosts(product.getPrimeCosts());
                 result.add(thirdpartProductDto);
             }
         });
