@@ -72,6 +72,7 @@ public class RsaPostFilter extends ZuulFilter {
                     } else {
                         body = StreamUtils.copyToString(stream, Charset.forName("UTF-8"));
                     }
+                    log.info("加密前的输出内容信息：{}", body);
                     RestResponse<Object> restResponse = objectMapper.readValue(body, new TypeReference<RestResponse<Object>>() {
                     });
                     if (restResponse.getCode() == 0) {
@@ -83,7 +84,9 @@ public class RsaPostFilter extends ZuulFilter {
                     String sign = RSAUtil.buildRSASignByPrivateKey(encodeData, applicationProperties.getMyRsaKey().getPrivateKey());
                     thirdpartyResp.setRespData(encodeData);
                     thirdpartyResp.setRespSign(sign);
+                    ctx.setResponseStatusCode(200);
                     ctx.setResponseBody(objectMapper.writeValueAsString(thirdpartyResp));
+                    log.info("加密后的输出内容信息：{}", ctx.getResponseBody());
                 }
             }
         } catch (Exception e) {

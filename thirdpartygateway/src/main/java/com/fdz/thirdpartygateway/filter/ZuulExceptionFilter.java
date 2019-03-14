@@ -54,6 +54,7 @@ public class ZuulExceptionFilter extends ZuulFilter {
         }
         PrintWriter printWriter = null;
         try {
+            ctx.setResponseStatusCode(200);
             printWriter = ctx.getResponse().getWriter();
             printWriter.write(objectMapper.writeValueAsString(thirdpartyResp));
             printWriter.flush();

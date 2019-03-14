@@ -1,7 +1,6 @@
 package com.fdz.thirdpartygateway.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fdz.common.config.CustomZuulFallback;
 import com.fdz.common.filter.RequestIdentifyingFilter;
 import com.fdz.thirdpartygateway.filter.RsaDecryptionFilter;
 import com.fdz.thirdpartygateway.filter.RsaPostFilter;
@@ -27,8 +26,8 @@ public class ZuulFilterConfiguration {
     }
 
     @Bean
-    public CustomZuulFallback customZuulFallback() {
-        return new CustomZuulFallback();
+    public ThirdpartyZuulFallback thirdpartyZuulFallback() {
+        return new ThirdpartyZuulFallback();
     }
 
     @Bean
