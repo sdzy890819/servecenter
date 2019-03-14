@@ -66,7 +66,12 @@ public class RsaPostFilter extends ZuulFilter {
                     ThirdpartyResp thirdpartyResp = new ThirdpartyResp();
                     thirdpartyResp.setChannel(uniqueKey);
                     InputStream stream = ctx.getResponseDataStream();
-                    String body = StreamUtils.copyToString(new GZIPInputStream(stream), Charset.forName("UTF-8"));
+                    String body = "";
+                    if (ctx.getResponseGZipped()) {
+                        body = StreamUtils.copyToString(new GZIPInputStream(stream), Charset.forName("UTF-8"));
+                    } else {
+                        body = StreamUtils.copyToString(stream, Charset.forName("UTF-8"));
+                    }
                     RestResponse<Object> restResponse = objectMapper.readValue(body, new TypeReference<RestResponse<Object>>() {
                     });
                     if (restResponse.getCode() == 0) {
@@ -82,7 +87,7 @@ public class RsaPostFilter extends ZuulFilter {
                 }
             }
         } catch (Exception e) {
-            throw new BizException("DONT TALK，KISS ME ", e);
+            throw new BizException("输出好像出错了，请检查公钥是否符合规则.", e);
         }
 
         return null;

@@ -5,6 +5,7 @@ import com.fdz.common.config.CustomZuulFallback;
 import com.fdz.common.filter.RequestIdentifyingFilter;
 import com.fdz.thirdpartygateway.filter.RsaDecryptionFilter;
 import com.fdz.thirdpartygateway.filter.RsaPostFilter;
+import com.fdz.thirdpartygateway.filter.ZuulExceptionFilter;
 import com.fdz.thirdpartygateway.service.content.ContentService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,12 @@ public class ZuulFilterConfiguration {
     public RsaPostFilter rsaPostFilter(ContentService contentService, ApplicationProperties applicationProperties, ObjectMapper objectMapper) {
         return new RsaPostFilter(contentService, applicationProperties, objectMapper);
     }
+
+    @Bean
+    public ZuulExceptionFilter zuulExceptionFilter(ObjectMapper objectMapper) {
+        return new ZuulExceptionFilter(objectMapper);
+    }
+
 
     /*@Bean
     public UrlPathFilter urlPathFilter() {

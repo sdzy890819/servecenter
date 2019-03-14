@@ -1,6 +1,8 @@
 package com.fdz.common.utils;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
@@ -222,5 +224,9 @@ public class RSAUtil {
         return decData;
     }
 
+    public static void main(String[] args) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println(objectMapper.writeValueAsString(RSAUtil.initRSAKey(2048)));
+    }
 }
 
