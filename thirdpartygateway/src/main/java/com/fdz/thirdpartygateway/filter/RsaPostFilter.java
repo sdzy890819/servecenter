@@ -81,7 +81,7 @@ public class RsaPostFilter extends ZuulFilter {
                         restResponse.setCode(ctx.getResponseStatusCode());
                     }
                     String encodeData = RSAUtil.buildRSAEncryptByPublicKey(objectMapper.writeValueAsString(restResponse), partnerRestResult.getPublicKey());
-                    String sign = RSAUtil.buildRSASignByPrivateKey(encodeData, applicationProperties.getMyRsaKey().getPrivateKey());
+                    String sign = RSAUtil.buildRSASignByPrivateKey(encodeData, partnerRestResult.getMyKey());
                     thirdpartyResp.setRespData(encodeData);
                     thirdpartyResp.setRespSign(sign);
                     ctx.setResponseStatusCode(200);
