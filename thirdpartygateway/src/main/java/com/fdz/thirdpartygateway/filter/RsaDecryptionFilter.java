@@ -69,6 +69,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
                     if (partnerRestResult == null) {
                         throw new BizException("渠道不存在.");
                     }
+                    ctx.getZuulRequestHeaders().put(ThirdparyConstants.Common.RETURN_DECODE, String.valueOf(partnerRestResult.getPullRetEncode()));
                     boolean bool = RSAUtil.inspectionSign(data, thirdpartyRequest.getSign(), partnerRestResult.getPublicKey());
                     if (bool) {
                         String decodeData = RSAUtil.resultAnalysis(data, partnerRestResult.getMyKey());
@@ -77,7 +78,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
                         ctx.getZuulRequestHeaders().put("content-type", APPLICATION_JSON_CHARSET_UTF_8);
                         ctx.getZuulRequestHeaders().put(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.PARTNER_CHANNEL);
                         ctx.getZuulRequestHeaders().put(Constants.Common.UNIQUE_KEY_HEADER, partnerRestResult.getUniqueKey());
-                        ctx.getZuulRequestHeaders().put(ThirdparyConstants.Common.RETURN_DECODE, String.valueOf(partnerRestResult.getPullRetEncode()));
+
                         ctx.getZuulRequestHeaders().put(Constants.Common.P_USER_INFO_HEADER, UserDisassembly.assembleP(partnerRestResult.getId()));
                         ctx.setRequest(servletRequest);
                     }
