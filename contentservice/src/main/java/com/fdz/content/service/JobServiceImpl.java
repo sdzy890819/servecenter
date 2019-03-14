@@ -97,7 +97,7 @@ public class JobServiceImpl implements JobService {
                     if (partner == null) {
                         throw new BizException("合作伙伴已经不存在了，无法同步。请检查是否有问题.");
                     }
-                    boolean bool = thirdpartyClient.sync(a.getInterfaceUrl(), partner.getUniqueKey(), data, partner.getPublicKey(), partner.getMyKey());
+                    boolean bool = thirdpartyClient.sync(a.getInterfaceUrl(), partner.getUniqueKey(), data, partner.getPublicKey(), partner.getMyKey(), partner.getSyncRetEncode());
                     log.info("合作机构数据同步结果, {}", bool);
                     if (bool) {
                         a.setStatus(InterfaceExecStatus.SUCCESS.getStatus());

@@ -25,32 +25,37 @@ public abstract class RsaRestRequest extends RestRequest {
         super();
     }
 
-    public <Result> ThirdpartyResponse<Result> request(String url, String channel, Map<String, Object> data, String publicKey, String privateKey) {
+    public <Result> ThirdpartyResponse<Result> request(String url, String channel, Map<String, Object> data, String publicKey, String privateKey, Boolean syncRetEncode) {
         return request(url, channel, data, publicKey, privateKey, new TypeReference<ThirdpartyResponse<Result>>() {
-        });
+        }, syncRetEncode);
     }
 
-    public <Result> ThirdpartyResponse<Result> request(String url, String channel, Map<String, Object> data, String publicKey, String privateKey, TypeReference typeReference) {
-        ThirdpartyResult thirdpartyResult = request(url, initParam(channel, data, publicKey, privateKey));
-        if (StringUtils.isNotBlank(thirdpartyResult.getRespData()) && StringUtils.isNotBlank(thirdpartyResult.getRespSign())) {
-            boolean bool = RSAUtil.inspectionSign(thirdpartyResult.getRespData(), thirdpartyResult.getRespSign(), publicKey);
-            if (bool) {
-                String decodeData = RSAUtil.resultAnalysis(thirdpartyResult.getRespData(), privateKey);
-                if (StringUtils.isNotBlank(decodeData)) {
-                    try {
-                        ThirdpartyResponse<Result> result = getObjectMapper().readValue(decodeData, typeReference);
-                        return result;
-                    } catch (IOException e) {
-                        throw new BizException(Constants.BusinessCode.THIRDPARTY_ERROR_JSON, "执行decodeData失败");
+    public <Result> ThirdpartyResponse<Result> request(String url, String channel, Map<String, Object> data, String publicKey, String privateKey, TypeReference typeReference, Boolean syncRetEncode) {
+        ThirdpartyVo thirdpartyVo = initParam(channel, data, publicKey, privateKey);
+        if (syncRetEncode) {
+            ThirdpartyResult thirdpartyResult = request(url, thirdpartyVo);
+            if (StringUtils.isNotBlank(thirdpartyResult.getRespData()) && StringUtils.isNotBlank(thirdpartyResult.getRespSign())) {
+                boolean bool = RSAUtil.inspectionSign(thirdpartyResult.getRespData(), thirdpartyResult.getRespSign(), publicKey);
+                if (bool) {
+                    String decodeData = RSAUtil.resultAnalysis(thirdpartyResult.getRespData(), privateKey);
+                    if (StringUtils.isNotBlank(decodeData)) {
+                        try {
+                            ThirdpartyResponse<Result> result = getObjectMapper().readValue(decodeData, typeReference);
+                            return result;
+                        } catch (IOException e) {
+                            throw new BizException(Constants.BusinessCode.THIRDPARTY_ERROR_JSON, "执行decodeData失败");
+                        }
                     }
+                } else {
+                    throw new BizException(Constants.BusinessCode.THIRDPARTY_ERROR_RSA, "验签失败");
                 }
             } else {
-                throw new BizException(Constants.BusinessCode.THIRDPARTY_ERROR_RSA, "验签失败");
+                log.warn("被调用方未返回data、signMsg信息。不做解密处理, url = {}, channel = {}", url, channel);
             }
+            return null;
         } else {
-            log.warn("被调用方未返回data、signMsg信息。不做解密处理, url = {}, channel = {}", url, channel);
+            return request(url, thirdpartyVo, typeReference);
         }
-        return null;
     }
 
     /**
@@ -68,6 +73,18 @@ public abstract class RsaRestRequest extends RestRequest {
             throw new BizException("Json转换错误");
         }
     }
+
+    public <Result> ThirdpartyResponse<Result> request(String url, ThirdpartyVo thirdpartyVo, TypeReference typeReference) {
+        try {
+            Map<String, Object> jsonMap = getObjectMapper().readValue(getObjectMapper().writeValueAsString(thirdpartyVo), new TypeReference<Map<String, Object>>() {
+            });
+            String result = doPostJson(url, jsonMap);
+            return getObjectMapper().readValue(result, typeReference);
+        } catch (IOException e) {
+            throw new BizException("Json转换错误");
+        }
+    }
+
 
     private ThirdpartyVo initParam(String channel, Map<String, Object> data, String publicKey, String privateKey) {
         ThirdpartyVo thirdpartyVo = new ThirdpartyVo();
