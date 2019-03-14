@@ -114,6 +114,8 @@ function getVal() {
     content.contactMobile = $("#txt_contactMobile").val();
     //content.serviceRate = $("#txt_serviceRate").val();
     content.publicKey = $("#txt_publicKey").val();
+    content.syncRetEncode = $("#txt_syncRetEncode").val();
+    content.pullRetEncode = $("#txt_pullRetEncode").val();
     return content;
 }
 
@@ -127,6 +129,8 @@ function setVal(data) {
     $("#txt_contactMobile").val(data.contactMobile);
     //$("#txt_serviceRate").val(data.serviceRate);
     $("#txt_publicKey").val(data.publicKey);
+    $("#txt_syncRetEncode").val(data.syncRetEncode + "");
+    $("#txt_pullRetEncode").val(data.pullRetEncode + "");
 }
 
 function getUserVal() {
@@ -264,7 +268,7 @@ function load(currentPage, pageSize, search) {
                     var ab = "";
                     data.data.data.forEach(function (val, index) {
                         ab = ab + writeData(["<a href='#' id='listShowKey' showKey='" + val.id + "'>" + val.uniqueKey + "</a>", val.name, val.contacts, val.contactMobile, val.natureStr,
-                            val.createTimeStr,
+                            val.syncRetEncode, val.pullRetEncode,
                             "<a href='#' id='listUser' user='" + val.id + "' class='btn btn-info btn-sm' >用户</a>" +
                             "<a href='#' id='listUpdate' update='" + val.id + "' class='btn btn-info btn-sm' >修改</a>" +
                             "<a href='#' id='listDelete' delete='" + val.id + "' class='btn btn-danger btn-sm' >删除</a>"]);

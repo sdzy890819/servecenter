@@ -45,6 +45,22 @@
                     <label for="txt_publicKey">公钥</label>
                     <textarea name="txt_publicKey" class="form-control" rows="3" id="txt_publicKey" placeholder="公钥"></textarea>
                 </div>
+                <div class="form-group">
+                    <label for="txt_syncRetEncode">同步接口返回是否加密</label>
+                    <select id="txt_syncRetEncode" name="txt_syncRetEncode" class="form-control">
+                        <option value="true">加密</option>
+                        <option value="false">不加密</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="txt_pullRetEncode">拉取接口返回是否加密</label>
+                    <select id="txt_pullRetEncode" name="txt_pullRetEncode" class="form-control">
+                        <option value="true">加密</option>
+                        <option value="false">不加密</option>
+                    </select>
+                </div>
+
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"><span

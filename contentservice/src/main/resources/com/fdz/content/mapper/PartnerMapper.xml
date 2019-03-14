@@ -14,11 +14,13 @@
     <result column="unique_key" property="uniqueKey" jdbcType="VARCHAR" />
     <result column="my_key" property="myKey" />
     <result column="my_public_key" property="myPublicKey" />
+    <result column="sync_ret_encode" property="syncRetEncode" />
+    <result column="pull_ret_encode" property="pullRetEncode" />
   </resultMap>
 
   <sql id="Base_Column_List" >
     id, create_time, modify_time, create_by, modify_by, remark, is_delete, `name`, short_name,
-    nature, code, contacts, contact_mobile, service_rate, public_key,unique_key,my_key,my_public_key
+    nature, code, contacts, contact_mobile, service_rate, public_key,unique_key,my_key,my_public_key,sync_ret_encode,pull_ret_encode
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
@@ -37,13 +39,14 @@
       create_by, modify_by, remark, 
       is_delete, `name`, short_name,
       nature, code, contacts, 
-      contact_mobile, service_rate, public_key,unique_key,my_key,my_public_key
+      contact_mobile, service_rate, public_key,unique_key,my_key,my_public_key,sync_ret_encode,pull_ret_encode
       )
     values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, #{modifyTime,jdbcType=BIGINT}, 
       #{createBy,jdbcType=VARCHAR}, #{modifyBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{delete,jdbcType=BIT}, #{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, 
       #{nature,jdbcType=TINYINT}, #{code,jdbcType=VARCHAR}, #{contacts,jdbcType=VARCHAR}, 
       #{contactMobile,jdbcType=VARCHAR}, #{serviceRate,jdbcType=DECIMAL}, #{publicKey,jdbcType=VARCHAR},#{uniqueKey,jdbcType=VARCHAR},#{myKey}, #{myPublicKey}
+      ,#{syncRetEncode},#{pullRetEncode}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.fdz.content.domain.Partner" keyProperty="id" useGeneratedKeys="true">
@@ -103,6 +106,12 @@
       <if test="myPublicKey != null">
         my_public_key,
       </if>
+      <if test="syncRetEncode != null">
+        sync_ret_encode,
+      </if>
+      <if test="pullRetEncode != null">
+        pull_ret_encode,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -159,6 +168,12 @@
       <if test="myPublicKey != null">
         #{myPublicKey},
       </if>
+      <if test="syncRetEncode != null">
+        #{syncRetEncode},
+      </if>
+      <if test="pullRetEncode != null">
+        #{pullRetEncode},
+      </if>
     </trim>
   </insert>
 
@@ -212,6 +227,12 @@
       <if test="myPublicKey != null">
         my_public_key = #{myPublicKey},
       </if>
+      <if test="syncRetEncode != null">
+        sync_ret_encode = #{syncRetEncode},
+      </if>
+      <if test="pullRetEncode != null">
+        pull_ret_encode = #{pullRetEncode},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -233,7 +254,9 @@
       public_key = #{publicKey,jdbcType=VARCHAR},
       unique_key = #{uniqueKey,jdbcType=VARCHAR},
       my_key = #{myKey},
-      my_public_key = #{myPublicKey}
+      my_public_key = #{myPublicKey},
+      sync_ret_encode = #{syncRetEncode},
+      pull_ret_encode = #{pullRetEncode}
     where id = #{id,jdbcType=BIGINT}
   </update>
 

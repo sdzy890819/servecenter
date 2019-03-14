@@ -44,4 +44,8 @@ public class PartnerRestResult {
 
     private String myPublicKey;
 
+    private Boolean syncRetEncode;
+
+    private Boolean pullRetEncode;
+
 }

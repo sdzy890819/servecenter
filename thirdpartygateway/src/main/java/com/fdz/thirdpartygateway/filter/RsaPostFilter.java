@@ -58,6 +58,7 @@ public class RsaPostFilter extends ZuulFilter {
         try {
             RequestContext ctx = RequestContext.getCurrentContext();
             Object channelSource = ctx.getZuulRequestHeaders().get(ThirdparyConstants.Common.CHANNEL_SOURCE);
+            Boolean encode = Boolean.valueOf(ctx.getZuulRequestHeaders().get(ThirdparyConstants.Common.RETURN_DECODE));
             if (channelSource != null) {
                 String channelSrouceString = (String) channelSource;
                 if (StringUtils.isNotBlank(channelSrouceString) && ThirdparyConstants.Common.PARTNER_CHANNEL.equalsIgnoreCase(channelSrouceString)) {
@@ -80,13 +81,19 @@ public class RsaPostFilter extends ZuulFilter {
                     } else {
                         restResponse.setCode(ctx.getResponseStatusCode());
                     }
-                    String encodeData = RSAUtil.buildRSAEncryptByPublicKey(objectMapper.writeValueAsString(restResponse), partnerRestResult.getPublicKey());
-                    String sign = RSAUtil.buildRSASignByPrivateKey(encodeData, partnerRestResult.getMyKey());
-                    thirdpartyResp.setRespData(encodeData);
-                    thirdpartyResp.setRespSign(sign);
-                    ctx.setResponseStatusCode(200);
-                    ctx.setResponseBody(objectMapper.writeValueAsString(thirdpartyResp));
-                    log.info("加密后的输出内容信息：{}", ctx.getResponseBody());
+                    if (encode) {
+                        String encodeData = RSAUtil.buildRSAEncryptByPublicKey(objectMapper.writeValueAsString(restResponse), partnerRestResult.getPublicKey());
+                        String sign = RSAUtil.buildRSASignByPrivateKey(encodeData, partnerRestResult.getMyKey());
+                        thirdpartyResp.setRespData(encodeData);
+                        thirdpartyResp.setRespSign(sign);
+                        ctx.setResponseStatusCode(200);
+                        ctx.setResponseBody(objectMapper.writeValueAsString(thirdpartyResp));
+                        log.info("加密后的输出内容信息：{}", ctx.getResponseBody());
+                    } else {
+                        ctx.setResponseBody(objectMapper.writeValueAsString(restResponse));
+                        log.info("选定的无需加密.");
+                    }
+
                 }
             }
         } catch (Exception e) {

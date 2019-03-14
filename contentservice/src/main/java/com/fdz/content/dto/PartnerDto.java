@@ -31,4 +31,8 @@ public class PartnerDto {
 
     private String myPublicKey;
 
+    private Boolean syncRetEncode;
+
+    private Boolean pullRetEncode;
+
 }

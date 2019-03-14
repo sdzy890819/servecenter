@@ -32,7 +32,9 @@ public class Partner extends BaseEntity {
 
     private String myPublicKey;
 
-//    private boolean encode;
+    private Boolean syncRetEncode;
+
+    private Boolean pullRetEncode;
 
     public Partner() {
         super();

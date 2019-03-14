@@ -59,6 +59,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
             RequestContext ctx = RequestContext.getCurrentContext();
             HttpServletRequest request = ctx.getRequest();
             Object channelSource = request.getAttribute(ThirdparyConstants.Common.CHANNEL_SOURCE);
+            ctx.getZuulRequestHeaders().put(ThirdparyConstants.Common.RETURN_DECODE, "false");
             if (channelSource != null) {
                 String channelSrouceString = (String) channelSource;
                 if (StringUtils.isNotBlank(channelSrouceString) && ThirdparyConstants.Common.PARTNER_CHANNEL.equalsIgnoreCase(channelSrouceString)) {
@@ -76,11 +77,13 @@ public class RsaDecryptionFilter extends ZuulFilter {
                         ctx.getZuulRequestHeaders().put("content-type", APPLICATION_JSON_CHARSET_UTF_8);
                         ctx.getZuulRequestHeaders().put(ThirdparyConstants.Common.CHANNEL_SOURCE, ThirdparyConstants.Common.PARTNER_CHANNEL);
                         ctx.getZuulRequestHeaders().put(Constants.Common.UNIQUE_KEY_HEADER, partnerRestResult.getUniqueKey());
+                        ctx.getZuulRequestHeaders().put(ThirdparyConstants.Common.RETURN_DECODE, String.valueOf(partnerRestResult.getPullRetEncode()));
                         ctx.getZuulRequestHeaders().put(Constants.Common.P_USER_INFO_HEADER, UserDisassembly.assembleP(partnerRestResult.getId()));
                         ctx.setRequest(servletRequest);
                     }
                 }
             }
+
         } catch (BizException e) {
             throw e;
         } catch (Exception e) {
