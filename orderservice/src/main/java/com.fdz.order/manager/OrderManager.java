@@ -110,7 +110,7 @@ public class OrderManager {
         PaymentRecord paymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.PAY.getType(), ordersInfo.getOrderSn(), true);
         PaymentRecord infoPaymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.INFO.getType(), ordersInfo.getOrderSn(), true);
         if (paymentRecord == null || infoPaymentRecord == null) {
-            throw new BizException("未找到帐单信息");
+            return 2;
         }
         if (orders.getOrderStatus() != null) {
             insertStatus(orders.getId(), orders.getStatus());
