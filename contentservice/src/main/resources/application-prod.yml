@@ -1,0 +1,74 @@
+## =============================================================
+## Spring autoconfigure Properties: Overriding application.yml
+## =============================================================
+spring:
+  redis:
+    host: 172.17.40.204
+    port: 6379
+    timeout: 2000
+    password: cms-new-123!@#
+    pool:
+      max-wait: 2000 # 2 seconds
+      max-idle: 10
+      min-idle: 0
+      max-active: 10
+      max-redirects: 8
+  datasource:
+    url: jdbc:mysql:replication://172.17.40.204:3306,172.17.40.204:3306/servecenter?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowMasterDownConnections=true&readFromMasterWhenNoSlaves=true
+    username: root
+    password: Zhangyang&1989
+    driver-class-name: com.mysql.jdbc.ReplicationDriver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initialSize: 10
+      minIdle: 10
+      maxActive: 50
+      maxWait: 3000
+      useUnfairLock: true
+      poolPreparedStatements: false
+      testOnBorrow: false
+      keepAlive: false
+      validation-query: select 1
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+## =============================================================
+## Application Properties @see ApplicationProperties: Overriding application.yml
+## =============================================================
+application:
+  cors:
+    enabled: false
+  redis:
+    enabled: true
+  oss:
+    access-key-id: LTAICsjYMFe7mZpR
+    access-key-secret: 6KUram7SDvH5dnqJXxVoQ7S2mpM8Zb
+    bucket-name: hongbo-public-img
+    images-dir: img
+    endpoint: oss-cn-beijing.aliyuncs.com
+    public-endpoint: oss-cn-beijing.aliyuncs.com
+  security-conf:
+    authentication:
+      jwt:
+        secret: servecenteraskldjoqwe
+        secret2: servecentersecret2123123asd
+        token-validity-in-seconds: 216000 #12 * 60 * 60 * 5
+        token-validity-in-seconds-for-remember-me: 302400 #7 * 12 * 60 * 60
+  my-rsa-key:
+    private-key: MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCRGOCUHcg6Kyohl5zN8X4vRjh8Lpv2099zgUrBWklJd5rX2PhXVVnZmIFQ01eZa_u7g1IPl0ZmCytDtIZA9RsrqJQC5Iyy1EJUPLLmc7_FXeTzOEvtEWkuyBIqrmQgFEqcVMP5CZLgQ3QHKjnGFwcmEon4K5zjzerE7DdaIy4oH0x5A3CSWNDFzDBhIZQDk3pEvHKNnCEUkiibOSS8YOUkZYaPWN0uHfR1SCx1lIC7WFa6oV80RDtJHcy_7E51SUJAdPLPadzQAb80KqexmBwbqJROvGl7NqUFd50n2oAScLIOf7xPSk0QsT-OYmG7M0deXXkMNMmASMnBz-NCuGVXAgMBAAECggEAON0bBnE1izZnaIrWdQ9zeGt4r5JEpVMbe1TsSyJrHlO1Z2osyW01rUVLSLXK2uGq4i3w9xM-D7fI2Nvi0Yo9f7qtZwTS7zKoXAL9ybsLKPpHQ9qIRvxP0HmwRPHbY4cQRnwh4XOTEDjfO_-cbLmRn6YcVBojflOw8kPw3W50JFylX8YJhtOrfXZZ9JgFOPoBMzpiXw4We-U21QeH6cZPQuKRQlTs-DpYw_s38_pACNcjYMtD1BfBHZMq-yeXONZVwDHDFQlCUrS4j7wAWxQs-TEBtpk8ymrerdsD9Ay841fmJuXjP4xtx7ZcZejusj2zaQqcYclRo3yGb67Mv7hoQQKBgQDtwTpsqbPFzJ2jqIBcN1qpZdUuGspaB0VTO5alnSAGrPm8SXYUeROb_PIT4fEnQEFfcAErOgb70RiblttlGhjdfajFOpzNybxZjLYALcdclzoA6mROfiosFFonpyuZD8d6qLtak31Zah5KMBShb9pNYXTfuhhVJBfRlgy8-HHtWQKBgQCcO1v__jO2KQveixRXkEQyYOGM1is6iH-4IInErkgnnVGD0LBG136DtHWNrjV4TwriKVk6zTD0x9Xm0jSSHkDfpwN72z8XRxufGd_my-TDDVKtoTwfk62IcZi3am3oAZ3WugzXsTLYGYP3cFnnu7Hof3XC8LGcYXjqA-uxNYgiLwKBgG1GxL2w-inNtB7GkcjQwGDfpy37rknW0axB1SnloBSxaE98TEN4quSlS_aLgLWTuPhOmJrvnsoa_v50Rf6gEhGrcejE2dFUCbf3DqfiYqFR-Jz3HoddQbDk4dMb6NP_BqZ_6yzkYVa5iZZ7pt_UczfhtUAnXouzfScdmlk4r9RxAoGAEg7OYHVqVrjB1XQv4rsbFtOZ3mR21KooUQj5w5D9aA7H-Dtr1JRd3C1ElR64sXI5aNCsrp4-9VwPvkE3sFfs2az9OxipXzBp4ebkuVGB3IWys7z6LRAts6KlqzWTBIkDTGluyJODs_SnCzeiPKW2N5Bb9S9K6C9gAXR4jqAIXyMCgYBP2j1V5_6XEtCVnaCUYpPgBqZbvl2RfXUSXBUWtr5kGdL9AfIgYZHS9PgAPvqTa8A8sHt3wOrTzanR4EZI-as6uFxZcJb0N0JZYxDm_2JXHUhtUgFk7sf1SHrSTclFwzWZVuoeHoxxD0lI2PSFZDFqR2va81u_mX0TklP2NSbKUQ
+
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    com.fdz: debug
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:39111/eureka/
+feign:
+  hystrix:
+    enabled: true
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 3000
+
+

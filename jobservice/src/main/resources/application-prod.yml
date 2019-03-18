@@ -1,0 +1,54 @@
+## =============================================================
+## Spring autoconfigure Properties: Overriding application.yml
+## =============================================================
+spring:
+  redis:
+    host: 172.17.40.204
+    port: 6379
+    timeout: 2000
+    password: cms-new-123!@#
+    pool:
+      max-wait: 2000 # 2 seconds
+      max-idle: 10
+      min-idle: 0
+      max-active: 10
+  datasource:
+    url: jdbc:mysql:replication://172.17.40.204:3306,172.17.40.204:3306/servecenter?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowMasterDownConnections=true&readFromMasterWhenNoSlaves=true
+    username: root
+    password: Zhangyang&1989
+    driver-class-name: com.mysql.jdbc.ReplicationDriver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initialSize: 10
+      minIdle: 10
+      maxActive: 50
+      maxWait: 3000
+      useUnfairLock: true
+      poolPreparedStatements: false
+      testOnBorrow: false
+      keepAlive: false
+      validation-query: select 1
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+## =============================================================
+## Application Properties @see ApplicationProperties: Overriding application.yml
+## =============================================================
+application:
+  cors:
+    enabled: false
+logging:
+  level:
+    root: info
+    org.springframework.web: debug
+    com.fdz: debug
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:39111/eureka/
+feign:
+  hystrix:
+    enabled: true
+
+
+
+
