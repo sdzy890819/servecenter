@@ -59,7 +59,7 @@ public class PartnerLoginController {
         if (partnerUser == null) {
             throw new BizException("用户名、或密码错误");
         }
-        String pwd = EncryptUtil.encryptPwd(loginDto.getUserName(), loginDto.getPassword());
+        String pwd = passwordEncoder.encode(EncryptUtil.encryptPwd(loginDto.getUserName(), loginDto.getPassword()));
         if (!partnerUser.getPassword().equals(pwd)) {
             throw new BizException("用户名、或密码错误");
         }
