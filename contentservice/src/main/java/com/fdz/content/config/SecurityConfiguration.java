@@ -43,26 +43,26 @@ public class SecurityConfiguration {
 
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
+    public DaoAuthenticationProvider daoAuthenticationProvider(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(partnerService);
         return daoAuthenticationProvider;
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProviderCustomer() {
+    public DaoAuthenticationProvider daoAuthenticationProviderCustomer(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(managerService);
         return daoAuthenticationProvider;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager() {
+    public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
         List<AuthenticationProvider> list = new ArrayList<>();
-        list.add(daoAuthenticationProvider());
-        list.add(daoAuthenticationProviderCustomer());
+        list.add(daoAuthenticationProvider(passwordEncoder));
+        list.add(daoAuthenticationProviderCustomer(passwordEncoder));
         ProviderManager providerManager = new ProviderManager(list);
         return providerManager;
     }
