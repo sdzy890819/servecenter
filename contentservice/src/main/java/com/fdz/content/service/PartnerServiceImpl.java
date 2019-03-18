@@ -16,7 +16,6 @@ import com.fdz.content.service.order.OrderService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -34,9 +33,6 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
 
     @Resource
     private RedisDataManager redisDataManager;
-
-    @Resource
-    private PasswordEncoder passwordEncoder;
 
     @Resource
     private OrderService orderService;
@@ -69,7 +65,7 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
                     if (partnerUser != null) {
                         LoginUser loginUser = new LoginUser();
                         loginUser.setId(partnerUser.getPartnerId());
-                        loginUser.setPassword(passwordEncoder.encode(partnerUser.getPassword()));
+                        loginUser.setPassword(partnerUser.getPassword());
                         loginUser.setUserName(UserDisassembly.assembleP(partnerUser.getPartnerId()));
                         redisDataManager.set(Constants.RedisKey.PARTNER_LOGIN_LABEL + loginUser.getUsername(), loginUser, 1, TimeUnit.DAYS);
                         return loginUser;

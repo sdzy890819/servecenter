@@ -23,6 +23,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -46,6 +47,9 @@ public class PartnerLoginController {
 
     @Resource
     private RedisDataManager redisDataManager;
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @ApiOperation("登录")
     @PostMapping("/login")
@@ -80,7 +84,7 @@ public class PartnerLoginController {
         }
         if (partnerUser.getPassword().equals(pwd)) {
             PartnerUser updateUser = new PartnerUser(partnerUser.getId());
-            updateUser.setPassword(EncryptUtil.encryptPwd(partnerUser.getUserName(), dto.getNewPwd()));
+            updateUser.setPassword(passwordEncoder.encode(EncryptUtil.encryptPwd(partnerUser.getUserName(), dto.getNewPwd())));
             partnerService.updateByPrimaryKeySelective(updateUser);
         } else {
             throw new BizException("旧密码不对.请重新输入");

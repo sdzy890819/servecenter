@@ -19,6 +19,7 @@ import com.fdz.content.dto.PartnerUserDto;
 import com.fdz.content.service.PartnerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -38,6 +39,9 @@ public class PartnerController {
 
     @Resource
     private PartnerService partnerService;
+
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
     @ApiOperation("获取当前合作伙伴信息")
     @GetMapping("/info")
@@ -186,7 +190,7 @@ public class PartnerController {
                 partnerUser.setUserName(dto.getUserName());
             }
             if (StringUtils.isNotBlank(dto.getPassword())) {
-                partnerUser.setPassword(EncryptUtil.encryptPwd(StringUtils.isNotBlank(dto.getUserName()) ? dto.getUserName() : old.getUserName(), dto.getPassword()));
+                partnerUser.setPassword(passwordEncoder.encode(EncryptUtil.encryptPwd(StringUtils.isNotBlank(dto.getUserName()) ? dto.getUserName() : old.getUserName(), dto.getPassword())));
             }
             if (StringUtils.isNotBlank(dto.getRealName())) {
                 partnerUser.setRealName(dto.getRealName());
@@ -197,7 +201,7 @@ public class PartnerController {
                 throw new BizException("用户名或者密码不可以为空");
             }
             PartnerUser partnerUser = dtoConvert.convert(dto);
-            String pwd = EncryptUtil.encryptPwd(partnerUser.getUserName(), partnerUser.getPassword());
+            String pwd = passwordEncoder.encode(EncryptUtil.encryptPwd(partnerUser.getUserName(), partnerUser.getPassword()));
             partnerUser.setPassword(pwd);
             partnerService.insertSelective(partnerUser);
         }
