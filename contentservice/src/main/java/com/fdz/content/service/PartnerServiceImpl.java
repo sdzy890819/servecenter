@@ -1,21 +1,14 @@
 package com.fdz.content.service;
 
-import com.fdz.common.constant.Constants;
 import com.fdz.common.enums.InterfaceExecStatus;
 import com.fdz.common.enums.InterfaceTypeEnums;
-import com.fdz.common.redis.RedisDataManager;
-import com.fdz.common.security.vo.LoginUser;
 import com.fdz.common.utils.Page;
 import com.fdz.common.utils.StringUtils;
-import com.fdz.common.utils.UserDisassembly;
 import com.fdz.content.domain.*;
 import com.fdz.content.dto.PartnerDto;
 import com.fdz.content.dto.RecordDto;
 import com.fdz.content.manager.PartnerManager;
 import com.fdz.content.service.order.OrderService;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,16 +16,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Service("partnerService")
-public class PartnerServiceImpl implements PartnerService, UserDetailsService {
+public class PartnerServiceImpl implements PartnerService {
 
     @Resource
     private PartnerManager partnerManager;
-
-    @Resource
-    private RedisDataManager redisDataManager;
 
     @Resource
     private OrderService orderService;
@@ -50,32 +39,6 @@ public class PartnerServiceImpl implements PartnerService, UserDetailsService {
     @Override
     public PartnerUser selectPartnerUserByPrimaryKey(Long id) {
         return partnerManager.selectPartnerUserByPrimaryKey(id);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if (StringUtils.isBlank(username)) {
-            throw new UsernameNotFoundException("userId为空");
-        }
-        if (UserDisassembly.isP(username)) {
-            username = UserDisassembly.disassembly(username);
-            if (username.matches("[0-9]+")) {
-                try {
-                    PartnerUser partnerUser = selectPartnerUserByPrimaryKey(Long.parseLong(username));
-                    if (partnerUser != null) {
-                        LoginUser loginUser = new LoginUser();
-                        loginUser.setId(partnerUser.getPartnerId());
-                        loginUser.setPassword(partnerUser.getPassword());
-                        loginUser.setUserName(UserDisassembly.assembleP(partnerUser.getPartnerId()));
-                        redisDataManager.set(Constants.RedisKey.PARTNER_LOGIN_LABEL + loginUser.getUsername(), loginUser, 1, TimeUnit.DAYS);
-                        return loginUser;
-                    }
-                } catch (NumberFormatException e) {
-                    throw new UsernameNotFoundException("解析错误");
-                }
-            }
-        }
-        throw new UsernameNotFoundException("不是当前的用户体系");
     }
 
     public Partner selectPartnerByPrimaryKey(Long id) {

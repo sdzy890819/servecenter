@@ -22,9 +22,6 @@ public class SecurityConfiguration {
     private ApplicationProperties applicationProperties;
 
     @Resource
-    private UserDetailsService partnerService;
-
-    @Resource
     private UserDetailsService managerService;
 
     @Bean
@@ -46,14 +43,6 @@ public class SecurityConfiguration {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(partnerService);
-        return daoAuthenticationProvider;
-    }
-
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProviderCustomer() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(managerService);
         return daoAuthenticationProvider;
     }
@@ -62,7 +51,6 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager() {
         List<AuthenticationProvider> list = new ArrayList<>();
         list.add(daoAuthenticationProvider());
-        list.add(daoAuthenticationProviderCustomer());
         ProviderManager providerManager = new ProviderManager(list);
         return providerManager;
     }

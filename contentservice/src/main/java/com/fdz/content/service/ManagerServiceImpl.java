@@ -6,6 +6,7 @@ import com.fdz.common.security.vo.LoginUser;
 import com.fdz.common.utils.StringUtils;
 import com.fdz.common.utils.UserDisassembly;
 import com.fdz.content.domain.Manager;
+import com.fdz.content.domain.PartnerUser;
 import com.fdz.content.manager.ManageManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +28,9 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService {
 
     @Resource
     private PasswordEncoder passwordEncoder;
+
+    @Resource
+    private PartnerService partnerService;
 
     @Override
     public Manager findManagerByUserName(String userName) {
@@ -54,6 +58,24 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService {
                         loginUser.setId(manager.getId());
                         loginUser.setUserName(UserDisassembly.assembleM(manager.getId()));
                         redisDataManager.set(Constants.RedisKey.MANAGE_LOGIN_LABEL + loginUser.getUsername(), loginUser, 1, TimeUnit.DAYS);
+                        return loginUser;
+                    }
+                } catch (NumberFormatException e) {
+                    throw new UsernameNotFoundException("解析错误");
+                }
+            }
+        }
+        if (UserDisassembly.isP(username)) {
+            username = UserDisassembly.disassembly(username);
+            if (username.matches("[0-9]+")) {
+                try {
+                    PartnerUser partnerUser = partnerService.selectPartnerUserByPrimaryKey(Long.parseLong(username));
+                    if (partnerUser != null) {
+                        LoginUser loginUser = new LoginUser();
+                        loginUser.setId(partnerUser.getPartnerId());
+                        loginUser.setPassword(partnerUser.getPassword());
+                        loginUser.setUserName(UserDisassembly.assembleP(partnerUser.getPartnerId()));
+                        redisDataManager.set(Constants.RedisKey.PARTNER_LOGIN_LABEL + loginUser.getUsername(), loginUser, 1, TimeUnit.DAYS);
                         return loginUser;
                     }
                 } catch (NumberFormatException e) {
