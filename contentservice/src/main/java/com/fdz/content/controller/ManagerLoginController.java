@@ -22,7 +22,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -48,9 +47,6 @@ public class ManagerLoginController {
     @Resource
     private RedisDataManager redisDataManager;
 
-    @Resource
-    private PasswordEncoder passwordEncoder;
-
     @ApiOperation("登录")
     @PostMapping("/login")
     RestResponse<LoginResult> login(@RequestBody LoginDto loginDto, HttpServletResponse response) {
@@ -59,7 +55,7 @@ public class ManagerLoginController {
         if (manager == null) {
             throw new BizException("用户名、或密码错误");
         }
-        String pwd = passwordEncoder.encode(EncryptUtil.encryptPwd(loginDto.getUserName(), loginDto.getPassword()));
+        String pwd = EncryptUtil.encryptPwd(loginDto.getUserName(), loginDto.getPassword());
         if (!manager.getPassword().equals(pwd)) {
             throw new BizException("用户名、或密码错误");
         }
@@ -84,7 +80,7 @@ public class ManagerLoginController {
         }
         if (manager.getPassword().equals(pwd)) {
             Manager updateManager = new Manager(manager.getId());
-            updateManager.setPassword(passwordEncoder.encode(EncryptUtil.encryptPwd(manager.getUserName(), dto.getNewPwd())));
+            updateManager.setPassword(EncryptUtil.encryptPwd(manager.getUserName(), dto.getNewPwd()));
             managerService.updateByPrimaryKeySelective(updateManager);
         } else {
             throw new BizException("旧密码不对.请重新输入");
