@@ -126,6 +126,8 @@ public class OrderManager {
                     }
                     break;
                 }
+                default:
+                    break;
             }
         }
         int p = updateByPrimaryKeySelective(orders);
