@@ -271,6 +271,7 @@ public class OrderServiceImpl implements OrderService {
         updateLogistics.setLogistics(dto.getLogistics());
         updateLogistics.setLogisticsSn(dto.getLogisticsSn());
         updateLogistics.setLogisticsStatus(dto.getLogisticsStatus());
+        ordersLogistics.setLogisticsAmount(dto.getLogisticsAmount());
         update(updateOrder, updateLogistics);
         sendStatusExecRecord(orders.getOrderSn());
     }

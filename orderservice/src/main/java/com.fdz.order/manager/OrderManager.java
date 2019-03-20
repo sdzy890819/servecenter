@@ -1,15 +1,17 @@
 package com.fdz.order.manager;
 
+import com.fdz.common.aspect.ann.Lock;
+import com.fdz.common.enums.OrdersStatus;
 import com.fdz.common.enums.PayStatusEnums;
 import com.fdz.common.enums.PaymentTypeEnums;
 import com.fdz.common.exception.BizException;
 import com.fdz.common.utils.IDGenerator;
 import com.fdz.common.utils.Page;
-import com.fdz.common.utils.StringUtils;
 import com.fdz.order.domain.*;
 import com.fdz.order.dto.PaymentRecordSearchDto;
 import com.fdz.order.dto.SearchOrdersDto;
 import com.fdz.order.mapper.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Repository
 @Transactional
 public class OrderManager {
@@ -96,6 +99,7 @@ public class OrderManager {
         return ordersProductMapper.insertOrdersProducts(list);
     }
 
+    @Lock(key = "PAYMENT_RECORD_#{orders.orderSn}")
     public int insert(Orders orders, List<OrdersProduct> list, OrdersLogistics ordersLogistics, List<PaymentRecord> paymentRecords) {
         int p = insertSelective(orders);
         p = p + insertSelective(ordersLogistics);
@@ -105,40 +109,47 @@ public class OrderManager {
         return p;
     }
 
+    @Lock(key = "ORDER_UPDATE_#{orders.id}")
     public int update(Orders orders, OrdersLogistics ordersLogistics) {
         Orders ordersInfo = selectOrdersByPrimaryKey(orders.getId());
-        PaymentRecord paymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.PAY.getType(), ordersInfo.getOrderSn(), true);
-        PaymentRecord infoPaymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.INFO.getType(), ordersInfo.getOrderSn(), true);
-        if (paymentRecord == null || infoPaymentRecord == null) {
-            return 2;
-        }
         if (orders.getOrderStatus() != null) {
             insertStatus(orders.getId(), orders.getStatus());
+            switch (OrdersStatus.get(orders.getOrderStatus())) {
+                case CONFIRM_SEND: {
+                    PaymentRecord paymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.PAY.getType(), ordersInfo.getOrderSn(), false);
+                    PaymentRecord infoPaymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.INFO.getType(), ordersInfo.getOrderSn(), false);
+                    if (paymentRecord != null) {
+                        updateRecord(paymentRecord);
+                    }
+                    if (infoPaymentRecord != null) {
+                        updateRecord(infoPaymentRecord);
+                    }
+                    break;
+                }
+            }
         }
         int p = updateByPrimaryKeySelective(orders);
         p = p + updateByPrimaryKeySelective(ordersLogistics);
-        if (paymentRecord.getFrozen()) {
-            updateRecord(paymentRecord);
-        }
-        if (infoPaymentRecord.getFrozen()) {
-            updateRecord(infoPaymentRecord);
-        }
         return p;
     }
 
-    private void updateRecord(PaymentRecord old) {
-        PaymentRecord infoRecord = new PaymentRecord(old.getId());
-        infoRecord.setFrozen(false);
-        if (old.getPayTime() == null) {
-            infoRecord.setPayTime(new Date());
+    private void updateRecord(PaymentRecord info) {
+        if (!info.getFrozen()) {
+            info.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
+            info.setPaySn(String.valueOf(paySnIDGenerator.getId()));
+            info.setPayTime(new Date());
+            info.setFrozen(true);
+            Account account = accountMapper.findAccountByPartnerId(info.getPartnerId());
+            BigDecimal freezing = account.getFreezingAmount().subtract(info.getAmount().abs());
+            if (freezing.compareTo(info.getAmount().abs()) < 0) {
+                freezing = BigDecimal.ZERO;
+                log.error("账务异常, 出现冻结资金小于0的情况, 金额:{}, 冻结资金:{}, 订单号:{}", freezing, info.getAmount(), info.getOrderSn());
+            }
+            Account updateAccount = new Account(account.getId());
+            updateAccount.setFreezingAmount(freezing);
+            updateByPrimaryKeySelective(info);
+            updateByPrimaryKeySelective(updateAccount);
         }
-        if (StringUtils.isNotNull(old.getPaySn())) {
-            infoRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
-        }
-        if (old.getPayStatus() == null) {
-            infoRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
-        }
-        updateByPrimaryKeySelective(infoRecord);
     }
 
 
@@ -261,6 +272,7 @@ public class OrderManager {
         Account account = findAccountByPartnerId(paymentRecord.getPartnerId());
         PaymentTypeEnums paymentTypeEnums = PaymentTypeEnums.get(paymentRecord.getPaymentType());
         BigDecimal amount = account.getAmount();
+        BigDecimal freezingAmount = account.getFreezingAmount();
         switch (paymentTypeEnums) {
             case RECHARGE: {
                 BigDecimal tmpAmount = paymentRecord.getAmount().abs();
@@ -275,6 +287,7 @@ public class OrderManager {
                     throw new BizException("没有足够的钱" + paymentTypeEnums.getText());
                 }
                 amount = amount.add(tmpAmount);
+                freezingAmount = freezingAmount.add(tmpAmount.abs());
                 paymentRecord.setSurplusAmount(amount);
                 paymentRecord.setAmount(tmpAmount);
                 break;
@@ -282,9 +295,7 @@ public class OrderManager {
         }
         Account a = new Account(account.getId());
         a.setAmount(amount);
-        paymentRecord.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
-        paymentRecord.setPaySn(String.valueOf(paySnIDGenerator.getId()));
-        paymentRecord.setPayTime(new Date());
+        a.setFreezingAmount(freezingAmount);
         updateByPrimaryKeySelective(a);
         insertSelective(paymentRecord);
     }
@@ -292,4 +303,5 @@ public class OrderManager {
     public PaymentRecord findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(Long partnerId, Byte paymentType, String orderSn, Boolean frozen) {
         return paymentRecordMapper.findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(partnerId, paymentType, orderSn, frozen);
     }
+
 }
