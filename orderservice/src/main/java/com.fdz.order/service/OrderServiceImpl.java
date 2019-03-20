@@ -372,6 +372,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrdersProduct> ordersProducts = orderManager.findOrdersProductsByOrderSn(orderSn);
 
         OrderPushVo orderPushVo = dtoConvert.convert(orders);
+        orderPushVo.setSn(orders.getPartnerSn());
         List<OrderProductPushVo> orderProductPushVos = dtoConvert.convert(ordersProducts);
         OrdersLogisticsPushVo ordersLogisticsPushVo = dtoConvert.convert(ordersLogistics);
         orderPushVo.setProducts(orderProductPushVos);
