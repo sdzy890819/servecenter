@@ -222,12 +222,12 @@ function load(currentPage, pageSize, search) {
                     var ab = "";
                     data.data.data.forEach(function (val, index) {
                         ab = ab + writeData(["<a href='#' id='show-detail' show='" + val.orderSn + "'>" + val.partnerSn + "</a>", val.orderSn,
-                            val.amount, val.ordersLogisticsResult.logistics,
-                            val.ordersLogisticsResult.logisticsSn,
-                            val.ordersLogisticsResult.receiver,
-                            val.ordersLogisticsResult.receiverMobile,
-                            val.buyTimeStr,
-                            val.statusStr]);
+                            val.amount, outStr(val.ordersLogisticsResult.logistics),
+                            outStr(val.ordersLogisticsResult.logisticsSn),
+                            outStr(val.ordersLogisticsResult.receiver),
+                            outStr(val.ordersLogisticsResult.receiverMobile),
+                            outStr(val.buyTimeStr),
+                            outStr(val.statusStr)]);
                     })
                     $("#body").html(ab);
                 }

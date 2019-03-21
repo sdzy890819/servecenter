@@ -219,12 +219,12 @@ function load(currentPage, pageSize, search) {
                     var ab = "";
                     data.data.data.forEach(function (val, index) {
                         ab = ab + writeData(["<a href='orders-detail.html?menuName=orders&id=" + val.orderSn + "'>" + val.partnerSn + "</a>", val.orderSn,
-                            val.amount, val.ordersLogisticsResult.logistics,
-                            val.ordersLogisticsResult.logisticsSn,
-                            val.ordersLogisticsResult.receiver,
-                            val.ordersLogisticsResult.receiverMobile,
-                            val.buyTimeStr,
-                            val.statusStr, "<a href='#' id='listUpdate' update='" + val.orderSn + "' class='btn btn-info btn-sm' >修改发货</a><a href='#' id='listDelivery' delivery='" + val.orderSn + "' class='btn btn-info btn-sm' >发货</a>"]);
+                            val.amount, outStr(val.ordersLogisticsResult.logistics),
+                            outStr(val.ordersLogisticsResult.logisticsSn),
+                            outStr(val.ordersLogisticsResult.receiver),
+                            outStr(val.ordersLogisticsResult.receiverMobile),
+                            outStr(val.buyTimeStr),
+                            outStr(val.statusStr), "<a href='#' id='listUpdate' update='" + val.orderSn + "' class='btn btn-info btn-sm' >修改发货</a><a href='#' id='listDelivery' delivery='" + val.orderSn + "' class='btn btn-info btn-sm' >发货</a>"]);
                     })
                     $("#body").html(ab);
                 }
