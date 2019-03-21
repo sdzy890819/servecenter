@@ -130,8 +130,8 @@ public class PartnerManager {
         return partnerInterfaceConfigMapper.findConfigByPartnerIdAndType(partnerIds, interfaceType);
     }
 
-    public int insertInterfaceExecRecordList(List<InterfaceExecRecord> list) {
-        return interfaceExecRecordMapper.insertInterfaceExecRecordList(list);
+    public void insertInterfaceExecRecordList(List<InterfaceExecRecord> list) {
+        interfaceExecRecordMapper.insertInterfaceExecRecordList(list);
     }
 
     public List<InterfaceExecRecord> findRecordPartnerIdAndTypeAndStatus(List<Long> partnerId, byte type, byte status) {

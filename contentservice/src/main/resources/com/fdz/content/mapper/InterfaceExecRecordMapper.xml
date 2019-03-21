@@ -175,7 +175,7 @@
       `data` = #{data}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <select id="insertInterfaceExecRecordList" resultType="java.lang.Integer">
+  <select id="insertInterfaceExecRecordList">
     insert into interface_exec_record (id, create_time, modify_time,
       create_by, modify_by, remark,
       is_delete, partner_id, interface_url,

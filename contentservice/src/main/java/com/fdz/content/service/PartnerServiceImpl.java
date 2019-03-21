@@ -127,8 +127,8 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     @Override
-    public int insertInterfaceExecRecordList(List<InterfaceExecRecord> list) {
-        return partnerManager.insertInterfaceExecRecordList(list);
+    public void insertInterfaceExecRecordList(List<InterfaceExecRecord> list) {
+        partnerManager.insertInterfaceExecRecordList(list);
     }
 
     /**

@@ -57,7 +57,7 @@ public interface PartnerService {
 
     List<PartnerInterfaceConfig> findConfigByPartnerIdAndType(List<Long> partnerIds, byte interfaceType);
 
-    int insertInterfaceExecRecordList(List<InterfaceExecRecord> list);
+    void insertInterfaceExecRecordList(List<InterfaceExecRecord> list);
 
     List<InterfaceExecRecord> findRecordPartnerIdAndTypeAndStatus(List<Long> partnerId, byte type, byte status);
 

@@ -34,7 +34,7 @@ public interface InterfaceExecRecordMapper {
 
     int updateByPrimaryKey(InterfaceExecRecord record);
 
-    int insertInterfaceExecRecordList(List<InterfaceExecRecord> list);
+    void insertInterfaceExecRecordList(List<InterfaceExecRecord> list);
 
     List<InterfaceExecRecord> findRecordPartnerIdAndTypeAndStatus(@Param("list") List<Long> partnerId, @Param("type") byte type, @Param("status") byte status);
 
