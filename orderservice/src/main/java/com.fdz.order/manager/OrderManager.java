@@ -112,12 +112,12 @@ public class OrderManager {
     @Lock(key = "ORDER_UPDATE_#{orders.id}")
     public int update(Orders orders, OrdersLogistics ordersLogistics) {
         Orders ordersInfo = selectOrdersByPrimaryKey(orders.getId());
-        if (orders.getOrderStatus() != null) {
+        if (orders.getStatus() != null) {
             insertStatus(orders.getId(), orders.getStatus());
-            switch (OrdersStatus.get(orders.getOrderStatus())) {
+            switch (OrdersStatus.get(orders.getStatus())) {
                 case CONFIRM_SEND: {
-                    PaymentRecord paymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.PAY.getType(), ordersInfo.getOrderSn(), false);
-                    PaymentRecord infoPaymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.INFO.getType(), ordersInfo.getOrderSn(), false);
+                    PaymentRecord paymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.PAY.getType(), ordersInfo.getOrderSn(), true);
+                    PaymentRecord infoPaymentRecord = findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(ordersInfo.getPartnerId(), PaymentTypeEnums.INFO.getType(), ordersInfo.getOrderSn(), true);
                     if (paymentRecord != null) {
                         updateRecord(paymentRecord);
                     }
@@ -136,11 +136,11 @@ public class OrderManager {
     }
 
     private void updateRecord(PaymentRecord info) {
-        if (!info.getFrozen()) {
+        if (info.getFrozen()) {
             info.setPayStatus(PayStatusEnums.SUCCESS.getStatus());
             info.setPaySn(String.valueOf(paySnIDGenerator.getId()));
             info.setPayTime(new Date());
-            info.setFrozen(true);
+            info.setFrozen(false);
             Account account = accountMapper.findAccountByPartnerId(info.getPartnerId());
             BigDecimal freezing = account.getFreezingAmount().subtract(info.getAmount().abs());
             if (freezing.compareTo(info.getAmount().abs()) < 0) {
