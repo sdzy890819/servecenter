@@ -191,7 +191,7 @@ public class ProductController {
             }
         }
         Product product = dtoConvert.convert(dto);
-        productService.updateByPrimaryKeySelective(product);
+        productService.updateSelective(product, dto.getProductImages());
         partnerService.syncProduct(product.getId());
         return RestResponse.success(null);
     }

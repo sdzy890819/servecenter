@@ -2,10 +2,7 @@ package com.fdz.content.mapper;
 
 import com.fdz.common.constant.Constants;
 import com.fdz.content.domain.ProductImage;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -38,7 +35,7 @@ public interface ProductImageMapper {
     int insertList(@Param("list") List<ProductImage> list);
 
     @Select("delete from " + TABLE + " where product_id = #{productId}")
-    int deleteByProductId(@Param("productId") Long productId);
+    void deleteByProductId(@Param("productId") Long productId);
 
     @Select(SELECT + " and product_id = #{productId} " + Constants.Sql.DEFAULT_ORDER)
     @ResultMap(RESULT_MAP)

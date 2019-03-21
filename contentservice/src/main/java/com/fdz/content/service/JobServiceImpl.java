@@ -11,6 +11,8 @@ import com.fdz.common.utils.StringUtils;
 import com.fdz.content.constants.ContentConstants;
 import com.fdz.content.domain.InterfaceExecRecord;
 import com.fdz.content.domain.Partner;
+import com.fdz.content.dto.PageDataResult;
+import com.fdz.content.dto.ThirdpartProductDto;
 import com.fdz.content.rest.ThirdpartyClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -84,7 +86,11 @@ public class JobServiceImpl implements JobService {
                     case SYNC_PARTNER_PRODUCT: {
                         log.info("{}, start partner id: {}", type.getText(), a.getPartnerId());
                         Page page = new Page(1, 1000);
-                        data = productService.list(page);
+                        List<ThirdpartProductDto> thirdpartProductDtos = productService.list(page);
+                        PageDataResult<List<ThirdpartProductDto>> pageDataResult = new PageDataResult<>();
+                        pageDataResult.setPage(page);
+                        pageDataResult.setData(thirdpartProductDtos);
+                        data = pageDataResult;
                         break;
                     }
                     default: {
