@@ -13,7 +13,7 @@ spring:
       min-idle: 0
       max-active: 10
   datasource:
-    url: jdbc:mysql:replication://39.106.221.165:3306,39.106.221.165:3306/servecenter?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowMasterDownConnections=true&readFromMasterWhenNoSlaves=true
+    url: jdbc:mysql:replication://39.106.221.165:3306,39.106.221.165:3306/job?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowMasterDownConnections=true&readFromMasterWhenNoSlaves=true
     username: root
     password: CmsManager123!@#
     driver-class-name: com.mysql.jdbc.ReplicationDriver
@@ -36,6 +36,8 @@ spring:
 application:
   cors:
     enabled: false
+  redis:
+    enabled: true
 logging:
   level:
     root: info
