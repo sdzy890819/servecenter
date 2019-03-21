@@ -355,7 +355,7 @@ public class OrderServiceImpl implements OrderService {
         } catch (JsonProcessingException e) {
             throw new BizException("Json转字符串异常", e);
         }
-        recordDto.setInterfaceType(InterfaceTypeEnums.SYNC_ORDER_STATUS.getType());
+        recordDto.setInterfaceType(InterfaceTypeEnums.SYNC_ORDER_INFO.getType());
         recordDto.setPartnerId(partnerId);
         contentService.create(recordDto);
     }
