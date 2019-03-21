@@ -82,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
                 amount = amount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
                 platformAmount = platformAmount.add(dto.getPlatformPrice().multiply(new BigDecimal(a.getNum())));
                 costAmount = costAmount.add(dto.getPrimeCosts().multiply(new BigDecimal(a.getNum())));
-                infoAmount = infoAmount.add(dto.getSalePrice().multiply(new BigDecimal(a.getNum())));
+                infoAmount = infoAmount.add(dto.getServiceFee().multiply(new BigDecimal(a.getNum())));
                 OrdersProduct ordersProduct = new OrdersProduct();
                 ordersProduct.setOrderSn(orderSn);
                 ordersProduct.setPartnerSn(cashierDto.getSn());
