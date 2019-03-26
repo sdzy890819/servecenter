@@ -73,7 +73,7 @@ public class ManagerServiceImpl implements ManagerService, UserDetailsService {
                     if (partnerUser != null) {
                         LoginUser loginUser = new LoginUser();
                         loginUser.setId(partnerUser.getPartnerId());
-                        loginUser.setPassword(partnerUser.getPassword());
+                        loginUser.setPassword(passwordEncoder.encode(partnerUser.getPassword()));
                         loginUser.setUserName(UserDisassembly.assembleP(partnerUser.getPartnerId()));
                         redisDataManager.set(Constants.RedisKey.PARTNER_LOGIN_LABEL + loginUser.getUsername(), loginUser, 1, TimeUnit.DAYS);
                         return loginUser;
