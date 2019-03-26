@@ -31,7 +31,7 @@ public interface ProductService {
 
     int insertSelective(ProductType record);
 
-    List<ThirdpartProductDto> list(Page page);
+    List<ThirdpartProductDto> list(Long partnerId, Page page);
 
     ThirdpartyProductDto detail(Long partnerProductId);
 

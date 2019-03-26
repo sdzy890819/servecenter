@@ -86,7 +86,7 @@ public class JobServiceImpl implements JobService {
                     case SYNC_PARTNER_PRODUCT: {
                         log.info("{}, start partner id: {}", type.getText(), a.getPartnerId());
                         Page page = new Page(1, 1000);
-                        List<ThirdpartProductDto> thirdpartProductDtos = productService.list(page);
+                        List<ThirdpartProductDto> thirdpartProductDtos = productService.list(a.getPartnerId(), page);
                         PageDataResult<List<ThirdpartProductDto>> pageDataResult = new PageDataResult<>();
                         pageDataResult.setPage(page);
                         pageDataResult.setData(thirdpartProductDtos);

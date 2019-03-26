@@ -64,11 +64,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ThirdpartProductDto> list(Page page) {
-        Integer count = partnerManager.countPartnerProduct();
+    public List<ThirdpartProductDto> list(Long partnerId, Page page) {
+        Integer count = partnerManager.countPartnerProduct(partnerId);
         page.setCount(count);
         if (page.isQuery()) {
-            List<PartnerProduct> list = partnerManager.listPartnerProduct(page);
+            List<PartnerProduct> list = partnerManager.listPartnerProduct(partnerId, page);
             return list(list);
         }
         return null;

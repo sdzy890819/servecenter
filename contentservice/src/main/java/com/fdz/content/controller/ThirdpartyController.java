@@ -2,6 +2,7 @@ package com.fdz.content.controller;
 
 
 import com.fdz.common.dto.PageDto;
+import com.fdz.common.security.SecurityUtils;
 import com.fdz.common.utils.Page;
 import com.fdz.common.web.RestResponse;
 import com.fdz.common.web.version.ApiVersion;
@@ -39,13 +40,13 @@ public class ThirdpartyController {
     @ApiOperation("产品列表")
     @PostMapping("/list")
     RestResponse<PageDataResult<List<ThirdpartProductDto>>> list(@RequestBody PageDto pageDto) {
+        Long partnerId = SecurityUtils.checkLoginAndGetUserByPartner();
         Page page = dtoConvert.convert(pageDto);
-        List<ThirdpartProductDto> list = productService.list(page);
+        List<ThirdpartProductDto> list = productService.list(partnerId, page);
         PageDataResult<List<ThirdpartProductDto>> data = new PageDataResult<>();
         data.setPage(page);
         data.setData(list);
         return RestResponse.success(data);
     }
-
 
 }

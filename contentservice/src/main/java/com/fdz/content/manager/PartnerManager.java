@@ -102,12 +102,12 @@ public class PartnerManager {
         return partnerInterfaceConfigMapper.findConfigByPartnerAndType(partner, type);
     }
 
-    public int countPartnerProduct() {
-        return partnerProductMapper.countPartnerProduct();
+    public int countPartnerProduct(Long partnerId) {
+        return partnerProductMapper.countPartnerProduct(partnerId);
     }
 
-    public List<PartnerProduct> listPartnerProduct(Page page) {
-        return partnerProductMapper.listPartnerProduct(page);
+    public List<PartnerProduct> listPartnerProduct(Long partnerId, Page page) {
+        return partnerProductMapper.listPartnerProduct(partnerId, page);
     }
 
     public List<PartnerProduct> searchPartnerProduct(PartnerProduct partnerProduct, Page page) {

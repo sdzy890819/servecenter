@@ -30,13 +30,13 @@ public interface PartnerProductMapper {
 
     int updateByPrimaryKey(PartnerProduct record);
 
-    @Select("select count(1) from " + TABLE + Constants.Sql.NOT_DELETED + " and shelf = true")
+    @Select("select count(1) from " + TABLE + Constants.Sql.NOT_DELETED + " and partner_id = #{partnerId} " + " and shelf = true")
     @ResultType(Integer.class)
-    int countPartnerProduct();
+    int countPartnerProduct(@Param("partnerId") Long partnerId);
 
-    @Select(SELECT + " and shelf = true " + Constants.Sql.DEFAULT_ORDER + Constants.Sql.LIMIT_SQL)
+    @Select(SELECT + " and shelf = true " + " and partner_id = #{partnerId} " + Constants.Sql.DEFAULT_ORDER + Constants.Sql.LIMIT_SQL)
     @ResultMap(RESULT_MAP)
-    List<PartnerProduct> listPartnerProduct(@Param("page") Page page);
+    List<PartnerProduct> listPartnerProduct(@Param("partnerId") Long partnerId, @Param("page") Page page);
 
     int countSearchPartnerProduct(@Param("p") PartnerProduct partnerProduct);
 
