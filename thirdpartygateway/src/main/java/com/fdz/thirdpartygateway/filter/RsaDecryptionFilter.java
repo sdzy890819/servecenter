@@ -81,6 +81,8 @@ public class RsaDecryptionFilter extends ZuulFilter {
 
                         ctx.getZuulRequestHeaders().put(Constants.Common.P_USER_INFO_HEADER, UserDisassembly.assembleP(partnerRestResult.getId()));
                         ctx.setRequest(servletRequest);
+                    } else {
+                        throw new BizException("签名不通过.");
                     }
                 }
             }
