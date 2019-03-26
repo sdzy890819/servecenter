@@ -13,7 +13,7 @@ spring:
       min-idle: 0
       max-active: 10
   datasource:
-    url: jdbc:mysql:replication://172.17.40.204:3306,172.17.40.204:3306/servecenter?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowMasterDownConnections=true&readFromMasterWhenNoSlaves=true
+    url: jdbc:mysql:replication://172.17.40.204:3306,172.17.40.204:3306/job?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&useSSL=false&allowMasterDownConnections=true&readFromMasterWhenNoSlaves=true
     username: root
     password: Zhangyang&1989
     driver-class-name: com.mysql.jdbc.ReplicationDriver
