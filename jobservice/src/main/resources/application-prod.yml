@@ -36,6 +36,8 @@ spring:
 application:
   cors:
     enabled: false
+  redis:
+    enabled: true
 logging:
   level:
     root: info
