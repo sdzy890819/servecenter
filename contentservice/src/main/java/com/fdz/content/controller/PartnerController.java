@@ -109,6 +109,12 @@ public class PartnerController {
                 if (StringUtils.isNotBlank(dto.getPublicKey())) {
                     partner.setPublicKey(dto.getPublicKey());
                 }
+                if (dto.getSyncRetEncode() != null) {
+                    partner.setSyncRetEncode(dto.getSyncRetEncode());
+                }
+                if (dto.getPullRetEncode() != null) {
+                    partner.setPullRetEncode(dto.getPullRetEncode());
+                }
                 if (StringUtils.isBlank(partner.getMyKey()) && StringUtils.isBlank(partner.getMyPublicKey())) {
                     Map<String, String> map = RSAUtil.initRSAKey(RSAUtil.ALGORITHM_RSA_PRIVATE_KEY_LENGTH);
                     partner.setMyKey(map.get(RSAUtil.PRIVATE_KEY));
