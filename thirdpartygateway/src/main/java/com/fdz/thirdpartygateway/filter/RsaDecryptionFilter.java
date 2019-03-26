@@ -90,7 +90,7 @@ public class RsaDecryptionFilter extends ZuulFilter {
         } catch (BizException e) {
             throw e;
         } catch (Exception e) {
-            throw new BizException("不要说话 ", e);
+            throw new BizException("无效应用接入,请检查接入信息是否正常 ", e);
         }
         return null;
     }
