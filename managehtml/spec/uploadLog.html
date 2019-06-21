@@ -1,0 +1,27 @@
+<div class="modal fade" id="upload_logistics" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="txt_ems_form">EMS数据文件</label>
+                    <form class="form-inline" id="txt_ems_form" enctype='multipart/form-data'>
+                        <input type="file" name="file" id="ems_file" accept="application/vnd.sealed-xls"
+                               class="form-control"/>
+                        <input type="button" id="txt_ems_submit" value="导入EMS Excel" class="form-control"/>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,9 +6,12 @@ import com.fdz.order.domain.Orders;
 import com.fdz.order.domain.OrdersLogistics;
 import com.fdz.order.domain.PaymentRecord;
 import com.fdz.order.dto.*;
+import com.fdz.order.vo.EmsLogistics;
 import com.fdz.order.vo.OrderPushVo;
 import com.fdz.order.vo.OrderStatusPushVo;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface OrderService {
@@ -60,4 +63,10 @@ public interface OrderService {
     PaymentRecord findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(Long partnerId, Byte paymentType, String orderSn, Boolean frozen);
 
     Account findAccountByPartnerId(Long partnerId);
+
+    List<EmsLogistics> export(SearchOrdersDto dto);
+
+    void emsStyle(HttpServletResponse response, List<EmsLogistics> data);
+
+    void importEms(MultipartFile file);
 }

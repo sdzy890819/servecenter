@@ -39,6 +39,10 @@ application:
     enabled: false
   redis:
     enabled: true
+  sender-info:
+    name: 栗渔
+    mobile: 4000567861
+    address: 上海市青浦区新达路
 logging:
   level:
     root: info

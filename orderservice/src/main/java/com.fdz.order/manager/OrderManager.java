@@ -306,4 +306,12 @@ public class OrderManager {
         return paymentRecordMapper.findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(partnerId, paymentType, orderSn, frozen);
     }
 
+    public List<OrdersAndLogistics> searchAllOrders(SearchOrdersDto dto) {
+        return ordersMapper.searchAllOrders(dto);
+    }
+
+    public void updateLogisticsInfo(List<OrdersLogisticsInfo> logisticsList) {
+        ordersLogisticsMapper.updateLogisticsInfo(logisticsList);
+    }
+
 }

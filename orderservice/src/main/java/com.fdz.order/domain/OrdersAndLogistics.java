@@ -51,4 +51,10 @@ public class OrdersAndLogistics extends BaseEntity {
 
     private BigDecimal infoAmount;
 
+    private String receiverProvince;
+
+    private String receiverCity;
+
+    private String receiverArea;
+
 }

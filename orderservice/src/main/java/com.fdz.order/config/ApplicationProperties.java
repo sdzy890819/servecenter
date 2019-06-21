@@ -24,6 +24,17 @@ public class ApplicationProperties {
     @NestedConfigurationProperty
     private final RoutingKey routingKey = new RoutingKey();
 
+    @NestedConfigurationProperty
+    private final SenderInfo senderInfo = new SenderInfo();
+
+
+    @Data
+    public static class SenderInfo {
+        private String name;
+        private String mobile;
+        private String address;
+    }
+
     @Data
     public static class RoutingKey {
         private String statusKey;

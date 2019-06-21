@@ -15,6 +15,13 @@ $(document).ready(function () {
         $("#txt_id").val("");
     });
 
+    $("#txt_ems_submit").click(function () {
+        uploadEms(new FormData($("#txt_ems_form")[0]), "ems_file");
+    });
+
+    $("#import_ems").click(function () {
+        $('#upload_logistics').modal();
+    });
 
     $("#btn_submit").click(function () {
         if (isNotNull($("#txt_id").val())) {
@@ -26,6 +33,13 @@ $(document).ready(function () {
         }
     });
 
+
+    $("#export_ems_style").click(function () {
+        if ($("#search_deliveryStatus").val() != 0) {
+            $("#search_deliveryStatus").val(0);
+        }
+        $("#searchForm").submit();
+    });
 
     $("#search_btn").click(function () {
         load(1, $("#pageSize").find("option:selected").val(), searchVo());
@@ -72,6 +86,33 @@ $(document).ready(function () {
         });
     })
 });
+
+var uploading = false;
+
+function uploadEms(form, id) {
+    if (uploading) {
+        bootbox.alert("有文件正在上传, 请稍后再上传新的文件");
+        return;
+    }
+    $.ajax({
+        url: "/v1/order/importEms",
+        data: form,
+        type: "post",
+        dataType: "json",
+        cache: false,//上传文件无需缓存
+        processData: false,//用于对data参数进行序列化处理 这里必须false
+        contentType: false, //必须
+        beforeSend: function () {
+            uploading = true;
+        },
+        success: function (result) {
+            if (result.code == 0) {
+                bootbox.alert("上传完成.");
+            }
+            uploading = false;
+        },
+    })
+}
 
 function delivery(orderSn) {
     $.ajax({

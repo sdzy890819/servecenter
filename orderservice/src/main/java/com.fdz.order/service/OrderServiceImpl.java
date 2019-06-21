@@ -8,6 +8,7 @@ import com.fdz.common.exception.BizException;
 import com.fdz.common.utils.IDGenerator;
 import com.fdz.common.utils.Page;
 import com.fdz.common.utils.StringUtils;
+import com.fdz.order.config.ApplicationProperties;
 import com.fdz.order.convert.DtoConvert;
 import com.fdz.order.domain.*;
 import com.fdz.order.dto.*;
@@ -16,15 +17,23 @@ import com.fdz.order.service.content.ContentService;
 import com.fdz.order.service.content.dto.PartnerRestResult;
 import com.fdz.order.service.content.dto.RecordDto;
 import com.fdz.order.service.content.dto.ThirdpartyProductDto;
-import com.fdz.order.vo.OrderProductPushVo;
-import com.fdz.order.vo.OrderPushVo;
-import com.fdz.order.vo.OrderStatusPushVo;
-import com.fdz.order.vo.OrdersLogisticsPushVo;
+import com.fdz.order.vo.*;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -49,6 +58,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Resource
     private IDGenerator paymentIDGenerator;
+
+    @Resource
+    private ApplicationProperties applicationProperties;
+
+    private static final String XLS = "xls";
+
+    private static final String XLSX = "xlsx";
+
+    private static final int SIZE = 50;
 
     @Override
     public CashierResult shopping(CashierDto cashierDto, Long partnerId) {
@@ -484,4 +502,219 @@ public class OrderServiceImpl implements OrderService {
         return orderManager.findRecordByPartnerIdAndTypeAndOrderSnAndFrozen(partnerId, paymentType, orderSn, frozen);
     }
 
+    @Override
+    public List<EmsLogistics> export(SearchOrdersDto dto) {
+        List<OrdersAndLogistics> list = orderManager.searchAllOrders(dto);
+        if (StringUtils.isNotEmpty(list)) {
+            List<EmsLogistics> data = new ArrayList<>();
+            for (OrdersAndLogistics a : list) {
+                EmsLogistics emsLogistics = new EmsLogistics();
+                emsLogistics.setAddress(a.getReceiverProvince() + " " + a.getReceiverCity() + " " + a.getReceiverArea() + " " + a.getReceiverAddress());
+                emsLogistics.setDh(a.getOrderSn());
+                emsLogistics.setMobile(a.getReceiverMobile());
+                emsLogistics.setName(a.getLogistics());
+                data.add(emsLogistics);
+            }
+            return data;
+        }
+        return null;
+    }
+
+    @Override
+    public void importEms(MultipartFile file) throws BizException {
+        checkFile(file);
+        Workbook workbook = getWorkBook(file);
+        Sheet sheet = workbook.getSheetAt(0);
+        if (sheet == null) {
+            throw new BizException("找不到excel sheet");
+        }
+        int end = sheet.getLastRowNum();
+        int start = sheet.getFirstRowNum();
+        List<OrdersLogisticsInfo> list = new ArrayList<>();
+        for (int rowNum = start + 1; rowNum <= end; rowNum++) {
+            Row row = sheet.getRow(rowNum);
+            if (row == null) {
+                continue;
+            }
+            String yjh = getCellValue(row.getCell(0));
+            String dh = getCellValue(row.getCell(1));
+            String name = getCellValue(row.getCell(10));
+            String mobile = getCellValue(row.getCell(12));
+            OrdersLogisticsInfo emsInfo = new OrdersLogisticsInfo();
+            emsInfo.setOrderSn(dh);
+            emsInfo.setLogistics(LogisticsEnum.EMS.getLogistics());
+            emsInfo.setLogisticsSn(yjh);
+            emsInfo.setLogisticsStatus(OrdersStatus.DELIVERED.getStatusText());
+            list.add(emsInfo);
+            if (list.size() >= SIZE) {
+                orderManager.updateLogisticsInfo(list);
+                list.clear();
+            }
+        }
+        if (list.size() > 0) {
+            orderManager.updateLogisticsInfo(list);
+            list.clear();
+        }
+        log.info("导入完成.");
+    }
+
+    public static Workbook getWorkBook(MultipartFile file) {
+        //获得文件名
+        String fileName = file.getOriginalFilename();
+        //创建Workbook工作薄对象，表示整个excel
+        Workbook workbook = null;
+        try {
+            //获取excel文件的io流
+            InputStream is = file.getInputStream();
+            //根据文件后缀名不同(xls和xlsx)获得不同的Workbook实现类对象
+            if (fileName.endsWith(XLS)) {
+                //2003
+                workbook = new HSSFWorkbook(is);
+            } else if (fileName.endsWith(XLSX)) {
+                //2007
+                workbook = new XSSFWorkbook(is);
+            }
+        } catch (IOException e) {
+            log.info(e.getMessage());
+        }
+        return workbook;
+    }
+
+    private static Workbook getWorkBook(InputStream inputStream, String fileName) {
+        //创建Workbook工作薄对象，表示整个excel
+        Workbook workbook = null;
+        try {
+            //根据文件后缀名不同(xls和xlsx)获得不同的Workbook实现类对象
+            if (fileName.endsWith(XLS)) {
+                //2003
+                workbook = new HSSFWorkbook(inputStream);
+            } else if (fileName.endsWith(XLSX)) {
+                //2007
+                workbook = new XSSFWorkbook(inputStream);
+            }
+        } catch (IOException e) {
+            log.info(e.getMessage());
+        }
+        return workbook;
+    }
+
+    public static String getCellValue(Cell cell) {
+        String cellValue = "";
+        if (cell == null) {
+            return cellValue;
+        }
+        //把数字当成String来读，避免出现1读成1.0的情况
+        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+            cell.setCellType(Cell.CELL_TYPE_STRING);
+        }
+        //判断数据的类型
+        switch (cell.getCellType()) {
+            case Cell.CELL_TYPE_NUMERIC: //数字
+                cellValue = String.valueOf(cell.getNumericCellValue());
+                break;
+            case Cell.CELL_TYPE_STRING: //字符串
+                cellValue = String.valueOf(cell.getStringCellValue());
+                break;
+            case Cell.CELL_TYPE_BOOLEAN: //Boolean
+                cellValue = String.valueOf(cell.getBooleanCellValue());
+                break;
+            case Cell.CELL_TYPE_FORMULA: //公式
+                cellValue = String.valueOf(cell.getCellFormula());
+                break;
+            case Cell.CELL_TYPE_BLANK: //空值
+                cellValue = "";
+                break;
+            case Cell.CELL_TYPE_ERROR: //故障
+                cellValue = "非法字符";
+                break;
+            default:
+                cellValue = "未知类型";
+                break;
+        }
+        return cellValue;
+    }
+
+    private static void checkFile(MultipartFile file) throws BizException {
+        //判断文件是否存在
+        if (null == file) {
+            log.error("文件不存在！");
+            throw new BizException("文件不存在！");
+        }
+        //获得文件名
+        String fileName = file.getOriginalFilename();
+        //判断文件是否是excel文件
+        if (!fileName.endsWith(XLS) && !fileName.endsWith(XLSX)) {
+            log.error(fileName + "不是excel文件");
+            throw new BizException(fileName + "不是excel文件");
+        }
+    }
+
+    @Override
+    public void emsStyle(HttpServletResponse response, List<EmsLogistics> data) {
+        InputStream inputStream = this.getClass().getResourceAsStream("/export.xls");
+        OutputStream outputStream = null;
+        try {
+            Workbook workbook = getWorkBook(inputStream, "export.xls");
+            outputStream = response.getOutputStream();
+            Sheet sheet = workbook.getSheetAt(0);
+            if (data != null) {
+                for (int i = 0; i < data.size(); i++) {
+                    EmsLogistics tmp = data.get(i);
+                    Row row = sheet.createRow(i + 1);
+                    Cell dhCell = row.createCell(1);
+                    dhCell.setCellValue(tmp.getDh());
+                    Cell fromNameCell = row.createCell(3);
+                    fromNameCell.setCellValue(applicationProperties.getSenderInfo().getName());
+                    Cell fromMobileCell = row.createCell(4);
+                    fromMobileCell.setCellValue(applicationProperties.getSenderInfo().getMobile());
+                    Cell fromAddressCell = row.createCell(6);
+                    fromAddressCell.setCellValue(applicationProperties.getSenderInfo().getAddress());
+                    // 收件人信息 12 -
+                    Cell nameCell = row.createCell(12);
+                    nameCell.setCellValue(tmp.getName());
+                    Cell mobileCell = row.createCell(13);
+                    mobileCell.setCellValue(tmp.getMobile());
+                    Cell addressCell = row.createCell(15);
+                    addressCell.setCellValue(tmp.getAddress());
+                }
+            }
+            workbook.write(outputStream);
+        } catch (IOException e) {
+            log.error("执行export失败", e);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    log.error("export.xls 流关闭错误 {}", e);
+                }
+            }
+            if (outputStream != null) {
+                try {
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    log.error("导出输出流关闭错误 {}", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * // 保留num的位数
+     * //　 0 代表前面补充0
+     * // num 代表长度为4
+     * // d 代表参数为正数型
+     *
+     * @param code
+     * @param num
+     * @return
+     */
+    private String autoGenericCode(int code, int num) {
+        String result = "";
+
+        result = String.format("%0" + num + "d", code + 1);
+
+        return result;
+    }
 }

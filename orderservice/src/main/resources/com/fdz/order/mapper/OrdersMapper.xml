@@ -41,6 +41,9 @@
     <result column="platform_amount" property="platformAmount" />
     <result column="cost_amount" property="costAmount" />
     <result column="info_amount" property="infoAmount" />
+    <result column="receiver_province" jdbcType="VARCHAR" property="receiverProvince"/>
+    <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity"/>
+    <result column="receiver_area" jdbcType="VARCHAR" property="receiverArea"/>
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -307,12 +310,45 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
+  <select id="searchAllOrders" resultMap="ordersAndLogistics">
+    select o.id, o.create_time, o.modify_time, o.create_by, o.modify_by, o.remark, o.is_delete, o.order_sn,
+    o.partner_sn, o.partner_id, o.amount, o.buy_time, o.confirm_time, o.business_delivery_time,
+    o.end_time, o.delivery_status, o.status, o.order_status, o.business_delivery_status, o.platform_amount, o.cost_amount, o.info_amount ,
+    l.receiver, l.receiver_address, l.receiver_mobile, l.logistics, l.logistics_sn,
+    l.logistics_status,l.receiver_province,l.receiver_city,l.receiver_area  from orders o, orders_logistics l where o.is_delete = 0 and o.order_sn = l.order_sn
+    <if test="search.orderSn != null">
+      and o.order_sn = #{search.orderSn}
+    </if>
+    <if test="search.partnerId != null">
+      and o.partner_id = #{search.partnerId}
+    </if>
+    <if test="search.partnerName != null">
+      and o.partner_id in (select id from partner where `name` = #{search.partnerName})
+    </if>
+    <if test="search.partnerSn != null">
+      and o.partner_sn = #{search.partnerSn}
+    </if>
+    <if test="search.receiverMobile != null">
+      and l.receiver_mobile = #{search.receiverMobile}
+    </if>
+    <if test="search.buyStartTime != null">
+      and o.buy_time  >= #{search.buyStartTime}
+    </if>
+    <if test="search.buyEndTime != null">
+      and o.buy_time &lt;= #{search.buyEndTime}
+    </if>
+    <if test="search.deliveryStatus != null">
+      and o.delivery_status = #{search.deliveryStatus}
+    </if>
+    order by o.id desc
+  </select>
+
   <select id="searchOrders" resultMap="ordersAndLogistics">
     select o.id, o.create_time, o.modify_time, o.create_by, o.modify_by, o.remark, o.is_delete, o.order_sn,
     o.partner_sn, o.partner_id, o.amount, o.buy_time, o.confirm_time, o.business_delivery_time,
     o.end_time, o.delivery_status, o.status, o.order_status, o.business_delivery_status, o.platform_amount, o.cost_amount, o.info_amount ,
     l.receiver, l.receiver_address, l.receiver_mobile, l.logistics, l.logistics_sn,
-    l.logistics_status  from orders o, orders_logistics l where o.is_delete = 0 and o.order_sn = l.order_sn
+    l.logistics_status,l.receiver_province,l.receiver_city,l.receiver_area  from orders o, orders_logistics l where o.is_delete = 0 and o.order_sn = l.order_sn
     <if test="search.orderSn != null">
       and o.order_sn = #{search.orderSn}
     </if>
@@ -367,4 +403,6 @@
       and o.delivery_status = #{search.deliveryStatus}
     </if>
   </select>
+
+
 </mapper>

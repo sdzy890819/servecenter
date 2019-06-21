@@ -2,10 +2,13 @@ package com.fdz.order.mapper;
 
 import com.fdz.common.constant.Constants;
 import com.fdz.order.domain.OrdersLogistics;
+import com.fdz.order.domain.OrdersLogisticsInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface OrdersLogisticsMapper {
@@ -39,4 +42,6 @@ public interface OrdersLogisticsMapper {
     @Select(SELECT + " and order_sn=#{orderSn}")
     @ResultMap(RESULT_MAP)
     OrdersLogistics findOrdersLogisticsByOrderSn(@Param("orderSn") String orderSn);
+
+    void updateLogisticsInfo(@Param("list") List<OrdersLogisticsInfo> logisticsList);
 }

@@ -282,4 +282,22 @@
       receiver_area = #{receiverArea}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <update id="updateLogisticsInfo">
+        <foreach collection="list" item="a" separator=";">
+            update orders_logistics
+            <set>
+                <if test="a.logistics != null">
+                    logistics = #{a.logistics,jdbcType=VARCHAR},
+                </if>
+                <if test="a.logisticsSn != null">
+                    logistics_sn = #{a.logisticsSn,jdbcType=VARCHAR},
+                </if>
+                <if test="a.logisticsStatus != null">
+                    logistics_status = #{a.logisticsStatus,jdbcType=VARCHAR},
+                </if>
+            </set>
+            where order_sn = #{a.orderSn}
+        </foreach>
+    </update>
 </mapper>

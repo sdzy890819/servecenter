@@ -17,7 +17,7 @@
     <link href="assets/css/custom-styles.css" rel="stylesheet"/>
     <!-- Google Fonts-->
     <link href='assets/css/font.css' rel='stylesheet' type='text/css'/>
-    <link href="assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
 
 </head>
 
@@ -43,131 +43,142 @@
         <div id="page-inner">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form class="form-inline" id="searchForm">
+                    <form class="form-inline" id="searchForm" target="_blank" method="post"
+                          action="/v1/order/exportEms">
                         <div class="form-group">
                             <label for="search_orderSn">商品订单号</label>
-                            <input type="text" id="search_orderSn" class="form-control" placeholder="商品订单号">
+                            <input type="text" id="search_orderSn" name="orderSn" class="form-control"
+                                   placeholder="商品订单号">
                         </div>
                         <div class="form-group">
                             <label for="search_partnerSn">机构订单号</label>
-                            <input type="text" id="search_partnerSn" class="form-control" placeholder="机构订单号">
+                            <input type="text" id="search_partnerSn" class="form-control" name="partnerSn"
+                                   placeholder="机构订单号">
                         </div>
                         <div class="form-group">
                             <label for="search_partnerName">机构名称</label>
-                            <input type="text" id="search_partnerName" class="form-control" placeholder="机构名称">
+                            <input type="text" id="search_partnerName" class="form-control" name="partnerName"
+                                   placeholder="机构名称">
                         </div>
                         <div class="form-group">
                             <label for="search_receiverMobile">收货人电话</label>
-                            <input type="text" id="search_receiverMobile" class="form-control" placeholder="收货人电话">
+                            <input type="text" id="search_receiverMobile" class="form-control" name="receiverMobile"
+                                   placeholder="收货人电话">
                         </div>
                         <div class="form-group">
                             <label for="search_buyStartTime">下单日期</label>
-                            <input type="text" id="search_buyStartTime" class="form-control" placeholder="yyyy-MM-dd" data-date-format="yyyy-mm-dd"> -
-                            <input type="text" id="search_buyEndTime" class="form-control" placeholder="yyyy-MM-dd" data-date-format="yyyy-mm-dd">
+                            <input type="text" id="search_buyStartTime" class="form-control" name="buyStartTime"
+                                   placeholder="yyyy-MM-dd"
+                                   data-date-format="yyyy-mm-dd"> -
+                            <input type="text" id="search_buyEndTime" class="form-control" name="buyEndTime"
+                                   placeholder="yyyy-MM-dd"
+                                   data-date-format="yyyy-mm-dd">
                         </div>
                         <div class="form-group">
                             <label for="search_deliveryStatus">发货状态</label>
-                            <select id="search_deliveryStatus" class="form-control">
+                            <select id="search_deliveryStatus" name="deliveryStatus" class="form-control">
                                 <option value="">请选择</option>
                                 <option value="0">待发货</option>
                                 <option value="1">已发货</option>
                             </select>
                         </div>
-
                         <button type="button" id="search_btn" class="btn btn-default">查询</button>
+                        <button type="button" id="export_ems_style" class="btn btn-default">导出EMS格式</button>
                     </form>
                 </div>
             </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        渠道列表
-                    </div>
-                    <div class="panel-body">
-                        <div>
-                            <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="dataTables_length" id="dataTables-example_length">
-                                            <label>每页个数：
-                                                <select name="dataTables-example_length"
-                                                        aria-controls="dataTables-example" id="pageSize"
-                                                        class="form-control input-sm">
-                                                    <option value="10">10</option>
-                                                    <option value="25">25</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div id="dataTables-example_filter" style="text-align: right">
-                                            <!-- <a href="#" class="btn btn-success" id="add">添加</a> -->
-                                        </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    渠道列表
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <div id="dataTables-example_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dataTables_length" id="dataTables-example_length">
+                                        <label>每页个数：
+                                            <select name="dataTables-example_length"
+                                                    aria-controls="dataTables-example" id="pageSize"
+                                                    class="form-control input-sm">
+                                                <option value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select></label>
                                     </div>
                                 </div>
-                                <table class="table table-striped table-bordered table-hover dataTable no-footer"
-                                       id="dataTables-example" aria-describedby="dataTables-example_info">
-                                    <thead>
-                                    <tr role="row">
-                                        <th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"
-                                            rowspan="1" colspan="1" aria-sort="ascending" style="width: 139px;">
-                                            机构订单号
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">
-                                            商品订单号
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">订单金额
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">物流渠道
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">物流单号
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">收货人
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">收货人电话
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">下单日期
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">订单状态
-                                        </th>
-                                        <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
-                                            colspan="1" style="width: 139px;">操作
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="body"></tbody>
-                                </table>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="dataTables_info" id="dataTables-example_info" role="alert"
-                                             aria-live="polite" aria-relevant="all">
-                                        </div>
+                                <div class="col-sm-6">
+                                    <div id="dataTables-example_filter" style="text-align: right">
+                                        <a href="#" class="btn btn-success" id="import_ems">导入Ems信息</a>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="dataTables_paginate paging_simple_numbers"
-                                             id="dataTables-example_paginate">
-                                            <ul class="pagination" id="pageBar">
+                                </div>
+                            </div>
+                            <table class="table table-striped table-bordered table-hover dataTable no-footer"
+                                   id="dataTables-example" aria-describedby="dataTables-example_info">
+                                <thead>
+                                <tr role="row">
+                                    <th class="sorting_asc" tabindex="0" aria-controls="dataTables-example"
+                                        rowspan="1" colspan="1" aria-sort="ascending" style="width: 139px;">
+                                        机构订单号
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">
+                                        商品订单号
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">订单金额
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">物流渠道
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">物流单号
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">收货人
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">收货人电话
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">下单日期
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">订单状态
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1"
+                                        colspan="1" style="width: 139px;">操作
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody id="body"></tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dataTables_info" id="dataTables-example_info" role="alert"
+                                         aria-live="polite" aria-relevant="all">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="dataTables_paginate paging_simple_numbers"
+                                         id="dataTables-example_paginate">
+                                        <ul class="pagination" id="pageBar">
 
-                                            </ul>
-                                        </div>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
+                </div>
             </div>
             <!--# include virtual="/spec/updateOrders.html" -->
             <!-- /. ROW  -->
             <!--# include virtual="/spec/publicUpdateUser.html" -->
+
+            <!--# include virtual="/spec/uploadLog.html" -->
         </div>
         <!-- /. PAGE INNER  -->
     </div>
