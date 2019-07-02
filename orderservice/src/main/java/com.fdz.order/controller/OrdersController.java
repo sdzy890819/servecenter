@@ -98,7 +98,7 @@ public class OrdersController {
     }
 
 
-    @ApiOperation("确认收货")
+    @ApiOperation("订单结束")
     @GetMapping("/receive/{orderSn}")
     RestResponse receive(@PathVariable("orderSn") String orderSn) {
         orderService.receive(orderSn);

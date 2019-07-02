@@ -12,4 +12,6 @@ public class EmsLogistics {
     private String mobile;
 
     private String address;
+
+    private String remark;
 }

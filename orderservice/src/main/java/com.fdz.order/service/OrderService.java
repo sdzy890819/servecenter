@@ -69,4 +69,6 @@ public interface OrderService {
     void emsStyle(HttpServletResponse response, List<EmsLogistics> data);
 
     void importEms(MultipartFile file);
+
+    void orderReceive();
 }

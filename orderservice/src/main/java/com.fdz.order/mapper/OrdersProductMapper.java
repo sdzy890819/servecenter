@@ -40,4 +40,7 @@ public interface OrdersProductMapper {
     @Select(SELECT + " and order_sn = #{orderSn} " + Constants.Sql.DEFAULT_ORDER)
     @ResultMap(RESULT_MAP)
     List<OrdersProduct> findOrdersProductsByOrderSn(String orderSn);
+
+    List<OrdersProduct> findOrdersProductByOrderSns(@Param("list") List<String> orderSns);
+
 }

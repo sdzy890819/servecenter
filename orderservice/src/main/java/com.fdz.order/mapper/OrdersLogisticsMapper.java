@@ -44,4 +44,5 @@ public interface OrdersLogisticsMapper {
     OrdersLogistics findOrdersLogisticsByOrderSn(@Param("orderSn") String orderSn);
 
     void updateLogisticsInfo(@Param("list") List<OrdersLogisticsInfo> logisticsList);
+
 }

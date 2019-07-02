@@ -322,4 +322,14 @@
       platform_price = #{platformPrice}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="findOrdersProductByOrderSns" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from orders_product
+    where order_sn in
+    <foreach collection="list" item="a" separator="," open="(" close=")">
+    #{a}
+    </foreach>
+  </select>
 </mapper>

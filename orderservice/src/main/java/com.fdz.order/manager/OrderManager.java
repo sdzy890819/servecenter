@@ -221,6 +221,10 @@ public class OrderManager {
         return ordersProductMapper.findOrdersProductsByOrderSn(orderSn);
     }
 
+    public List<OrdersProduct> findOrdersProductByOrderSns(List<String> orderSns) {
+        return ordersProductMapper.findOrdersProductByOrderSns(orderSns);
+    }
+
     public List<OrderStatistics> findOrderStatistics(Date start, Date end) {
         return ordersMapper.findOrderStatistics(start, end);
     }
@@ -312,6 +316,10 @@ public class OrderManager {
 
     public void updateLogisticsInfo(List<OrdersLogisticsInfo> logisticsList) {
         ordersLogisticsMapper.updateLogisticsInfo(logisticsList);
+    }
+
+    public List<String> findOrdersByTimeAndDelivered(Date time) {
+        return ordersMapper.findOrdersByTimeAndDelivered(time);
     }
 
 }

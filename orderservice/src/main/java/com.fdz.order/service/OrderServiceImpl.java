@@ -3,8 +3,10 @@ package com.fdz.order.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fdz.common.aspect.ann.Lock;
+import com.fdz.common.constant.Constants;
 import com.fdz.common.enums.*;
 import com.fdz.common.exception.BizException;
+import com.fdz.common.redis.RedisDataManager;
 import com.fdz.common.utils.IDGenerator;
 import com.fdz.common.utils.Page;
 import com.fdz.common.utils.StringUtils;
@@ -26,6 +28,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,6 +70,9 @@ public class OrderServiceImpl implements OrderService {
     private static final String XLSX = "xlsx";
 
     private static final int SIZE = 50;
+
+    @Resource
+    private RedisDataManager redisDataManager;
 
     @Override
     public CashierResult shopping(CashierDto cashierDto, Long partnerId) {
@@ -506,6 +512,7 @@ public class OrderServiceImpl implements OrderService {
     public List<EmsLogistics> export(SearchOrdersDto dto) {
         List<OrdersAndLogistics> list = orderManager.searchAllOrders(dto);
         if (StringUtils.isNotEmpty(list)) {
+            Map<String, StringBuilder> map = getRemark(list);
             List<EmsLogistics> data = new ArrayList<>();
             for (OrdersAndLogistics a : list) {
                 EmsLogistics emsLogistics = new EmsLogistics();
@@ -513,11 +520,33 @@ public class OrderServiceImpl implements OrderService {
                 emsLogistics.setDh(a.getOrderSn());
                 emsLogistics.setMobile(a.getReceiverMobile());
                 emsLogistics.setName(a.getLogistics());
+                StringBuilder tmp = map.get(a.getOrderSn());
+                emsLogistics.setRemark(tmp != null ? tmp.toString() : "");
                 data.add(emsLogistics);
             }
             return data;
         }
         return null;
+    }
+
+    private Map<String, StringBuilder> getRemark(List<OrdersAndLogistics> list) {
+        List<String> orderSns = new ArrayList<>();
+        list.forEach(a -> orderSns.add(a.getOrderSn()));
+        List<OrdersProduct> ordersProducts = orderManager.findOrdersProductByOrderSns(orderSns);
+        Map<String, StringBuilder> remarkMap = new HashMap<>();
+        if (StringUtils.isNotEmpty(ordersProducts)) {
+            ordersProducts.forEach(a -> {
+                StringBuilder tmp = remarkMap.get(a.getOrderSn());
+                if (tmp == null) {
+                    tmp = new StringBuilder();
+                }
+                tmp.append(" | ");
+                tmp.append(a.getProductId());
+                tmp.append("*");
+                tmp.append(a.getProductNum());
+            });
+        }
+        return remarkMap;
     }
 
     @Override
@@ -716,5 +745,23 @@ public class OrderServiceImpl implements OrderService {
         result = String.format("%0" + num + "d", code + 1);
 
         return result;
+    }
+
+    @Override
+    @Async
+    public void orderReceive() {
+        final int days = 5;
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH, -5);
+            List<String> list = orderManager.findOrdersByTimeAndDelivered(calendar.getTime());
+            for (int i = 0; i < list.size(); i++) {
+                receive(list.get(i));
+            }
+            redisDataManager.delete(Constants.RedisKey.LOCK_PREFIX + "FINISH_ORDER");
+            log.info("订单结束程序，正常结束");
+        } catch (Exception e) {
+            log.error("结束订单报错, {}", e);
+        }
     }
 }

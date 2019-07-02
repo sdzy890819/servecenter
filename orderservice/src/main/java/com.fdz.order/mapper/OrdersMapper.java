@@ -60,4 +60,9 @@ public interface OrdersMapper {
     @ResultType(OrderStatistics.class)
     List<OrderStatistics> findOrderStatisticsByBusiness(@Param("start") Date start, @Param("end") Date end);
 
+
+    @Select("select order_sn from " + TABLE + " where status = 4 and business_delivery_status = 1 and business_delivery_time <= #{time}")
+    @ResultType(String.class)
+    List<String> findOrdersByTimeAndDelivered(@Param("time") Date time);
+
 }
