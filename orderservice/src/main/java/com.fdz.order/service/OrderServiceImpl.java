@@ -547,6 +547,7 @@ public class OrderServiceImpl implements OrderService {
                 StringBuilder tmp = remarkMap.get(a.getOrderSn());
                 if (tmp == null) {
                     tmp = new StringBuilder();
+                    remarkMap.put(a.getOrderSn(), tmp);
                 }
                 tmp.append(" | ");
                 tmp.append(a.getProductId());
