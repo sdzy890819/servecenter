@@ -713,6 +713,8 @@ public class OrderServiceImpl implements OrderService {
                     mobileCell.setCellValue(tmp.getMobile());
                     Cell addressCell = row.createCell(15);
                     addressCell.setCellValue(tmp.getAddress());
+                    Cell remarkCell = row.createCell(26);
+                    remarkCell.setCellValue(tmp.getRemark());
                 }
             }
             workbook.write(outputStream);
