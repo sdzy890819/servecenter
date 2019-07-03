@@ -71,4 +71,6 @@ public interface OrderService {
     void importEms(MultipartFile file);
 
     void orderReceive();
+
+    void orderCancel();
 }

@@ -65,4 +65,7 @@ public interface OrdersMapper {
     @ResultType(String.class)
     List<String> findOrdersByTimeAndDelivered(@Param("time") Date time);
 
+    @Select("select order_sn from " + TABLE + " where status = 1 and buy_time <= #{time}")
+    @ResultType(String.class)
+    List<String> findOrdersByTimeAndWaitPay(@Param("time") Date time);
 }

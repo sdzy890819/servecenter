@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum OrdersFinishStatus {
 
-    PROCESSING((byte) 1, "流程中"), FINISHED((byte) 2, "已完成");
+    PROCESSING((byte) 1, "流程中"), FINISHED((byte) 2, "已完成"), CANCEL((byte) 3, "已取消");
     private byte status;
 
     private String statusText;

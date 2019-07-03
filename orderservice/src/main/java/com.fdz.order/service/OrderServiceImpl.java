@@ -282,7 +282,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void businessDelivery(LogisticsDto dto) {
         Orders orders = orderManager.findOrdersByOrderSn(dto.getOrderSn());
-        if (orders.getOrderStatus() == OrdersStatus.RECEIVED.getStatus()) {
+        if (orders.getStatus() == OrdersStatus.RECEIVED.getStatus()) {
             throw new BizException("订单已经签收，不可更改物流信息");
         }
         OrdersLogistics ordersLogistics = orderManager.findOrdersLogisticsByOrderSn(dto.getOrderSn());
@@ -307,7 +307,7 @@ public class OrderServiceImpl implements OrderService {
         if (orders == null) {
             throw new BizException("订单不存在.");
         }
-        if (orders.getOrderStatus() == OrdersStatus.RECEIVED.getStatus()) {
+        if (orders.getStatus() == OrdersStatus.RECEIVED.getStatus()) {
             throw new BizException("订单已经签收，不可更改物流信息");
         }
         Orders updateOrder = new Orders(orders.getId());
@@ -333,6 +333,14 @@ public class OrderServiceImpl implements OrderService {
         updateOrdersLogistics.setLogisticsStatus(OrdersStatus.RECEIVED.getStatusText());
         update(updateOrder, updateOrdersLogistics);
         sendStatusExecRecord(orderSn);
+    }
+
+    public void cancel(String orderSn) {
+        Orders orders = orderManager.findOrdersByOrderSn(orderSn);
+        Orders updateOrder = new Orders(orders.getId());
+        updateOrder.setStatus(OrdersStatus.CANCEL.getStatus());
+        updateOrder.setOrderStatus(OrdersFinishStatus.CANCEL.getStatus());
+        orderManager.update(updateOrder);
     }
 
     /**
@@ -753,15 +761,45 @@ public class OrderServiceImpl implements OrderService {
         final int days = 5;
         try {
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH, -5);
+            calendar.add(Calendar.DAY_OF_MONTH, -days);
             List<String> list = orderManager.findOrdersByTimeAndDelivered(calendar.getTime());
-            for (int i = 0; i < list.size(); i++) {
-                receive(list.get(i));
+            if (StringUtils.isNotEmpty(list)) {
+                list.forEach(a -> {
+                    try {
+                        receive(a);
+                    } catch (Exception e) {
+                        log.error("当前订单取消存在问题, {}, {}", a, e);
+                    }
+                });
             }
             redisDataManager.delete(Constants.RedisKey.LOCK_PREFIX + "FINISH_ORDER");
             log.info("订单结束程序，正常结束");
         } catch (Exception e) {
             log.error("结束订单报错, {}", e);
+        }
+    }
+
+    @Override
+    @Async
+    public void orderCancel() {
+        final int days = 10;
+        try {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH, -days);
+            List<String> list = orderManager.findOrdersByTimeAndWaitPay(calendar.getTime());
+            if (StringUtils.isNotEmpty(list)) {
+                list.forEach(a -> {
+                    try {
+                        cancel(a);
+                    } catch (Exception e) {
+                        log.error("当前订单取消存在问题, {}, {}", a, e);
+                    }
+                });
+            }
+            redisDataManager.delete(Constants.RedisKey.LOCK_PREFIX + "CANCAL_ORDER");
+            log.info("订单结束程序，正常结束");
+        } catch (Exception e) {
+            log.error("取消订单报错, {}", e);
         }
     }
 }

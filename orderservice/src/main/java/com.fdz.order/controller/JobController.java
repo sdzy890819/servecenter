@@ -22,10 +22,19 @@ public class JobController {
     private OrderService orderService;
 
     @ApiOperation("批量已收货接口")
-    @PostMapping("/finish_order")
+    @PostMapping("/finish-order")
     @Lock(key = "FINISH_ORDER", unlock = false, unit = TimeUnit.DAYS)
     RestResponse finishOrder() throws IOException {
         orderService.orderReceive();
+        return RestResponse.success("任务已经提交.开始执行");
+    }
+
+
+    @ApiOperation("批量取消接口")
+    @PostMapping("/cancel_order")
+    @Lock(key = "CANCAL_ORDER", unlock = false, unit = TimeUnit.DAYS)
+    RestResponse cancelOrder() throws IOException {
+        orderService.orderCancel();
         return RestResponse.success("任务已经提交.开始执行");
     }
 

@@ -322,4 +322,13 @@ public class OrderManager {
         return ordersMapper.findOrdersByTimeAndDelivered(time);
     }
 
+    public List<String> findOrdersByTimeAndWaitPay(Date time) {
+        return ordersMapper.findOrdersByTimeAndWaitPay(time);
+    }
+
+    public void update(Orders orders) {
+        updateByPrimaryKeySelective(orders);
+        insertStatus(orders.getId(), orders.getStatus());
+    }
+
 }
