@@ -138,7 +138,7 @@ function searchVo() {
     searchVo.receiverMobile = $("#search_receiverMobile").val();
     searchVo.buyStartTime = $("#search_buyStartTime").val();
     searchVo.buyEndTime = $("#search_buyEndTime").val();
-    searchVo.deliveryStatus = $("#search_deliveryStatus").val();
+    //searchVo.deliveryStatus = $("#search_deliveryStatus").val();
     searchVo.partnerName = $("#search_partnerName").val();
     searchVo.status = $("#search_status").val();
     return searchVo;

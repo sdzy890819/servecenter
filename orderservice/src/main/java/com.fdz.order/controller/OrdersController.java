@@ -119,9 +119,10 @@ public class OrdersController {
                    @RequestParam(value = "receiverMobile", required = false) String receiverMobile,
                    @RequestParam(value = "buyStartTime", required = false) String buyStartTime,
                    @RequestParam(value = "buyEndTime", required = false) String buyEndTime,
-                   @RequestParam(value = "deliveryStatus", required = false, defaultValue = "0") Byte deliveryStatus,
+                   @RequestParam(value = "deliveryStatus", required = false) Byte deliveryStatus,
                    @RequestParam(value = "partnerId", required = false) Long partnerId,
                    @RequestParam(value = "partnerName", required = false) String partnerName,
+                   @RequestParam(value = "status", required = false) Integer status,
                    HttpServletResponse response) throws ParseException {
         SearchOrdersDto dto = new SearchOrdersDto();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,6 +133,7 @@ public class OrdersController {
             dto.setBuyStartTime(sdf.parse(buyStartTime));
         }
         dto.setDeliveryStatus(deliveryStatus);
+        dto.setStatus(status);
         if (StringUtils.isNotBlank(orderSn)) {
             dto.setOrderSn(orderSn);
         }
