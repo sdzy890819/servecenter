@@ -318,6 +318,19 @@ public class OrderManager {
         ordersLogisticsMapper.updateLogisticsInfo(logisticsList);
     }
 
+//    public void updateLogisticInfo(OrdersLogisticsInfo ordersLogisticsInfo) {
+//        OrdersLogistics oldLog = ordersLogisticsMapper.findOrdersLogisticsByOrderSn(ordersLogisticsInfo.getOrderSn());
+//        OrdersLogistics ordersLogistics = new OrdersLogistics(oldLog.getId());
+//        ordersLogistics.setLogistics(ordersLogisticsInfo.getLogistics());
+//        ordersLogistics.setLogisticsStatus(ordersLogisticsInfo.getLogisticsStatus());
+//        ordersLogistics.setLogisticsSn(ordersLogisticsInfo.getLogisticsSn());
+//        ordersLogisticsMapper.updateByPrimaryKeySelective(ordersLogistics);
+//        Orders oldOrders = findOrdersByOrderSn(ordersLogisticsInfo.getOrderSn());
+//        Orders orders = new Orders(oldOrders.getId());
+//        orders.setBusinessDeliveryStatus();
+//        update();
+//    }
+
     public List<String> findOrdersByTimeAndDelivered(Date time) {
         return ordersMapper.findOrdersByTimeAndDelivered(time);
     }

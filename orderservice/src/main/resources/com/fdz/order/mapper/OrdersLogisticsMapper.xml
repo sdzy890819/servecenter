@@ -297,7 +297,8 @@
                     logistics_status = #{a.logisticsStatus,jdbcType=VARCHAR},
                 </if>
             </set>
-            where order_sn = #{a.orderSn}
+            where order_sn = #{a.orderSn};
+            update orders set status = 4,business_delivery_time = now(),business_delivery_status = 1 where order_sn = #{a.orderSn};
         </foreach>
     </update>
 </mapper>

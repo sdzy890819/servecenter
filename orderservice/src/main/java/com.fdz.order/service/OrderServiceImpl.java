@@ -295,7 +295,7 @@ public class OrderServiceImpl implements OrderService {
         updateLogistics.setLogistics(dto.getLogistics());
         updateLogistics.setLogisticsSn(dto.getLogisticsSn());
         updateLogistics.setLogisticsStatus(dto.getLogisticsStatus());
-        ordersLogistics.setLogisticsAmount(dto.getLogisticsAmount());
+        updateLogistics.setLogisticsAmount(dto.getLogisticsAmount());
         update(updateOrder, updateLogistics);
         sendOrdersExecRecord(orders.getOrderSn(), orders.getPartnerId());
         sendStatusExecRecord(orders.getOrderSn());
@@ -578,21 +578,28 @@ public class OrderServiceImpl implements OrderService {
             String dh = getCellValue(row.getCell(1));
             String name = getCellValue(row.getCell(10));
             String mobile = getCellValue(row.getCell(12));
-            OrdersLogisticsInfo emsInfo = new OrdersLogisticsInfo();
-            emsInfo.setOrderSn(dh);
-            emsInfo.setLogistics(LogisticsEnum.EMS.getLogistics());
-            emsInfo.setLogisticsSn(yjh);
-            emsInfo.setLogisticsStatus(OrdersStatus.DELIVERED.getStatusText());
-            list.add(emsInfo);
-            if (list.size() >= SIZE) {
-                orderManager.updateLogisticsInfo(list);
-                list.clear();
-            }
+//            OrdersLogisticsInfo emsInfo = new OrdersLogisticsInfo();
+//            emsInfo.setOrderSn(dh);
+//            emsInfo.setLogistics(LogisticsEnum.EMS.getLogistics());
+//            emsInfo.setLogisticsSn(yjh);
+//            emsInfo.setLogisticsStatus(OrdersStatus.DELIVERED.getStatusText());
+//            list.add(emsInfo);
+//            if (list.size() >= SIZE) {
+//                orderManager.updateLogisticsInfo(list);
+//                list.clear();
+//            }
+            LogisticsDto dto = new LogisticsDto();
+            dto.setLogistics(LogisticsEnum.EMS.getLogistics());
+            dto.setLogisticsAmount(new BigDecimal(3.2));
+            dto.setLogisticsSn(yjh);
+            dto.setLogisticsStatus(OrdersStatus.DELIVERED.getStatusText());
+            dto.setOrderSn(dh);
+            businessDelivery(dto);
         }
-        if (list.size() > 0) {
-            orderManager.updateLogisticsInfo(list);
-            list.clear();
-        }
+//        if (list.size() > 0) {
+//            orderManager.updateLogisticsInfo(list);
+//            list.clear();
+//        }
         log.info("导入完成.");
     }
 
