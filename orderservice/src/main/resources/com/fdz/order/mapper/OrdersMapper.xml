@@ -340,6 +340,9 @@
     <if test="search.deliveryStatus != null">
       and o.delivery_status = #{search.deliveryStatus}
     </if>
+    <if test="search.status != null">
+      and o.status = #{search.status}
+    </if>
     order by o.id desc
   </select>
 
@@ -373,6 +376,9 @@
     <if test="search.deliveryStatus != null">
       and o.delivery_status = #{search.deliveryStatus}
     </if>
+    <if test="search.status != null">
+      and o.status = #{search.status}
+    </if>
     order by o.id desc limit #{page.start}, #{page.pageSize}
   </select>
 
@@ -401,6 +407,9 @@
     </if>
     <if test="search.deliveryStatus != null">
       and o.delivery_status = #{search.deliveryStatus}
+    </if>
+    <if test="search.status != null">
+      and o.status = #{search.status}
     </if>
   </select>
 

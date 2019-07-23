@@ -25,4 +25,6 @@ public class SearchOrdersDto {
     private Long partnerId;
 
     private String partnerName;
+
+    private Integer status;
 }

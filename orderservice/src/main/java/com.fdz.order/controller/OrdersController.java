@@ -131,9 +131,6 @@ public class OrdersController {
         if (StringUtils.isNotBlank(buyStartTime)) {
             dto.setBuyStartTime(sdf.parse(buyStartTime));
         }
-        if (deliveryStatus != 0) {
-            deliveryStatus = 0;
-        }
         dto.setDeliveryStatus(deliveryStatus);
         if (StringUtils.isNotBlank(orderSn)) {
             dto.setOrderSn(orderSn);
