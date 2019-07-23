@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     load(1, $("#pageSize").find("option:selected").val(), {});
     $("#pageSize").change(function () {
-        load(1, $(this).val());
+        load(1, $(this).val(), searchVo());
     });
     $(document).on("click", "a[page]", function () {
         if (!$(this).parent().hasClass("disabled") && !$(this).parent().hasClass("active")) {
@@ -104,6 +104,7 @@ function searchVo() {
     searchVo.buyStartTime = $("#search_buyStartTime").val();
     searchVo.buyEndTime = $("#search_buyEndTime").val();
     searchVo.deliveryStatus = $("#search_deliveryStatus").val();
+    searchVo.status = $("#search_status").val();
     return searchVo;
 }
 

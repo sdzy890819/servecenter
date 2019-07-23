@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     load(1, $("#pageSize").find("option:selected").val(), {});
     $("#pageSize").change(function () {
-        load(1, $(this).val());
+        load(1, $(this).val(), searchVo());
     });
     $(document).on("click", "a[page]", function () {
         if (!$(this).parent().hasClass("disabled") && !$(this).parent().hasClass("active")) {
@@ -266,6 +266,7 @@ function load(currentPage, pageSize, search) {
                             outStr(val.ordersLogisticsResult.receiver),
                             outStr(val.ordersLogisticsResult.receiverMobile),
                             outStr(val.buyTimeStr),
+                            outStr(val.confirmTimeStr),
                             outStr(val.statusStr), "<a href='#' id='listUpdate' update='" + val.orderSn + "' class='btn btn-info btn-sm' >修改发货</a><a href='#' id='listDelivery' delivery='" + val.orderSn + "' class='btn btn-info btn-sm' >发货</a>"]);
                     })
                     $("#body").html(ab);
