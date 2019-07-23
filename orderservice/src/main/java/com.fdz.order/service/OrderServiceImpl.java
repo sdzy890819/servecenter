@@ -527,7 +527,7 @@ public class OrderServiceImpl implements OrderService {
                 emsLogistics.setAddress(a.getReceiverProvince() + " " + a.getReceiverCity() + " " + a.getReceiverArea() + " " + a.getReceiverAddress());
                 emsLogistics.setDh(a.getOrderSn());
                 emsLogistics.setMobile(a.getReceiverMobile());
-                emsLogistics.setName(a.getLogistics());
+                emsLogistics.setName(a.getReceiver());
                 StringBuilder tmp = map.get(a.getOrderSn());
                 emsLogistics.setRemark(tmp != null ? tmp.toString() : "");
                 data.add(emsLogistics);
