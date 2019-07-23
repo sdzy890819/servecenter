@@ -559,6 +559,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Async
     public void importEms(MultipartFile file) throws BizException {
         checkFile(file);
         Workbook workbook = getWorkBook(file);
