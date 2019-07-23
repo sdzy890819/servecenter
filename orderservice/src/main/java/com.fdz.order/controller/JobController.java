@@ -5,6 +5,7 @@ import com.fdz.common.web.RestResponse;
 import com.fdz.order.service.OrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +23,7 @@ public class JobController {
     private OrderService orderService;
 
     @ApiOperation("批量已收货接口")
-    @PostMapping("/finish-order")
+    @GetMapping("/finish-order")
     @Lock(key = "FINISH_ORDER", unlock = false, unit = TimeUnit.DAYS)
     RestResponse finishOrder() throws IOException {
         orderService.orderReceive();
@@ -31,7 +32,7 @@ public class JobController {
 
 
     @ApiOperation("批量取消接口")
-    @PostMapping("/cancel_order")
+    @GetMapping("/cancel_order")
     @Lock(key = "CANCAL_ORDER", unlock = false, unit = TimeUnit.DAYS)
     RestResponse cancelOrder() throws IOException {
         orderService.orderCancel();
