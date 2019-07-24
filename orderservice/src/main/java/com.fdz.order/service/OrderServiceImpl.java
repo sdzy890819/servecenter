@@ -341,6 +341,7 @@ public class OrderServiceImpl implements OrderService {
         updateOrder.setStatus(OrdersStatus.CANCEL.getStatus());
         updateOrder.setOrderStatus(OrdersFinishStatus.CANCEL.getStatus());
         orderManager.update(updateOrder);
+        sendStatusExecRecord(orderSn);
     }
 
     /**
